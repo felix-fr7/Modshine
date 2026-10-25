@@ -45,6 +45,17 @@ mongoose.connect(MONGODB_URI, {
 
 // ================= API ROUTES =================
 
+// Root endpoint for Render health checks and browser verification
+app.get('/', (req, res) => {
+  res.json({
+    status: 'online',
+    appName: 'Modshine Interior API Server',
+    version: '1.0.0',
+    healthCheck: '/api/health',
+    database: isMongoConnected ? 'MongoDB (Connected)' : 'Local JSON Engine (Active)'
+  });
+});
+
 // Health & System status
 app.get('/api/health', (req, res) => {
   res.json({
