@@ -14,6 +14,7 @@ import AdminDashboard from './components/AdminDashboard.jsx';
 import ConsultationModal from './components/ConsultationModal.jsx';
 import { Phone } from 'lucide-react';
 import { apiUrl } from './config/api.js';
+import { initialProducts, initialCategories, initialSettings } from './data/defaultData.js';
 
 // Helper to check if current browser URL matches the admin endpoint
 const isAdminPath = () => {
@@ -24,10 +25,10 @@ const isAdminPath = () => {
 
 export default function App() {
   const [currentView, setCurrentView] = useState(() => (isAdminPath() ? 'admin' : 'site'));
-  const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [settings, setSettings] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState(initialProducts);
+  const [categories, setCategories] = useState(initialCategories);
+  const [settings, setSettings] = useState(initialSettings);
+  const [loading, setLoading] = useState(false);
 
   // Consultation Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -62,7 +63,7 @@ export default function App() {
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
-  // Fetch initial data from backend
+  // Fetch initial data from backend (smooth live sync)
   const loadInitialData = async () => {
     try {
       const [resProd, resCat, resSet] = await Promise.all([
@@ -71,17 +72,19 @@ export default function App() {
         fetch(apiUrl('/api/settings'))
       ]);
 
-      const [dataProd, dataCat, dataSet] = await Promise.all([
-        resProd.json(),
-        resCat.json(),
-        resSet.json()
-      ]);
+      if (resProd.ok && resCat.ok && resSet.ok) {
+        const [dataProd, dataCat, dataSet] = await Promise.all([
+          resProd.json(),
+          resCat.json(),
+          resSet.json()
+        ]);
 
-      setProducts(dataProd);
-      setCategories(dataCat);
-      setSettings(dataSet);
+        if (Array.isArray(dataProd) && dataProd.length > 0) setProducts(dataProd);
+        if (Array.isArray(dataCat) && dataCat.length > 0) setCategories(dataCat);
+        if (dataSet && typeof dataSet === 'object') setSettings(dataSet);
+      }
     } catch (err) {
-      console.warn('API fetch warning, fallback available:', err);
+      console.warn('Backend API connection warning, using curated portfolio data:', err);
     } finally {
       setLoading(false);
     }
