@@ -22,9 +22,7 @@ import {
 
 export default function ProcessSection({ onOpenConsultation }) {
   const [activeStep, setActiveStep] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true);
-  // Theme options: 'plum' matches the user's reference image; 'emerald' matches ModShine brand
-  const [colorTheme, setColorTheme] = useState('plum'); 
+  const [isPlaying, setIsPlaying] = useState(true); 
 
   const steps = [
     {
@@ -100,21 +98,10 @@ export default function ProcessSection({ onOpenConsultation }) {
 
   const currentStepData = steps[activeStep];
 
-  // Theme styling helpers
-  const isPlum = colorTheme === 'plum';
-  
-  // Theme gradients & colors
-  const nodeBgClass = isPlum
-    ? 'bg-gradient-to-br from-[#592650] via-[#753a6e] to-[#8d4984]'
-    : 'bg-gradient-to-br from-brand-darkest via-brand-primary to-brand-medium';
-
-  const nodeBorderActive = isPlum
-    ? 'border-[#ddc59f] ring-4 ring-[#8d4984]/30 shadow-[0_0_35px_rgba(141,73,132,0.45)]'
-    : 'border-gold-champagne ring-4 ring-gold-champagne/35 shadow-[0_0_35px_rgba(196,159,100,0.4)]';
-
-  const nodePillBg = isPlum
-    ? 'bg-[#592650] text-[#f5edd8] border border-[#ddc59f]/40'
-    : 'bg-brand-dark text-gold-champagne border border-gold-champagne/40';
+  // ModShine Signature Brand Palette (Deep Emerald & Champagne Gold)
+  const nodeBgClass = 'bg-gradient-to-br from-[#091c16] via-[#14453a] to-[#1a5749]';
+  const nodeBorderActive = 'border-gold-champagne ring-4 ring-gold-champagne/40 shadow-[0_0_35px_rgba(196,159,100,0.45)]';
+  const nodePillBg = 'bg-brand-primary text-gold-champagne border border-gold-champagne/60';
 
   return (
     <section id="process" className="py-20 lg:py-28 bg-[#fdfcf9] relative overflow-hidden">
@@ -150,7 +137,7 @@ export default function ProcessSection({ onOpenConsultation }) {
             From your very first sketch to the day you step into your completed dream home, our phased approach ensures complete transparency, zero hidden costs, and punctual handover.
           </p>
 
-          {/* Interactive Player Controls & Theme Switcher */}
+          {/* Interactive Player Controls */}
           <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
             
             {/* Auto-Play Toggle */}
@@ -192,30 +179,10 @@ export default function ProcessSection({ onOpenConsultation }) {
               ))}
             </div>
 
-            {/* Color Palette Toggle: Reference Plum vs ModShine Emerald */}
-            <div className="inline-flex items-center gap-1 p-1 rounded-full bg-white border border-warm-border shadow-sm text-[11px] font-medium">
-              <button
-                onClick={() => setColorTheme('plum')}
-                className={`px-2.5 py-1 rounded-full transition-all flex items-center gap-1.5 ${
-                  isPlum 
-                    ? 'bg-[#753a6e] text-white shadow-sm font-semibold' 
-                    : 'text-ink-muted hover:text-ink-body'
-                }`}
-              >
-                <span className="w-2 h-2 rounded-full bg-[#a3569c]" />
-                <span>Reference Theme</span>
-              </button>
-              <button
-                onClick={() => setColorTheme('emerald')}
-                className={`px-2.5 py-1 rounded-full transition-all flex items-center gap-1.5 ${
-                  !isPlum 
-                    ? 'bg-brand-primary text-white shadow-sm font-semibold' 
-                    : 'text-ink-muted hover:text-ink-body'
-                }`}
-              >
-                <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                <span>Emerald Theme</span>
-              </button>
+            {/* Active Stage Indicator Pill */}
+            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-brand-light text-brand-primary border border-brand-primary/20 text-xs font-semibold">
+              <span className="w-2 h-2 rounded-full bg-gold-rich" />
+              <span>Phase {currentStepData.step} in Focus</span>
             </div>
 
           </div>
