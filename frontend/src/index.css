@@ -218,4 +218,86 @@
   animation: fadeIn 0.35s ease-out forwards;
 }
 
+/* Process Timeline & Circular Node Animations */
+@keyframes flowArrow {
+  0% {
+    left: -20%;
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+
+.animate-flow-arrow {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 40px;
+  background: linear-gradient(90deg, transparent, rgba(221, 197, 159, 0.95), transparent);
+  animation: flowArrow 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes flowArrowVertical {
+  0% {
+    top: -20%;
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+.animate-flow-vertical {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  background: linear-gradient(180deg, transparent, rgba(221, 197, 159, 0.95), transparent);
+  animation: flowArrowVertical 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes radarWave {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.45);
+    opacity: 0;
+  }
+}
+
+.animate-radar-wave {
+  animation: radarWave 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes arrowNudge {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(4px);
+  }
+}
+
+.animate-arrow-nudge {
+  animation: arrowNudge 1.6s ease-in-out infinite;
+}
+
+
 
