@@ -1,0 +1,221 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-[#fdfcf9] text-[#2d3733];
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  h1, h2, h3, .font-serif {
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+}
+
+/* Custom luxury glass & gold highlights */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(220, 210, 195, 0.4);
+}
+
+.glass-dark {
+  background: rgba(14, 45, 36, 0.92);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(221, 197, 159, 0.2);
+}
+
+.gold-gradient-text {
+  background: linear-gradient(135deg, #dfc8a5 0%, #c49f64 50%, #f4e8d3 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-border-gradient {
+  border-image: linear-gradient(to right, #c49f64, #ddc59f, #aa8243) 1;
+}
+
+/* Smooth custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f4efe6;
+}
+::-webkit-scrollbar-thumb {
+  background: #c2baa8;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #14453a;
+}
+
+/* Luxury Architectural Chevron & Ambient Lighting Animations */
+@keyframes goldStreak {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-gold-streak {
+  background: linear-gradient(90deg, transparent 0%, rgba(221, 197, 159, 0.2) 20%, #f7e7ce 50%, rgba(221, 197, 159, 0.2) 80%, transparent 100%);
+  background-size: 200% 100%;
+  animation: goldStreak 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes warmPulse {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.04);
+  }
+}
+
+.animate-warm-pulse {
+  animation: warmPulse 4.5s ease-in-out infinite;
+}
+
+@keyframes warmPulseSlow {
+  0%, 100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+.animate-warm-slow {
+  animation: warmPulseSlow 6s ease-in-out infinite;
+}
+
+@keyframes floatGentle {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-float-gentle {
+  animation: floatGentle 5s ease-in-out infinite;
+}
+
+@keyframes particleDrift {
+  0% {
+    transform: translateY(0px) translateX(0px);
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.7;
+  }
+  75% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(-90px) translateX(25px);
+    opacity: 0;
+  }
+}
+
+.animate-particle-1 {
+  animation: particleDrift 8s infinite linear;
+}
+.animate-particle-2 {
+  animation: particleDrift 11s infinite linear 2.5s;
+}
+.animate-particle-3 {
+  animation: particleDrift 9s infinite linear 5s;
+}
+
+/* Subtle luxury marble background effect */
+.bg-marble-luxury {
+  background-color: #ffffff;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(240, 245, 243, 0.8) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(245, 241, 234, 0.7) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, rgba(255, 255, 255, 0.9) 0px, transparent 60%);
+}
+
+@keyframes auroraFloat {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+    opacity: 0.25;
+  }
+  33% {
+    transform: translate(35px, -30px) scale(1.18);
+    opacity: 0.5;
+  }
+  66% {
+    transform: translate(-30px, 25px) scale(0.92);
+    opacity: 0.3;
+  }
+}
+
+.animate-aurora-slow {
+  animation: auroraFloat 13s ease-in-out infinite;
+}
+
+.animate-aurora-reverse {
+  animation: auroraFloat 17s ease-in-out infinite reverse;
+}
+
+@keyframes lightBeamSweep {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%) rotate(-35deg);
+  }
+  20%, 60% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(300%) rotate(-35deg);
+  }
+}
+
+.animate-light-beam {
+  animation: lightBeamSweep 8s ease-in-out infinite;
+}
+
+@keyframes pulseBeacon {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 0.4;
+  }
+}
+
+.animate-pulse-beacon {
+  animation: pulseBeacon 2.5s infinite ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.35s ease-out forwards;
+}
+
+
