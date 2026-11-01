@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://modshine.onrender.com/api/:path*"
+      "destination": "https://modshine-j90i.onrender.com/api/:path*"
     },
     {
       "source": "/(.*)",

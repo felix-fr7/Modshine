@@ -59,7 +59,12 @@ d:/ModShine/
 
 ## 🚀 Running the Project
 
-### 1. Backend Server (Port 5000)
+### 🌐 Live Production Deployment
+- **Backend API (Render)**: `https://modshine-j90i.onrender.com`
+- **API Health Check**: `https://modshine-j90i.onrender.com/api/health`
+- **Overview Endpoint**: `https://modshine-j90i.onrender.com/api/overview`
+
+### 1. Backend Server (Local Port 5000)
 ```bash
 cd backend
 npm run dev
