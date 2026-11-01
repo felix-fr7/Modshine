@@ -29,7 +29,7 @@ export default function Navbar({ currentView, setCurrentView, settings, onOpenCo
           <div className="flex items-center space-x-2 sm:space-x-4 text-[11px] sm:text-xs">
             <span className="flex items-center gap-1 font-medium text-emerald-200 truncate max-w-[170px] sm:max-w-none">
               <MapPin className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gold-primary shrink-0" />
-              <span>{settings?.address?.split(',')[1] || 'Pasuvandhanai Road'}, Kovilpatti</span>
+              <span>Showroom: Kovilpatti • Serving All Tamil Nadu</span>
             </span>
             <span className="text-brand-medium hidden xs:inline">|</span>
             <a

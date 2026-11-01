@@ -210,7 +210,7 @@ export default function CostEstimator({ onOpenConsultationWithEstimate }) {
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-gold-primary" />
-                  <span>Factory Joinery, Safe Kovilpatti Transportation & Installation</span>
+                  <span>Factory Joinery, Safe Statewide Transportation & On-Site Installation</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-gold-primary" />

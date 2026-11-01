@@ -109,31 +109,37 @@ export default function AboutSection({ settings, onOpenConsultation }) {
     }
   ];
 
-  // South TN Regional Coverage Hubs
+  // Full Tamil Nadu Regional Coverage Hubs
   const regionalHubs = [
     {
-      city: "Kovilpatti",
-      role: "Flagship Showroom & Design Studio",
+      city: "Kovilpatti (HQ & Experience Centre)",
+      role: "Flagship Showroom & Manufacturing Unit",
       detail: "Pasuvandhanai Road Experience Centre — touch real laminate samples, test soft-close hardware, and review 3D layouts.",
       highlight: "HQ & Design Hub"
     },
     {
-      city: "Tuticorin & Tiruchendur",
-      role: "Coastal Climate Specialized Interiors",
-      detail: "Specialized boiling waterproof kitchen modules and marine-grade wardrobes built to withstand coastal air.",
-      highlight: "120+ Completed Homes"
+      city: "Chennai & Northern Hub",
+      role: "Luxury Apartments & Coastal Villas",
+      detail: "Turnkey modular execution across Chennai, Kanchipuram, Chengalpattu & Tiruvallur with architectural-grade finishes.",
+      highlight: "Statewide Coverage"
     },
     {
-      city: "Tirunelveli & Tenkasi",
-      role: "Luxury Villas & Modern Apartments",
-      detail: "Complete home interior transformations featuring Carra marble TV media centers and backlit traditional pooja mandirs.",
-      highlight: "180+ Completed Homes"
+      city: "Coimbatore & Western Districts",
+      role: "Modern Architectural Interiors",
+      detail: "Dedicated project teams across Coimbatore, Tirupur, Erode & Salem for modular kitchens, wardrobes & acoustic wall paneling.",
+      highlight: "Statewide Coverage"
     },
     {
-      city: "Madurai & Virudhunagar",
-      role: "Turnkey Modular Handover",
-      detail: "End-to-end 2BHK/3BHK modular interior packages with dedicated on-site project managers and scheduled milestones.",
-      highlight: "95+ Completed Homes"
+      city: "Madurai, Trichy & Central TN",
+      role: "Heritage & Contemporary Renovation",
+      detail: "Seamless 2BHK/3BHK modular packages across Madurai, Trichy, Dindigul, Karur & Thanjavur with milestone tracking.",
+      highlight: "Statewide Coverage"
+    },
+    {
+      city: "Tirunelveli, Tuticorin & South Hub",
+      role: "Coastal Waterproofing & Turnkey Interiors",
+      detail: "Boiling waterproof HDHMR Boilo kitchens and marine ply wardrobes built for Tuticorin, Tirunelveli, Tenkasi & Kanyakumari.",
+      highlight: "Statewide Coverage"
     }
   ];
 
@@ -163,7 +169,7 @@ export default function AboutSection({ settings, onOpenConsultation }) {
           </h2>
 
           <p className="text-ink-muted text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
-            Rooted in <span className="font-semibold text-brand-darkest">Kovilpatti</span> and transforming residences across <span className="font-semibold text-brand-darkest">Tuticorin, Tirunelveli, and Madurai</span> with metropolitan-grade factory modular craftsmanship.
+            Headquartered in <span className="font-semibold text-brand-darkest">Kovilpatti</span> and transforming residences across <span className="font-semibold text-brand-darkest">all 38 districts of Tamil Nadu</span> with metropolitan-grade factory modular craftsmanship.
           </p>
         </div>
 
@@ -327,7 +333,7 @@ export default function AboutSection({ settings, onOpenConsultation }) {
                 }`}
               >
                 <Building2 className="w-3.5 h-3.5" />
-                <span>South TN Reach</span>
+                <span>Tamil Nadu Reach</span>
               </button>
             </div>
 
@@ -413,15 +419,15 @@ export default function AboutSection({ settings, onOpenConsultation }) {
               </div>
             )}
 
-            {/* TAB CONTENT 3: South TN Coverage & Kovilpatti Showroom */}
+            {/* TAB CONTENT 3: Full Tamil Nadu Coverage & Kovilpatti Showroom */}
             {activeTab === 'reach' && (
               <div className="space-y-5 animate-fadeIn">
                 <div>
                   <h3 className="font-serif text-2xl font-bold text-brand-darkest">
-                    Deep Local Roots Across South Tamil Nadu
+                    Serving Homeowners Across Full Tamil Nadu
                   </h3>
                   <p className="text-ink-muted text-xs sm:text-sm mt-1">
-                    With our central design hub and warehouse in Kovilpatti, our dedicated execution crews manage seamless installations throughout the southern districts:
+                    With our central design hub and factory unit in Kovilpatti, our mobile survey units and dedicated installation teams deliver turnkey modular interiors across all 38 districts of Tamil Nadu:
                   </p>
                 </div>
 
@@ -494,7 +500,7 @@ export default function AboutSection({ settings, onOpenConsultation }) {
             <div className="p-4 rounded-2xl bg-white/70 border border-warm-border/60 shadow-xs hover:border-gold-champagne/60 transition-all">
               <p className="font-serif text-3xl sm:text-4xl font-bold text-brand-primary">450+</p>
               <p className="text-xs sm:text-sm font-semibold text-brand-darkest mt-1">Homes Transformed</p>
-              <p className="text-[11px] text-ink-muted">In Kovilpatti & South TN</p>
+              <p className="text-[11px] text-ink-muted">Across All Tamil Nadu</p>
             </div>
 
             <div className="p-4 rounded-2xl bg-white/70 border border-warm-border/60 shadow-xs hover:border-gold-champagne/60 transition-all">

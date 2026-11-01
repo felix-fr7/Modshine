@@ -83,7 +83,7 @@ export default function HeroSection({ settings, onOpenConsultation }) {
 
             {/* Sub-headline */}
             <p className="text-sm sm:text-lg text-emerald-100/85 max-w-xl font-normal leading-relaxed">
-              Modshine Interior brings architectural sophistication to Kovilpatti. Specializing in customized modular kitchens, bespoke wardrobes, acoustic TV units, and traditional backlit pooja mandirs.
+              Modshine Interior brings architectural sophistication to homes across Tamil Nadu. Specializing in customized modular kitchens, bespoke wardrobes, acoustic TV units, and traditional backlit pooja mandirs.
             </p>
 
             {/* Quick Guarantees & Highlights */}
@@ -143,7 +143,7 @@ export default function HeroSection({ settings, onOpenConsultation }) {
             {/* Showroom Address Pill */}
             <div className="pt-2 flex items-center gap-2 text-[11px] sm:text-xs text-neutral-400">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
-              <span>Visit our Design Studio at 24-A26 Pasuvandhanai Road, Kovilpatti</span>
+              <span>Showroom at 24-A26 Pasuvandhanai Road, Kovilpatti • Serving All Tamil Nadu</span>
             </div>
 
           </div>
@@ -185,7 +185,7 @@ export default function HeroSection({ settings, onOpenConsultation }) {
               {/* Floating Tag Top Right */}
               <div className="absolute top-2 right-2 sm:-top-3 sm:-right-3 bg-brand-primary/95 text-white text-[11px] sm:text-xs px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full border border-gold-champagne/50 shadow-xl flex items-center gap-1.5 backdrop-blur-md">
                 <span className="w-2 h-2 rounded-full bg-gold-primary animate-ping"></span>
-                <span className="font-semibold">Kovilpatti • Tirunelveli • Madurai</span>
+                <span className="font-semibold">Serving All Districts of Tamil Nadu</span>
               </div>
 
             </div>

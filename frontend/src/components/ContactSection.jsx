@@ -180,9 +180,9 @@ export default function ContactSection({ settings, initialInquiryData, onInquiry
 
               {/* Service Areas */}
               <div className="pt-4 border-t border-brand-medium/40">
-                <span className="text-[11px] text-neutral-400 block mb-1">Serving Districts:</span>
-                <p className="text-xs font-semibold text-emerald-200">
-                  Kovilpatti • Thoothukudi • Tirunelveli • Virudhunagar • Madurai
+                <span className="text-[11px] text-neutral-400 block mb-1">Service Coverage:</span>
+                <p className="text-xs font-semibold text-emerald-200 leading-relaxed">
+                  {settings?.serviceCoverage || 'Full Tamil Nadu (Chennai • Coimbatore • Madurai • Tirunelveli • Trichy • Salem • Kovilpatti & All 38 Districts)'}
                 </p>
               </div>
 
@@ -311,7 +311,7 @@ export default function ContactSection({ settings, initialInquiryData, onInquiry
                     </label>
                     <input
                       type="text"
-                      placeholder="e.g. Kovilpatti / Tirunelveli"
+                      placeholder="e.g. Chennai / Coimbatore / Kovilpatti / Madurai"
                       value={formData.city}
                       onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                       className="w-full px-4 py-2.5 rounded-xl border border-warm-border bg-white text-sm text-ink-body focus:outline-none focus:border-brand-primary shadow-sm"
@@ -366,7 +366,7 @@ export default function ContactSection({ settings, initialInquiryData, onInquiry
                   </label>
                   <textarea
                     rows={3}
-                    placeholder="Tell us about your space (e.g. 3BHK newly constructed villa in Kovilpatti, looking for L-shaped kitchen and master bedroom wardrobe)..."
+                    placeholder="Tell us about your space (e.g. 3BHK newly constructed villa in Chennai or Kovilpatti, looking for L-shaped kitchen and master bedroom wardrobe)..."
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     className="w-full px-4 py-2.5 rounded-xl border border-warm-border bg-white text-sm text-ink-body focus:outline-none focus:border-brand-primary shadow-sm"

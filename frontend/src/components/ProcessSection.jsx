@@ -507,7 +507,7 @@ export default function ProcessSection({ onOpenConsultation }) {
               Ready to begin your home transformation?
             </h3>
             <p className="text-sm text-emerald-100/70 max-w-xl">
-              Book a free consultation at our Kovilpatti design studio or schedule a site measurement at your premises.
+              Book a free consultation at our Kovilpatti design studio or schedule a site measurement anywhere across Tamil Nadu.
             </p>
           </div>
 

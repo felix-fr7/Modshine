@@ -301,7 +301,7 @@ export default function CategoryCatalog({ products, categories, onSelectProductF
             {/* Modal Footer CTAs */}
             <div className="p-3.5 sm:p-5 border-t border-warm-border bg-warm-canvas flex flex-col sm:flex-row justify-between items-center gap-2.5 sm:gap-3">
               <div className="text-[11px] sm:text-xs text-ink-muted text-center sm:text-left">
-                <span>Free site visit & 3D layout measurement in Kovilpatti & South TN.</span>
+                <span>Free site visit & 3D layout measurement across all Tamil Nadu.</span>
               </div>
               <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
                 <button

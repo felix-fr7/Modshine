@@ -52,7 +52,7 @@ export default function ConsultationModal({ isOpen, onClose, prefillData, onInqu
         setErrorMsg(data.error || 'Failed to submit inquiry.');
       }
     } catch (err) {
-      setErrorMsg('Network error. Please call our Kovilpatti showroom directly.');
+      setErrorMsg('Network error. Please call our design team directly.');
     } finally {
       setLoading(false);
     }
@@ -103,7 +103,7 @@ export default function ConsultationModal({ isOpen, onClose, prefillData, onInqu
                 Book Your Design Session
               </h3>
               <p className="text-xs text-ink-muted">
-                Visit our Kovilpatti studio or request a laser measurement at your home.
+                Visit our Kovilpatti studio or request a laser measurement at your home anywhere in Tamil Nadu.
               </p>
             </div>
 
@@ -159,6 +159,7 @@ export default function ConsultationModal({ isOpen, onClose, prefillData, onInqu
                   <label className="text-xs font-semibold text-brand-darkest block">City</label>
                   <input
                     type="text"
+                    placeholder="e.g. Chennai, Coimbatore, Kovilpatti"
                     value={formData.city}
                     onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                     className="w-full px-3 py-2 rounded-xl border border-warm-border text-xs focus:outline-none focus:border-brand-primary"

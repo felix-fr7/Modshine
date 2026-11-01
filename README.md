@@ -1,6 +1,6 @@
 # Modshine Interior - Premium Modular Furniture & Interior Design Web Application
 
-A full-stack, dynamic website and administration system designed for **Modshine Interior** (Pasuvandhanai Road, Kovilpatti, Tamil Nadu), built strictly according to the official company portfolio presentation.
+A full-stack, dynamic website and administration system designed for **Modshine Interior** (Headquartered in Pasuvandhanai Road, Kovilpatti, serving homeowners across all 38 districts of Tamil Nadu), built strictly according to the official company portfolio presentation.
 
 ---
 

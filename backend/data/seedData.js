@@ -8,6 +8,7 @@ export const initialSettings = {
   website: "www.modshineinterior.com",
   instagram: "@modshine.interior",
   address: "24-A26, Pasuvandhanai Road, Kovilpatti, Tamil Nadu 628501",
+  serviceCoverage: "Full Tamil Nadu (Chennai, Coimbatore, Madurai, Tirunelveli, Trichy, Salem, Kovilpatti & All 38 Districts)",
   workingHours: "Monday - Saturday: 9:00 AM - 8:30 PM | Sunday: By Appointment",
   stats: {
     projectsCompleted: 450,
@@ -15,7 +16,7 @@ export const initialSettings = {
     yearsExperience: 15,
     warrantyYears: 10
   },
-  announcement: "Special Inaugural Offer: Free 3D Visualization & Modular Wardrobe consultation in Kovilpatti & South TN!"
+  announcement: "Special Inaugural Offer: Free 3D Visualization & Modular Wardrobe consultation across all districts of Tamil Nadu!"
 };
 
 export const initialCategories = [
@@ -497,7 +498,7 @@ export const initialInquiries = [
     name: "Priya Murugesan",
     phone: "+91 94432 11099",
     email: "priya.murugesan@gmail.com",
-    city: "Tirunelveli",
+    city: "Chennai (Anna Nagar)",
     service: "Turnkey Interior Solutions",
     budget: "₹8,00,000+",
     propertyType: "Duplex House",
@@ -510,7 +511,7 @@ export const initialInquiries = [
     name: "Karthik Raja",
     phone: "+91 97900 55432",
     email: "karthik.raja@outlook.com",
-    city: "Kovilpatti",
+    city: "Coimbatore",
     service: "Pooja Unit & Partition",
     budget: "₹1,50,000 - ₹2,50,000",
     propertyType: "Independent House",

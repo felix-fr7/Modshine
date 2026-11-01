@@ -41,7 +41,7 @@ export default function Footer({ settings, onOpenConsultation }) {
             </div>
 
             <p className="text-xs text-emerald-100/70 leading-relaxed font-normal">
-              {settings?.tagline || 'DECORATE YOUR HOME THE EASY WAY'} — Kovilpatti's trusted design-driven interior studio specializing in customized modular kitchens, architectural wardrobes, TV consoles, and traditional temple pooja mandirs.
+              {settings?.tagline || 'DECORATE YOUR HOME THE EASY WAY'} — Tamil Nadu's trusted design-driven interior studio headquartered in Kovilpatti, specializing in customized modular kitchens, architectural wardrobes, TV consoles, and traditional temple pooja mandirs.
             </p>
 
             <div className="flex items-center gap-2 pt-2 text-xs text-gold-champagne">
@@ -83,7 +83,7 @@ export default function Footer({ settings, onOpenConsultation }) {
           {/* Direct Showroom Contact */}
           <div className="lg:col-span-3 space-y-3">
             <h4 className="text-xs uppercase tracking-wider text-gold-champagne font-bold">
-              Kovilpatti Showroom
+              Headquarters & Studio
             </h4>
             <div className="space-y-2.5 text-xs text-emerald-100/80">
               <div className="flex items-start gap-2">
@@ -118,7 +118,7 @@ export default function Footer({ settings, onOpenConsultation }) {
 
         {/* Bottom copyright & back to top */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-400">
-          <p>© {new Date().getFullYear()} Modshine Interior. All rights reserved. 24-A26 Pasuvandhanai Road, Kovilpatti, TN.</p>
+          <p>© {new Date().getFullYear()} Modshine Interior. All rights reserved. Kovilpatti HQ • Serving All Tamil Nadu.</p>
           <div className="flex items-center gap-4">
             <span className="text-[11px] text-emerald-200/60 flex items-center gap-1">
               <span>Crafted for timeless homes</span>

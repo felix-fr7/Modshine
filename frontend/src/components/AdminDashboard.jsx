@@ -565,7 +565,7 @@ export default function AdminDashboard({ onBackToSite, onRefreshData }) {
           <div className="max-w-3xl space-y-6">
             <div>
               <h2 className="text-xl font-bold font-serif text-slate-900">Showroom & Company Information</h2>
-              <p className="text-xs text-slate-500">Update contact numbers, Kovilpatti address, announcement banner, and working hours.</p>
+              <p className="text-xs text-slate-500">Update contact numbers, showroom address, statewide service coverage, announcement banner, and working hours.</p>
             </div>
 
             <form onSubmit={handleSaveSettings} className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 space-y-5 shadow-sm">
@@ -618,6 +618,17 @@ export default function AdminDashboard({ onBackToSite, onRefreshData }) {
                     value={settings.address || ''}
                     onChange={(e) => setSettings({ ...settings, address: e.target.value })}
                     className="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs text-slate-800 focus:outline-none focus:border-brand-primary"
+                  />
+                </div>
+
+                <div className="space-y-1 sm:col-span-2">
+                  <label className="text-xs font-semibold text-slate-700 block">Statewide Service Coverage</label>
+                  <input
+                    type="text"
+                    value={settings.serviceCoverage || ''}
+                    onChange={(e) => setSettings({ ...settings, serviceCoverage: e.target.value })}
+                    className="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs text-slate-800 focus:outline-none focus:border-brand-primary"
+                    placeholder="e.g. Full Tamil Nadu (Chennai, Coimbatore, Madurai, Tirunelveli, Trichy, Salem, Kovilpatti & All 38 Districts)"
                   />
                 </div>
 
