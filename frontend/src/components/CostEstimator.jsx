@@ -8,45 +8,35 @@ export default function CostEstimator({ onOpenConsultationWithEstimate }) {
   const [finishType, setFinishType] = useState('matte');
 
   const scopeOptions = [
-    { id: 'kitchen', label: 'Modular Kitchen', basePrice: 165000, desc: 'L-Shape / Parallel with overhead lofts & tandem boxes' },
-    { id: 'wardrobe', label: 'Master Bedroom Wardrobe', basePrice: 135000, desc: '9ft Floor-to-ceiling with loft & vanity mirror' },
-    { id: 'tv-partition', label: 'TV Unit & Living Partition', basePrice: 95000, desc: 'Fluted acoustic wall + wooden slat room divider' },
-    { id: '2bhk', label: 'Full 2 BHK Complete Interior', basePrice: 420000, desc: 'Kitchen + 2 Wardrobes + TV Unit + Mandir + Foyer' },
-    { id: '3bhk', label: 'Full 3 BHK Luxury Turnkey', basePrice: 650000, desc: 'Turnkey interior across all 3 bedrooms, hall & kitchen' },
+    { id: 'kitchen', label: 'Modular Kitchen', desc: 'L-Shape / Parallel with overhead lofts & tandem boxes' },
+    { id: 'wardrobe', label: 'Master Bedroom Wardrobe', desc: '9ft Floor-to-ceiling with loft & vanity mirror' },
+    { id: 'tv-partition', label: 'TV Unit & Living Partition', desc: 'Fluted acoustic wall + wooden slat room divider' },
+    { id: '2bhk', label: 'Full 2 BHK Complete Interior', desc: 'Kitchen + 2 Wardrobes + TV Unit + Mandir + Foyer' },
+    { id: '3bhk', label: 'Full 3 BHK Luxury Turnkey', desc: 'Turnkey interior across all 3 bedrooms, hall & kitchen' },
   ];
 
   const boardOptions = [
-    { id: 'hdhmr', label: 'Action TESA HDHMR Boilo', multiplier: 1.15, badge: 'Recommended • Waterproof' },
-    { id: 'bwp', label: 'Greenply BWP Marine Plywood 710', multiplier: 1.12, badge: 'Marine Grade' },
-    { id: 'mr', label: 'CenturyPly MR Plywood', multiplier: 1.0, badge: 'Standard Moisture Resistant' },
+    { id: 'hdhmr', label: 'Action TESA HDHMR Boilo', badge: 'Recommended • Waterproof' },
+    { id: 'bwp', label: 'Greenply BWP Marine Plywood 710', badge: 'Marine Grade' },
+    { id: 'mr', label: 'CenturyPly MR Plywood', badge: 'Standard Moisture Resistant' },
   ];
 
   const hardwareOptions = [
-    { id: 'hettich', label: 'German Hettich Sensys + InnoTech', multiplier: 1.10, badge: 'Lifetime Smooth' },
-    { id: 'ebco', label: 'Ebco Heavy Duty Soft-Close Channels', multiplier: 1.05, badge: 'High Durability' },
+    { id: 'hettich', label: 'German Hettich Sensys + InnoTech', badge: 'Lifetime Smooth' },
+    { id: 'ebco', label: 'Ebco Heavy Duty Soft-Close Channels', badge: 'High Durability' },
   ];
 
   const finishOptions = [
-    { id: 'matte', label: 'Cashmere Anti-Fingerprint Acrylic Matte', multiplier: 1.08 },
-    { id: 'fluted', label: 'Fluted Louvers & Carra Marble Sheet Highlights', multiplier: 1.12 },
-    { id: 'gloss', label: 'Scratch-Resistant High Gloss Laminate', multiplier: 1.0 },
+    { id: 'matte', label: 'Cashmere Anti-Fingerprint Acrylic Matte' },
+    { id: 'fluted', label: 'Fluted Louvers & Carra Marble Sheet Highlights' },
+    { id: 'gloss', label: 'Scratch-Resistant High Gloss Laminate' },
   ];
 
-  // Calculate live estimate
+  // Selected options
   const currentScope = scopeOptions.find(s => s.id === projectScope) || scopeOptions[0];
   const currentBoard = boardOptions.find(b => b.id === boardType) || boardOptions[0];
   const currentHardware = hardwareOptions.find(h => h.id === hardwareTier) || hardwareOptions[0];
   const currentFinish = finishOptions.find(f => f.id === finishType) || finishOptions[0];
-
-  const baseCalculated = Math.round(
-    currentScope.basePrice * currentBoard.multiplier * currentHardware.multiplier * currentFinish.multiplier
-  );
-  const minEstimate = Math.round(baseCalculated * 0.95);
-  const maxEstimate = Math.round(baseCalculated * 1.10);
-
-  const formatINR = (val) => {
-    return '₹' + val.toLocaleString('en-IN');
-  };
 
   return (
     <section id="estimator" className="py-20 lg:py-28 bg-warm-canvas relative border-t border-warm-border/60">
@@ -56,13 +46,13 @@ export default function CostEstimator({ onOpenConsultationWithEstimate }) {
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-light text-brand-primary text-xs font-semibold tracking-wider uppercase border border-brand-primary/20">
             <Calculator className="w-3.5 h-3.5 text-gold-rich" />
-            <span>Instant Price Estimator</span>
+            <span>Interactive Project Estimator</span>
           </div>
           <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-darkest tracking-tight">
-            Transparent Interior Budget Calculator
+            Custom Interior Specification Planner
           </h2>
           <p className="text-ink-muted text-sm sm:text-base leading-relaxed">
-            Customize your modular furniture requirements and receive an instant preliminary quote calculated with genuine Action TESA and German hardware rates.
+            Customize your modular furniture requirements and plan your layout specifications engineered with genuine Action TESA and German hardware.
           </p>
         </div>
 
@@ -179,26 +169,26 @@ export default function CostEstimator({ onOpenConsultationWithEstimate }) {
           <div className="lg:col-span-5 bg-brand-darkest text-white rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-gold-champagne/30 shadow-2xl space-y-5 sm:space-y-6">
             
             <div className="border-b border-brand-medium/40 pb-4 sm:pb-5">
-              <span className="text-[11px] sm:text-xs uppercase tracking-widest text-gold-champagne font-semibold block mb-1">Estimated Investment</span>
+              <span className="text-[11px] sm:text-xs uppercase tracking-widest text-gold-champagne font-semibold block mb-1">Project Specification</span>
               <div className="flex items-baseline gap-2">
-                <span className="font-serif text-2xl sm:text-4xl font-bold gold-gradient-text break-words">
-                  {formatINR(minEstimate)} - {formatINR(maxEstimate)}
+                <span className="font-serif text-2xl sm:text-3xl font-bold gold-gradient-text break-words">
+                  Custom Architecture Plan
                 </span>
               </div>
               <p className="text-[11px] sm:text-xs text-emerald-200/70 mt-1">
-                *Approximate estimate for standard layout with 10-Year Warranty.
+                *Tailored specifically to your site floor plan with 10-Year Warranty.
               </p>
             </div>
 
             {/* Included in estimate */}
             <div className="space-y-3">
               <h4 className="text-xs font-bold uppercase tracking-wider text-gold-champagne">
-                Included in This Estimate:
+                Included in This Specification:
               </h4>
               <ul className="space-y-2 text-xs text-emerald-100/90">
                 <li className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-gold-primary" />
-                  <span>Free Laser Site Measurement & 3D Visualization Plan</span>
+                  <span>Laser Site Measurement & Customized Layout Planning</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-gold-primary" />
@@ -228,12 +218,12 @@ export default function CostEstimator({ onOpenConsultationWithEstimate }) {
                     board: currentBoard.label,
                     hardware: currentHardware.label,
                     finish: currentFinish.label,
-                    estimateText: `${formatINR(minEstimate)} - ${formatINR(maxEstimate)}`
+                    estimateText: 'Custom Architecture Specification'
                   });
                 }}
                 className="w-full py-4 rounded-xl bg-gradient-to-r from-gold-primary via-gold-champagne to-gold-rich text-brand-darkest font-bold text-sm tracking-wide shadow-gold-glow hover:brightness-105 transition-all flex items-center justify-center gap-2"
               >
-                <span>Claim This Estimate & Free 3D Plan</span>
+                <span>Request Custom Quote & Consultation</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
@@ -241,7 +231,7 @@ export default function CostEstimator({ onOpenConsultationWithEstimate }) {
             {/* Guarantee note */}
             <div className="p-3 rounded-xl bg-brand-dark/80 border border-brand-medium/30 flex items-center gap-2 text-xs text-emerald-200/80">
               <ShieldCheck className="w-5 h-5 text-gold-champagne shrink-0" />
-              <span>Zero obligation. Final price locked only after client 3D design sign-off.</span>
+              <span>Zero obligation. Final custom quote confirmed after site measurement & design sign-off.</span>
             </div>
 
           </div>

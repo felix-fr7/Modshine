@@ -177,8 +177,7 @@ export default function CategoryCatalog({ products, categories, onSelectProductF
                   {/* Footer & Action */}
                   <div className="pt-4 border-t border-warm-border flex items-center justify-between">
                     <div>
-                      <p className="text-[10px] uppercase tracking-wider text-ink-muted font-medium">Estimated Budget</p>
-                      <p className="text-sm font-bold text-brand-primary">{prod.priceRange || 'Custom Quote'}</p>
+                      <span className="text-xs font-semibold text-brand-primary">Custom Architecture</span>
                     </div>
 
                     <button
@@ -233,8 +232,8 @@ export default function CategoryCatalog({ products, categories, onSelectProductF
                 />
                 <div className="absolute bottom-2.5 left-2.5 right-2.5 sm:bottom-4 sm:left-4 sm:right-4 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-1.5 sm:gap-2">
                   <div className="glass-dark px-3 py-1 sm:px-4 sm:py-2 rounded-xl text-white">
-                    <p className="text-[10px] sm:text-xs text-gold-champagne font-semibold uppercase">Pricing Guide</p>
-                    <p className="text-sm sm:text-lg font-serif font-bold">{activeModalProduct.priceRange || 'Custom Architecture'}</p>
+                    <p className="text-[10px] sm:text-xs text-gold-champagne font-semibold uppercase">Specification</p>
+                    <p className="text-sm sm:text-lg font-serif font-bold">Custom Architecture</p>
                   </div>
                   <div className="glass-dark px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl text-[10px] sm:text-xs font-semibold text-emerald-200 flex items-center gap-1">
                     <ShieldCheck className="w-3.5 h-3.5 text-gold-champagne" />
@@ -301,7 +300,7 @@ export default function CategoryCatalog({ products, categories, onSelectProductF
             {/* Modal Footer CTAs */}
             <div className="p-3.5 sm:p-5 border-t border-warm-border bg-warm-canvas flex flex-col sm:flex-row justify-between items-center gap-2.5 sm:gap-3">
               <div className="text-[11px] sm:text-xs text-ink-muted text-center sm:text-left">
-                <span>Free site visit & 3D layout measurement across all Tamil Nadu.</span>
+                <span>Expert site visit & precision laser measurement across all Tamil Nadu.</span>
               </div>
               <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
                 <button

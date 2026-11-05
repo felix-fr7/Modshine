@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowUpRight, ShieldCheck, Award, CheckCircle2, ChevronRight, Calculator, Sparkles } from 'lucide-react';
+import { ArrowUpRight, ShieldCheck, Award, CheckCircle2, ChevronRight, Calculator, Sparkles, Clock } from 'lucide-react';
 
 export default function HeroSection({ settings, onOpenConsultation }) {
   const motto = settings?.motto || 'DESIGN • INNOVATE • CREATE';
@@ -119,7 +119,7 @@ export default function HeroSection({ settings, onOpenConsultation }) {
                 onClick={onOpenConsultation}
                 className="w-full sm:w-auto px-6 sm:px-7 py-3.5 sm:py-4 rounded-xl bg-gradient-to-r from-gold-primary via-gold-champagne to-gold-rich text-brand-darkest font-bold text-xs sm:text-sm tracking-wide shadow-gold-glow hover:brightness-110 hover:scale-[1.02] transition-all flex items-center justify-center gap-2 group"
               >
-                <span>Book Free Site Visit & 3D Plan</span>
+                <span>Book Site Visit & Consultation</span>
                 <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
               </button>
 
@@ -140,10 +140,16 @@ export default function HeroSection({ settings, onOpenConsultation }) {
               </a>
             </div>
 
-            {/* Showroom Address Pill */}
-            <div className="pt-2 flex items-center gap-2 text-[11px] sm:text-xs text-neutral-400">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
-              <span>Showroom at 24-A26 Pasuvandhanai Road, Kovilpatti • Serving All Tamil Nadu</span>
+            {/* Showroom Address & Hours */}
+            <div className="pt-2 space-y-1.5">
+              <div className="flex items-center gap-2 text-[11px] sm:text-xs text-neutral-400">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
+                <span>Showroom at 24-A26 Pasuvandhanai Road, Kovilpatti • Serving All Tamil Nadu</span>
+              </div>
+              <div className="flex items-center gap-2 text-[11px] sm:text-xs text-emerald-200/90 font-medium">
+                <Clock className="w-3.5 h-3.5 text-gold-champagne shrink-0" />
+                <span>Shop Hours: 09:00 AM to 09:00 PM</span>
+              </div>
             </div>
 
           </div>

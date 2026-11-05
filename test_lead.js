@@ -5,7 +5,7 @@ async function testInquiry() {
     email: "murugan@example.com",
     city: "Kovilpatti",
     service: "Modular Kitchen",
-    budget: "₹2,50,000 - ₹3,50,000",
+    budget: "Standard Package",
     message: "Need quote for L-shaped kitchen in Kovilpatti Pasuvandhanai Road area."
   };
 

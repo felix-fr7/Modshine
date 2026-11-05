@@ -33,15 +33,15 @@ app.use('/assets', express.static(path.join(__dirname, 'public/assets')));
 mongoose.connect(MONGODB_URI, {
   serverSelectionTimeoutMS: 2500
 })
-.then(() => {
-  isMongoConnected = true;
-  console.log('✅ Connected to MongoDB successfully!');
-})
-.catch((err) => {
-  isMongoConnected = false;
-  console.warn('⚠️ MongoDB not running or connection failed:', err.message);
-  console.log('⚡ Active mode: Local JSON Engine (Fast, zero-config, persistent storage)');
-});
+  .then(() => {
+    isMongoConnected = true;
+    console.log('✅ Connected to MongoDB successfully!');
+  })
+  .catch((err) => {
+    isMongoConnected = false;
+    console.warn('⚠️ MongoDB not running or connection failed:', err.message);
+    console.log('⚡ Active mode: Local JSON Engine (Fast, zero-config, persistent storage)');
+  });
 
 // ================= API ROUTES =================
 
@@ -197,7 +197,7 @@ app.post('/api/inquiries', async (req, res) => {
       email: email || '',
       city: city || 'Kovilpatti',
       service: service || 'Modular Interior Consultation',
-      budget: budget || '₹2,00,000 - ₹5,00,000',
+      budget: budget || 'Standard Package',
       propertyType: propertyType || 'Residential Apartment / House',
       message: message || ''
     });

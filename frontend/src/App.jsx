@@ -114,7 +114,7 @@ export default function App() {
     setContactPrefill({
       service: estimateData.scope,
       budget: estimateData.estimateText,
-      message: `Calculated Estimate: ${estimateData.estimateText} using ${estimateData.board} and ${estimateData.hardware}. Requesting complimentary 3D site plan.`
+      message: `Selected Configuration: ${estimateData.scope} with ${estimateData.board} and ${estimateData.hardware}. Requesting custom quote & site inspection.`
     });
     const el = document.getElementById('contact');
     if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -239,7 +239,7 @@ export default function App() {
               onClick={handleOpenConsultation}
               className="flex-[1.5] py-2.5 px-2.5 rounded-xl bg-brand-primary hover:bg-brand-dark text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md border border-gold-champagne/30"
             >
-              <span>Free 3D Plan</span>
+              <span>Book Consultation</span>
             </button>
           </div>
         </>

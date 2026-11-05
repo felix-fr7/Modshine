@@ -26,7 +26,7 @@ export default function ContactSection({ settings, initialInquiryData, onInquiry
     email: '',
     city: 'Kovilpatti',
     service: 'Modular Kitchen',
-    budget: '₹2,00,000 - ₹5,00,000',
+    budget: 'Standard Package',
     propertyType: 'Residential Apartment',
     message: ''
   });
@@ -217,7 +217,7 @@ export default function ContactSection({ settings, initialInquiryData, onInquiry
                   Inquiry Received!
                 </h3>
                 <p className="text-sm text-ink-body max-w-md mx-auto leading-relaxed">
-                  Thank you, <strong>{formData.name}</strong>. Our Modshine interior designer will call you at <strong>{formData.phone}</strong> shortly to discuss your floor plan and arrange a complimentary 3D site visit.
+                  Thank you, <strong>{formData.name}</strong>. Our Modshine interior designer will call you at <strong>{formData.phone}</strong> shortly to discuss your floor plan and arrange an on-site consultation.
                 </p>
                 <div className="pt-4">
                   <button
@@ -229,7 +229,7 @@ export default function ContactSection({ settings, initialInquiryData, onInquiry
                         email: '',
                         city: 'Kovilpatti',
                         service: 'Modular Kitchen',
-                        budget: '₹2,00,000 - ₹5,00,000',
+                        budget: 'Standard Package',
                         propertyType: 'Residential Apartment',
                         message: ''
                       });
@@ -245,7 +245,7 @@ export default function ContactSection({ settings, initialInquiryData, onInquiry
                 
                 <div className="border-b border-warm-border pb-4">
                   <h3 className="font-serif text-2xl font-bold text-brand-darkest">
-                    Request a Free 3D Design & Consultation
+                    Request an Interior Design Consultation
                   </h3>
                   <p className="text-xs text-ink-muted mt-1">
                     Fill in your details and our team will get in touch with layout plans within 2 hours.
@@ -342,18 +342,19 @@ export default function ContactSection({ settings, initialInquiryData, onInquiry
                   {/* Budget Preference */}
                   <div className="space-y-1">
                     <label className="text-xs font-semibold text-brand-darkest block">
-                      Target Budget
+                      Target Budget Tier
                     </label>
                     <select
                       value={formData.budget}
                       onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
                       className="w-full px-4 py-2.5 rounded-xl border border-warm-border bg-white text-sm text-ink-body focus:outline-none focus:border-brand-primary shadow-sm"
                     >
-                      <option value="Under ₹1,50,000">Under ₹1,50,000</option>
-                      <option value="₹1,50,000 - ₹3,00,000">₹1,50,000 - ₹3,00,000</option>
-                      <option value="₹3,00,000 - ₹5,00,000">₹3,00,000 - ₹5,00,000</option>
-                      <option value="₹5,00,000 - ₹8,00,000">₹5,00,000 - ₹8,00,000</option>
-                      <option value="₹8,00,000+ Luxury Turnkey">₹8,00,000+ Luxury Turnkey</option>
+                      <option value="Essential Modular">Essential Modular</option>
+                      <option value="Standard Package">Standard Package</option>
+                      <option value="Premium Tier">Premium Tier</option>
+                      <option value="Luxury Turnkey">Luxury Turnkey</option>
+                      <option value="Custom Architecture">Custom Architecture</option>
+                      <option value="Flexible / Discuss on Call">Flexible / Discuss on Call</option>
                     </select>
                   </div>
 

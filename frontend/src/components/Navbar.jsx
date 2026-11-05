@@ -106,7 +106,7 @@ export default function Navbar({ currentView, setCurrentView, settings, onOpenCo
                 onClick={onOpenConsultation}
                 className="px-4 xl:px-5 py-2.5 rounded-full bg-brand-primary hover:bg-brand-dark text-white font-semibold text-xs xl:text-sm tracking-wide shadow-luxury hover:shadow-luxury-lg transition-all flex items-center gap-2 group border border-gold-champagne/30 whitespace-nowrap"
               >
-                <span>Book Consultation</span>
+                <span>Book Free Consultation</span>
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform text-gold-champagne" />
               </button>
             </div>
@@ -149,7 +149,7 @@ export default function Navbar({ currentView, setCurrentView, settings, onOpenCo
                 }}
                 className="w-full py-3.5 rounded-xl bg-brand-primary hover:bg-brand-dark text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-luxury"
               >
-                <span>Book Free Design Consultation</span>
+                <span>Book Free Consultation</span>
                 <ArrowRight className="w-4 h-4 text-gold-champagne" />
               </button>
 

@@ -476,7 +476,7 @@ export default function AboutSection({ settings, onOpenConsultation }) {
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-brand-primary hover:bg-brand-medium text-white text-sm font-bold shadow-luxury hover:shadow-gold-glow transition-all group border border-gold-champagne/30"
               >
                 <Sparkles className="w-4 h-4 text-gold-champagne group-hover:rotate-12 transition-transform" />
-                <span>Book Free 3D Site Consultation</span>
+                <span>Book Design Consultation</span>
                 <ArrowRight className="w-4 h-4 text-gold-champagne group-hover:translate-x-1 transition-transform" />
               </button>
 

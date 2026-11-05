@@ -9,7 +9,7 @@ export default function ConsultationModal({ isOpen, onClose, prefillData, onInqu
     email: '',
     city: 'Kovilpatti',
     service: 'Modular Kitchen',
-    budget: '₹2,00,000 - ₹5,00,000',
+    budget: 'Standard Package',
     propertyType: 'Residential Villa / Apartment',
     message: ''
   });
@@ -80,7 +80,7 @@ export default function ConsultationModal({ isOpen, onClose, prefillData, onInqu
               Consultation Scheduled!
             </h3>
             <p className="text-xs text-ink-muted leading-relaxed">
-              Thank you, <strong>{formData.name}</strong>. Our senior interior designer will call <strong>{formData.phone}</strong> to confirm your 3D floor plan review and schedule a free site visit.
+              Thank you, <strong>{formData.name}</strong>. Our senior interior designer will call <strong>{formData.phone}</strong> to confirm your requirements and schedule a design consultation.
             </p>
             <button
               onClick={() => {
@@ -97,7 +97,7 @@ export default function ConsultationModal({ isOpen, onClose, prefillData, onInqu
             
             <div>
               <span className="text-[10px] font-bold uppercase tracking-wider text-gold-rich bg-warm-cream px-2.5 py-1 rounded">
-                Complimentary 3D Consultation
+                Design & Project Consultation
               </span>
               <h3 className="font-serif text-2xl font-bold text-brand-darkest mt-2">
                 Book Your Design Session
@@ -190,7 +190,7 @@ export default function ConsultationModal({ isOpen, onClose, prefillData, onInqu
 
             <div className="flex items-center justify-center gap-1.5 text-[11px] text-ink-muted">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-              <span>No fees • 100% Free 3D plan & measurement</span>
+              <span>Direct factory pricing • 10-Year Warranty</span>
             </div>
 
           </form>

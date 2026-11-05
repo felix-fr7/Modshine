@@ -38,7 +38,7 @@ export default function AdminDashboard({ onBackToSite, onRefreshData }) {
     title: '',
     category: 'kitchen',
     categoryName: 'Modular Kitchen',
-    priceRange: '₹1,50,000 - ₹2,80,000',
+    priceRange: '',
     image: '/assets/kitchen_island.jpg',
     featured: false,
     inStock: true,
@@ -97,7 +97,7 @@ export default function AdminDashboard({ onBackToSite, onRefreshData }) {
       title: '',
       category: 'kitchen',
       categoryName: 'Modular Kitchen',
-      priceRange: '₹1,50,000 - ₹2,80,000',
+      priceRange: '',
       image: '/assets/kitchen_island.jpg',
       featured: false,
       inStock: true,
@@ -727,10 +727,10 @@ export default function AdminDashboard({ onBackToSite, onRefreshData }) {
 
                 {/* Price Range */}
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-700 block">Estimated Budget Range</label>
+                  <label className="text-xs font-semibold text-slate-700 block">Specification / Tag</label>
                   <input
                     type="text"
-                    placeholder="e.g. ₹1,40,000 - ₹2,50,000"
+                    placeholder="e.g. Custom Architecture"
                     value={productForm.priceRange}
                     onChange={(e) => setProductForm({ ...productForm, priceRange: e.target.value })}
                     className="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs text-slate-800 focus:outline-none focus:border-brand-primary"
