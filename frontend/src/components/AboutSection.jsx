@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { 
   Check, 
   ShieldCheck, 
@@ -26,28 +26,28 @@ export default function AboutSection({ settings, onOpenConsultation }) {
 
   const defaultShowcaseImages = [
     {
-      url: "/assets/about_montage_1.jpg",
+      url: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878421/modshine/about_montage_1.jpg",
       title: "Warm Architectural Living & Media Lounges",
       category: "Portfolio Highlight • Page 2",
       badge: "Living Spaces",
       desc: "Balancing fluted acoustic louvers, natural marble veining, and warm cove backlighting."
     },
     {
-      url: "/assets/kitchen_island.jpg",
+      url: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878434/modshine/kitchen_island.jpg",
       title: "Linear Luxe Modular Island Kitchen",
       category: "Portfolio Highlight • Page 6",
       badge: "Modular Kitchen",
       desc: "Boilo HDHMR waterproof substrate with German Hettich InnoTech tandem runners."
     },
     {
-      url: "/assets/bedroom_twin_luxury.jpg",
+      url: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878425/modshine/bedroom_twin_luxury.jpg",
       title: "Signature Master Bedroom Architectural Suite",
       category: "Portfolio Highlight • Page 12",
       badge: "Master Bedroom",
       desc: "Dual illuminated arches with sound-dampening panels and floating cantilever nightstands."
     },
     {
-      url: "/assets/wardrobe_sage_green.jpg",
+      url: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878470/modshine/wardrobe_sage_green.jpg",
       title: "Bespoke Sage Green Wardrobe with Vitrine",
       category: "Portfolio Highlight • Page 8",
       badge: "Custom Wardrobes",

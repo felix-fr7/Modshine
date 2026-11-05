@@ -1,4 +1,4 @@
-export const initialSettings = {
+﻿export const initialSettings = {
   companyName: "Modshine Interior",
   tagline: "Decorate Your Home The Easy Way",
   motto: "Design • Innovate • Create",
@@ -23,7 +23,7 @@ export const initialSettings = {
     highlightText: "The Easy Way",
     description: "Modshine Interior brings architectural sophistication to homes across Tamil Nadu. Specializing in customized modular kitchens, bespoke wardrobes, acoustic TV units, and traditional backlit pooja mandirs.",
     ctaText: "Book Site Visit & Consultation",
-    heroImage: "/assets/hero_living_room.jpg",
+    heroImage: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878427/modshine/hero_living_room.jpg",
     heroImageBadge: "Customized In Kovilpatti",
     heroImageTitle: "Warm Living & Lounge",
     highlights: [
@@ -41,10 +41,10 @@ export const initialSettings = {
       "We operate our own state-of-the-art modular manufacturing facility equipped with German CNC edge-banding machinery. Every panel is engineered to withstand tropical climate, moisture, and daily household use with a rock-solid 10-year warranty."
     ],
     showcaseGallery: [
-      { id: "g1", url: "/assets/about_montage_1.jpg", title: "Warm Architectural Living & Media Lounges", category: "Living Spaces", badge: "Living Spaces", desc: "Balancing fluted acoustic louvers, natural marble veining, and warm cove backlighting." },
-      { id: "g2", url: "/assets/kitchen_island.jpg", title: "Linear Luxe Modular Island Kitchen", category: "Modular Kitchen", badge: "Modular Kitchen", desc: "Boilo HDHMR waterproof substrate with German Hettich InnoTech tandem runners." },
-      { id: "g3", url: "/assets/bedroom_twin_luxury.jpg", title: "Signature Master Bedroom Architectural Suite", category: "Master Bedroom", badge: "Master Bedroom", desc: "Dual illuminated arches with sound-dampening panels and floating cantilever nightstands." },
-      { id: "g4", url: "/assets/wardrobe_sage_green.jpg", title: "Bespoke Sage Green Wardrobe with Vitrine", category: "Custom Wardrobes", badge: "Custom Wardrobes", desc: "Fluted bronze glass showcase with automatic magnetic door-sensor task lighting." }
+      { id: "g1", url: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878421/modshine/about_montage_1.jpg", title: "Warm Architectural Living & Media Lounges", category: "Living Spaces", badge: "Living Spaces", desc: "Balancing fluted acoustic louvers, natural marble veining, and warm cove backlighting." },
+      { id: "g2", url: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878434/modshine/kitchen_island.jpg", title: "Linear Luxe Modular Island Kitchen", category: "Modular Kitchen", badge: "Modular Kitchen", desc: "Boilo HDHMR waterproof substrate with German Hettich InnoTech tandem runners." },
+      { id: "g3", url: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878425/modshine/bedroom_twin_luxury.jpg", title: "Signature Master Bedroom Architectural Suite", category: "Master Bedroom", badge: "Master Bedroom", desc: "Dual illuminated arches with sound-dampening panels and floating cantilever nightstands." },
+      { id: "g4", url: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878470/modshine/wardrobe_sage_green.jpg", title: "Bespoke Sage Green Wardrobe with Vitrine", category: "Custom Wardrobes", badge: "Custom Wardrobes", desc: "Fluted bronze glass showcase with automatic magnetic door-sensor task lighting." }
     ]
   },
   services: [
@@ -53,7 +53,7 @@ export const initialSettings = {
       title: "Residential Interior Design",
       subtitle: "Comfort • Aesthetics • Practicality",
       description: "We create elegant and functional living spaces tailored to your lifestyle, combining aesthetics, comfort, and practicality.",
-      image: "/assets/hero_living_room.jpg",
+      image: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878427/modshine/hero_living_room.jpg",
       deliverables: ["Complete Hall & Living Room Decor", "Master & Kids Bedroom Concepts", "Lighting & Ceiling Architecture", "Curated Soft Furnishings"]
     },
     {
@@ -61,7 +61,7 @@ export const initialSettings = {
       title: "Modular Kitchen & Furniture",
       subtitle: "Style • Durability • Efficiency",
       description: "Custom-designed modular kitchens, wardrobes, TV units, and storage solutions crafted for style, durability, and efficient space utilization.",
-      image: "/assets/kitchen_island.jpg",
+      image: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878434/modshine/kitchen_island.jpg",
       deliverables: ["Action TESA HDHMR Boilo Kitchens", "Floor-to-Ceiling Sliding Wardrobes", "Acoustic Fluted TV Units", "Sacred Backlit Pooja Mandirs"]
     },
     {
@@ -69,7 +69,7 @@ export const initialSettings = {
       title: "Commercial Interior Design",
       subtitle: "Productivity • Brand Identity",
       description: "From offices to retail spaces, we design professional environments that enhance productivity and strengthen your brand identity.",
-      image: "/assets/partition_wooden_slat.jpg",
+      image: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878461/modshine/partition_wooden_slat.jpg",
       deliverables: ["Corporate Offices & Executive Cabins", "Retail Showrooms & Boutiques", "Hospitality & Clinic Lounges", "Soundproof Partition Walls"]
     },
     {
@@ -77,7 +77,7 @@ export const initialSettings = {
       title: "Turnkey Interior Solutions",
       subtitle: "Concept to Handover",
       description: "We manage the complete project from concept, design, material selection, execution, and final handover with assured quality and timely delivery.",
-      image: "/assets/bedroom_twin_luxury.jpg",
+      image: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878425/modshine/bedroom_twin_luxury.jpg",
       deliverables: ["3D Realistic Walkthrough Visuals", "Single Point Accountability", "Factory-Direct Precision Joinery", "Fixed Timeline & Budget Assurance"]
     }
   ],
@@ -106,9 +106,9 @@ export const initialSettings = {
     { id: "p6", step: "06", title: "Installation & Handover", subtitle: "On-Site Installation & 10-Year Warranty", description: "Professional installation by expert carpenters, dust-free cleanup, final inspection, and warranty handover.", timeline: "Day 36 - 45", deliverable: "Completed Dream Home & 10-Year Card", highlight: "Turnkey Handover" }
   ],
   testimonials: [
-    { id: "t1", name: "Dr. K. Senthil Kumar", location: "Kovilpatti", project: "Full 3 BHK Turnkey Interior", rating: 5, text: "Modshine transformed our home in Kovilpatti beyond expectations. The acrylic kitchen finish and living room fluted partition look straight out of an architectural magazine.", date: "October 2026", avatar: "/assets/page_5.jpg" },
-    { id: "t2", name: "Ananya & Rajesh", location: "Tirunelveli", project: "Modular Kitchen & Master Wardrobe", rating: 5, text: "The Action TESA HDHMR quality is fantastic. 100% water resistant and the German Hettich drawers are so silent and smooth. Timely delivery as promised!", date: "September 2026", avatar: "/assets/kitchen_island.jpg" },
-    { id: "t3", name: "M. Vignesh", location: "Madurai", project: "Acoustic TV Unit & Pooja Mandir", rating: 5, text: "The backlit temple pooja mandir and marble-veined TV unit have become the highlight of our living room. Every guest asks who did our interiors.", date: "August 2026", avatar: "/assets/tv_unit_fluted_marble.jpg" }
+    { id: "t1", name: "Dr. K. Senthil Kumar", location: "Kovilpatti", project: "Full 3 BHK Turnkey Interior", rating: 5, text: "Modshine transformed our home in Kovilpatti beyond expectations. The acrylic kitchen finish and living room fluted partition look straight out of an architectural magazine.", date: "October 2026", avatar: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878454/modshine/page_5.jpg" },
+    { id: "t2", name: "Ananya & Rajesh", location: "Tirunelveli", project: "Modular Kitchen & Master Wardrobe", rating: 5, text: "The Action TESA HDHMR quality is fantastic. 100% water resistant and the German Hettich drawers are so silent and smooth. Timely delivery as promised!", date: "September 2026", avatar: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878434/modshine/kitchen_island.jpg" },
+    { id: "t3", name: "M. Vignesh", location: "Madurai", project: "Acoustic TV Unit & Pooja Mandir", rating: 5, text: "The backlit temple pooja mandir and marble-veined TV unit have become the highlight of our living room. Every guest asks who did our interiors.", date: "August 2026", avatar: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878468/modshine/tv_unit_fluted_marble.jpg" }
   ],
   footer: {
     aboutSnippet: "Tamil Nadu's trusted design-driven interior studio headquartered in Kovilpatti, specializing in customized modular kitchens, architectural wardrobes, TV consoles, and traditional temple pooja mandirs.",
@@ -123,7 +123,7 @@ export const initialCategories = [
     slug: "kitchen",
     tagline: "Modern | Functional | Timeless",
     description: "Custom-designed modular kitchens, ergonomic work-triangles, waterproof HDHMR boards, and smooth soft-close hardware.",
-    image: "/assets/kitchen_island.jpg",
+    image: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878434/modshine/kitchen_island.jpg",
     itemCount: 8
   },
   {
@@ -132,7 +132,7 @@ export const initialCategories = [
     slug: "wardrobe",
     tagline: "Stylish | Functional | Organized",
     description: "Floor-to-ceiling customized wardrobes, walk-in closets, glass profile shutters, and integrated vanity counters.",
-    image: "/assets/wardrobe_sage_green.jpg",
+    image: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878470/modshine/wardrobe_sage_green.jpg",
     itemCount: 9
   },
   {
@@ -141,7 +141,7 @@ export const initialCategories = [
     slug: "tv-unit",
     tagline: "Stylish | Functional | Elegant",
     description: "Fluted panel acoustic walls, Carra marble backsplashes, floating consoles, and hidden cable management.",
-    image: "/assets/tv_unit_fluted_marble.jpg",
+    image: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878468/modshine/tv_unit_fluted_marble.jpg",
     itemCount: 6
   },
   {
@@ -150,7 +150,7 @@ export const initialCategories = [
     slug: "partition",
     tagline: "Display | Wooden Slat | CNC Design",
     description: "Aesthetic space dividers for living and dining spaces, featuring wooden slats, double-sided displays, and brass CNC fretwork.",
-    image: "/assets/partition_wooden_slat.jpg",
+    image: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878461/modshine/partition_wooden_slat.jpg",
     itemCount: 5
   },
   {
@@ -159,7 +159,7 @@ export const initialCategories = [
     slug: "pooja-unit",
     tagline: "Sacred | Traditional | Modern Craft",
     description: "Custom carved sacred temples, backlit jaali laser cutting, brass accents, bell carvings, and organized storage drawers.",
-    image: "/assets/pooja_unit_backlit.jpg",
+    image: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878462/modshine/pooja_unit_backlit.jpg",
     itemCount: 4
   },
   {
@@ -168,7 +168,7 @@ export const initialCategories = [
     slug: "living-bedroom",
     tagline: "Comfort | Aesthetics | Practicality",
     description: "Bespoke bed back paneling, floating bedside units, designer accent chairs, and customized credenzas.",
-    image: "/assets/bedroom_twin_luxury.jpg",
+    image: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878425/modshine/bedroom_twin_luxury.jpg",
     itemCount: 7
   }
 ];
@@ -180,7 +180,7 @@ export const initialProducts = [
     category: "kitchen",
     categoryName: "Modular Kitchen",
     priceRange: "Custom Architecture",
-    image: "/assets/kitchen_island.jpg",
+    image: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878434/modshine/kitchen_island.jpg",
     featured: true,
     inStock: true,
     rating: 4.9,
@@ -211,7 +211,7 @@ export const initialProducts = [
     category: "kitchen",
     categoryName: "Modular Kitchen",
     priceRange: "Custom Architecture",
-    image: "/assets/kitchen_parallel.jpg",
+    image: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878435/modshine/kitchen_parallel.jpg",
     featured: false,
     inStock: true,
     rating: 4.8,
@@ -241,7 +241,7 @@ export const initialProducts = [
     category: "wardrobe",
     categoryName: "Wardrobe",
     priceRange: "Custom Architecture",
-    image: "/assets/wardrobe_white_marble.jpg",
+    image: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878472/modshine/wardrobe_white_marble.jpg",
     featured: true,
     inStock: true,
     rating: 5.0,
@@ -271,7 +271,7 @@ export const initialProducts = [
     category: "wardrobe",
     categoryName: "Wardrobe",
     priceRange: "Custom Architecture",
-    image: "/assets/wardrobe_sage_green.jpg",
+    image: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878470/modshine/wardrobe_sage_green.jpg",
     featured: true,
     inStock: true,
     rating: 4.9,
@@ -301,7 +301,7 @@ export const initialProducts = [
     category: "wardrobe",
     categoryName: "Wardrobe",
     priceRange: "Custom Architecture",
-    image: "/assets/wardrobe_warm_wood_arches.jpg",
+    image: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878471/modshine/wardrobe_warm_wood_arches.jpg",
     featured: false,
     inStock: true,
     rating: 4.8,
@@ -331,7 +331,7 @@ export const initialProducts = [
     category: "tv-unit",
     categoryName: "TV Unit & Media Wall",
     priceRange: "Custom Architecture",
-    image: "/assets/tv_unit_fluted_marble.jpg",
+    image: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878468/modshine/tv_unit_fluted_marble.jpg",
     featured: true,
     inStock: true,
     rating: 5.0,
@@ -361,7 +361,7 @@ export const initialProducts = [
     category: "tv-unit",
     categoryName: "TV Unit & Media Wall",
     priceRange: "Custom Architecture",
-    image: "/assets/tv_unit_ambient_gold.jpg",
+    image: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878467/modshine/tv_unit_ambient_gold.jpg",
     featured: false,
     inStock: true,
     rating: 4.7,
@@ -390,7 +390,7 @@ export const initialProducts = [
     category: "partition",
     categoryName: "Partition & Space Dividers",
     priceRange: "Custom Architecture",
-    image: "/assets/partition_wooden_slat.jpg",
+    image: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878461/modshine/partition_wooden_slat.jpg",
     featured: true,
     inStock: true,
     rating: 4.9,
@@ -420,7 +420,7 @@ export const initialProducts = [
     category: "partition",
     categoryName: "Partition & Space Dividers",
     priceRange: "Custom Architecture",
-    image: "/assets/partition_cnc_design.jpg",
+    image: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878459/modshine/partition_cnc_design.jpg",
     featured: false,
     inStock: true,
     rating: 4.8,
@@ -449,7 +449,7 @@ export const initialProducts = [
     category: "pooja-unit",
     categoryName: "Pooja Unit",
     priceRange: "Custom Architecture",
-    image: "/assets/pooja_unit_mandir.jpg",
+    image: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878465/modshine/pooja_unit_mandir.jpg",
     featured: true,
     inStock: true,
     rating: 5.0,
@@ -479,7 +479,7 @@ export const initialProducts = [
     category: "pooja-unit",
     categoryName: "Pooja Unit",
     priceRange: "Custom Architecture",
-    image: "/assets/pooja_unit_backlit.jpg",
+    image: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878462/modshine/pooja_unit_backlit.jpg",
     featured: false,
     inStock: true,
     rating: 4.9,
@@ -508,7 +508,7 @@ export const initialProducts = [
     category: "living-bedroom",
     categoryName: "Living & Bedroom Sets",
     priceRange: "Custom Architecture",
-    image: "/assets/bedroom_twin_luxury.jpg",
+    image: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878425/modshine/bedroom_twin_luxury.jpg",
     featured: true,
     inStock: true,
     rating: 5.0,

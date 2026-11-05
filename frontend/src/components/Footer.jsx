@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Phone, MapPin, Mail, ArrowUp, ShieldCheck, Heart } from 'lucide-react';
 
 const InstagramIcon = (props) => (
@@ -26,7 +26,7 @@ export default function Footer({ settings, onOpenConsultation }) {
           <div className="lg:col-span-4 space-y-4">
             <div className="flex items-center space-x-3">
               <img
-                src="/assets/Logo.jpg"
+                src="https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878437/modshine/Logo.jpg"
                 alt="Modshine Interior Logo"
                 className="w-12 h-12 rounded-xl object-contain bg-white p-1 border border-white/30 shrink-0 shadow-sm"
               />

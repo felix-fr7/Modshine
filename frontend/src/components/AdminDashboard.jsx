@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import {
   LayoutDashboard,
   Package,
@@ -159,7 +159,7 @@ export default function AdminDashboard({ onBackToSite, onRefreshData }) {
     title: '',
     category: 'kitchen',
     categoryName: 'Modular Kitchen',
-    image: '/assets/kitchen_island.jpg',
+    image: 'https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878434/modshine/kitchen_island.jpg',
     featured: false,
     inStock: true,
     boardType: 'Action TESA HDHMR Boilo',
@@ -177,7 +177,7 @@ export default function AdminDashboard({ onBackToSite, onRefreshData }) {
     title: '',
     subtitle: '',
     description: '',
-    image: '/assets/hero_living_room.jpg',
+    image: 'https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878427/modshine/hero_living_room.jpg',
     icon: 'Home',
     deliverables: ''
   });
@@ -190,7 +190,7 @@ export default function AdminDashboard({ onBackToSite, onRefreshData }) {
     slug: '',
     tagline: '',
     description: '',
-    image: '/assets/kitchen_island.jpg'
+    image: 'https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878434/modshine/kitchen_island.jpg'
   });
 
   // 4. Testimonial Modal
@@ -204,7 +204,7 @@ export default function AdminDashboard({ onBackToSite, onRefreshData }) {
     rating: 5,
     text: '',
     date: 'Recent Execution',
-    avatar: '/assets/page_5.jpg'
+    avatar: 'https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878454/modshine/page_5.jpg'
   });
 
   // 5. Material / Board Modal
@@ -252,7 +252,7 @@ export default function AdminDashboard({ onBackToSite, onRefreshData }) {
   const [aboutGalleryModalOpen, setAboutGalleryModalOpen] = useState(false);
   const [editingGalleryIdx, setEditingGalleryIdx] = useState(null);
   const [aboutGalleryForm, setAboutGalleryForm] = useState({
-    url: '/assets/about_montage_1.jpg',
+    url: 'https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878421/modshine/about_montage_1.jpg',
     title: '',
     category: 'Living Spaces',
     badge: 'Living Spaces',
@@ -463,7 +463,7 @@ export default function AdminDashboard({ onBackToSite, onRefreshData }) {
   const handleOpenAddAboutGallery = () => {
     setEditingGalleryIdx(null);
     setAboutGalleryForm({
-      url: '/assets/about_montage_1.jpg',
+      url: 'https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878421/modshine/about_montage_1.jpg',
       title: '',
       category: 'Living Spaces',
       badge: 'Living Spaces',
@@ -478,7 +478,7 @@ export default function AdminDashboard({ onBackToSite, onRefreshData }) {
     if (!item) return;
     setEditingGalleryIdx(idx);
     setAboutGalleryForm({
-      url: item.url || '/assets/about_montage_1.jpg',
+      url: item.url || 'https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878421/modshine/about_montage_1.jpg',
       title: item.title || '',
       category: item.category || 'Living Spaces',
       badge: item.badge || 'Living Spaces',
@@ -534,7 +534,7 @@ export default function AdminDashboard({ onBackToSite, onRefreshData }) {
       title: '',
       subtitle: 'Style • Durability • Efficiency',
       description: '',
-      image: '/assets/hero_living_room.jpg',
+      image: 'https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878427/modshine/hero_living_room.jpg',
       icon: 'Home',
       deliverables: 'Custom Design, Factory Joinery, On-Site Installation, 10-Year Warranty'
     });
@@ -549,7 +549,7 @@ export default function AdminDashboard({ onBackToSite, onRefreshData }) {
       title: service.title || '',
       subtitle: service.subtitle || '',
       description: service.description || '',
-      image: service.image || '/assets/hero_living_room.jpg',
+      image: service.image || 'https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878427/modshine/hero_living_room.jpg',
       icon: service.icon || 'Home',
       deliverables: delivStr
     });
@@ -602,7 +602,7 @@ export default function AdminDashboard({ onBackToSite, onRefreshData }) {
       slug: '',
       tagline: '',
       description: '',
-      image: '/assets/kitchen_island.jpg'
+      image: 'https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878434/modshine/kitchen_island.jpg'
     });
     setCategoryModalOpen(true);
   };
@@ -614,7 +614,7 @@ export default function AdminDashboard({ onBackToSite, onRefreshData }) {
       slug: cat.slug || '',
       tagline: cat.tagline || '',
       description: cat.description || '',
-      image: cat.image || '/assets/kitchen_island.jpg'
+      image: cat.image || 'https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878434/modshine/kitchen_island.jpg'
     });
     setCategoryModalOpen(true);
   };
@@ -674,7 +674,7 @@ export default function AdminDashboard({ onBackToSite, onRefreshData }) {
       title: '',
       category: categories[0]?.slug || 'kitchen',
       categoryName: categories[0]?.name || 'Modular Kitchen',
-      image: '/assets/kitchen_island.jpg',
+      image: 'https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878434/modshine/kitchen_island.jpg',
       featured: false,
       inStock: true,
       boardType: 'Action TESA HDHMR Boilo',
@@ -692,7 +692,7 @@ export default function AdminDashboard({ onBackToSite, onRefreshData }) {
       title: prod.title || '',
       category: prod.category || 'kitchen',
       categoryName: prod.categoryName || 'Modular Kitchen',
-      image: prod.image || '/assets/kitchen_island.jpg',
+      image: prod.image || 'https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878434/modshine/kitchen_island.jpg',
       featured: prod.featured || false,
       inStock: prod.inStock !== false,
       boardType: prod.boardType || 'Action TESA HDHMR Boilo',
@@ -891,7 +891,7 @@ export default function AdminDashboard({ onBackToSite, onRefreshData }) {
       rating: 5,
       text: '',
       date: 'Recent',
-      avatar: '/assets/page_5.jpg'
+      avatar: 'https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878454/modshine/page_5.jpg'
     });
     setTestimonialModalOpen(true);
   };
@@ -906,7 +906,7 @@ export default function AdminDashboard({ onBackToSite, onRefreshData }) {
       rating: item.rating || 5,
       text: item.text || '',
       date: item.date || '',
-      avatar: item.avatar || '/assets/page_5.jpg'
+      avatar: item.avatar || 'https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878454/modshine/page_5.jpg'
     });
     setTestimonialModalOpen(true);
   };
@@ -1481,7 +1481,7 @@ export default function AdminDashboard({ onBackToSite, onRefreshData }) {
               {(settings.services || []).map((s) => (
                 <div key={s.id} className="rounded-3xl overflow-hidden bg-slate-950 border border-slate-800 flex flex-col justify-between">
                   <div className="relative h-48 bg-slate-900">
-                    <img src={s.image || '/assets/hero_living_room.jpg'} alt={s.title} className="w-full h-full object-cover" />
+                    <img src={s.image || 'https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878427/modshine/hero_living_room.jpg'} alt={s.title} className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent" />
                     <span className="absolute top-3 left-3 bg-brand-primary text-gold-champagne text-xs px-2.5 py-1 rounded-xl font-bold border border-gold-champagne/30">
                       {s.icon || 'Layers'}
@@ -1552,7 +1552,7 @@ export default function AdminDashboard({ onBackToSite, onRefreshData }) {
               {categories.map((cat) => (
                 <div key={cat.id} className="rounded-3xl overflow-hidden bg-slate-950 border border-slate-800 flex flex-col justify-between">
                   <div className="relative h-40 bg-slate-900">
-                    <img src={cat.image || '/assets/kitchen_island.jpg'} alt={cat.name} className="w-full h-full object-cover" />
+                    <img src={cat.image || 'https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878434/modshine/kitchen_island.jpg'} alt={cat.name} className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent" />
                     <span className="absolute top-3 left-3 bg-slate-900/90 text-gold-champagne text-[11px] px-2.5 py-1 rounded-lg font-bold border border-slate-800">
                       Slug: {cat.slug}
@@ -1656,7 +1656,7 @@ export default function AdminDashboard({ onBackToSite, onRefreshData }) {
                       filteredProducts.map((p) => (
                         <tr key={p.id} className="hover:bg-slate-900/60 transition-colors">
                           <td className="py-3.5 px-4 flex items-center gap-3">
-                            <img src={p.image || '/assets/kitchen_island.jpg'} alt={p.title} className="w-12 h-12 rounded-xl object-cover shrink-0 border border-slate-800" />
+                            <img src={p.image || 'https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878434/modshine/kitchen_island.jpg'} alt={p.title} className="w-12 h-12 rounded-xl object-cover shrink-0 border border-slate-800" />
                             <div className="min-w-0">
                               <strong className="block text-white font-semibold truncate max-w-xs">{p.title}</strong>
                               <span className="text-[11px] text-slate-400 truncate max-w-xs block">{p.finish}</span>
@@ -1889,7 +1889,7 @@ export default function AdminDashboard({ onBackToSite, onRefreshData }) {
 
                   <div className="pt-4 border-t border-slate-900 flex items-center justify-between">
                     <div className="flex items-center gap-2.5 min-w-0">
-                      <img src={t.avatar || '/assets/page_5.jpg'} alt={t.name} className="w-9 h-9 rounded-full object-cover shrink-0 border border-slate-700" />
+                      <img src={t.avatar || 'https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878454/modshine/page_5.jpg'} alt={t.name} className="w-9 h-9 rounded-full object-cover shrink-0 border border-slate-700" />
                       <div className="min-w-0">
                         <strong className="block text-white text-xs font-semibold truncate">{t.name}</strong>
                         <span className="text-[10px] text-slate-400 block truncate">{t.location} • {t.project}</span>

@@ -93,6 +93,55 @@ async function initMongoSync() {
         console.log(`🌱 Seeded ${inqs.length} Inquiries to MongoDB Atlas`);
       }
     }
+
+    // Migrate any legacy local /assets/ image URLs in MongoDB Atlas to Cloudinary URLs
+    const currentSettings = await Setting.findOne();
+    if (currentSettings) {
+      const freshSettings = localStore.getSettings();
+      let needsUpdate = false;
+      if (currentSettings.hero?.heroImage?.includes('/assets/')) {
+        currentSettings.hero.heroImage = freshSettings.hero?.heroImage || currentSettings.hero.heroImage;
+        needsUpdate = true;
+      }
+      if (currentSettings.about?.showcaseGallery?.some(g => g.url?.includes('/assets/'))) {
+        currentSettings.about.showcaseGallery = freshSettings.about?.showcaseGallery || currentSettings.about.showcaseGallery;
+        needsUpdate = true;
+      }
+      if (currentSettings.services?.some(s => s.image?.includes('/assets/'))) {
+        currentSettings.services = freshSettings.services || currentSettings.services;
+        needsUpdate = true;
+      }
+      if (needsUpdate) {
+        await Setting.updateOne({ _id: currentSettings._id }, { $set: currentSettings });
+        console.log('☁️ Migrated MongoDB Atlas Settings images to Cloudinary URLs');
+      }
+    }
+
+    // Migrate Categories with legacy /assets/
+    const catsToUpdate = await Category.find({ image: { $regex: '/assets/' } });
+    if (catsToUpdate.length > 0) {
+      const freshCats = localStore.getCategories();
+      for (const cat of catsToUpdate) {
+        const match = freshCats.find(c => c.slug === cat.slug || c.name === cat.name);
+        if (match && match.image) {
+          await Category.updateOne({ _id: cat._id }, { $set: { image: match.image } });
+        }
+      }
+      console.log(`☁️ Migrated ${catsToUpdate.length} MongoDB Atlas Categories images to Cloudinary URLs`);
+    }
+
+    // Migrate Products with legacy /assets/
+    const prodsToUpdate = await Product.find({ image: { $regex: '/assets/' } });
+    if (prodsToUpdate.length > 0) {
+      const freshProds = localStore.getProducts();
+      for (const prod of prodsToUpdate) {
+        const match = freshProds.find(p => p.id === prod.id || p.title === prod.title);
+        if (match && match.image) {
+          await Product.updateOne({ _id: prod._id }, { $set: { image: match.image } });
+        }
+      }
+      console.log(`☁️ Migrated ${prodsToUpdate.length} MongoDB Atlas Products images to Cloudinary URLs`);
+    }
   } catch (err) {
     console.warn('MongoDB Atlas auto-sync notice:', err.message);
   }

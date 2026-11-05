@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { ArrowUpRight, ShieldCheck, Award, CheckCircle2, ChevronRight, Calculator, Sparkles, Clock } from 'lucide-react';
 
 export default function HeroSection({ settings, onOpenConsultation }) {
@@ -7,7 +7,7 @@ export default function HeroSection({ settings, onOpenConsultation }) {
   const highlightText = settings?.hero?.highlightText || 'The Easy Way';
   const description = settings?.hero?.description || 'Modshine Interior brings architectural sophistication to homes across Tamil Nadu. Specializing in customized modular kitchens, bespoke wardrobes, acoustic TV units, and traditional backlit pooja mandirs.';
   const ctaText = settings?.hero?.ctaText || 'Book Site Visit & Consultation';
-  const heroImage = settings?.hero?.heroImage || '/assets/hero_living_clean.jpg';
+  const heroImage = settings?.hero?.heroImage || 'https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878426/modshine/hero_living_clean.jpg';
   const heroImageTitle = settings?.hero?.heroImageTitle || 'Minimalist Fluted TV & Ambient Lounge';
   const heroImageBadge = settings?.hero?.heroImageBadge || 'Featured Execution';
   const address = settings?.address || '24-A26, Pasuvandhanai Road, Kovilpatti, Tamil Nadu 628501';

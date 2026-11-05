@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Phone, MapPin, Menu, X, ArrowRight, MessageCircle } from 'lucide-react';
 
 export default function Navbar({ currentView, setCurrentView, settings, onOpenConsultation }) {
@@ -67,7 +67,7 @@ export default function Navbar({ currentView, setCurrentView, settings, onOpenCo
               className="cursor-pointer flex items-center space-x-2.5 sm:space-x-3 group shrink-0"
             >
               <img
-                src="/assets/Logo.jpg"
+                src="https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878437/modshine/Logo.jpg"
                 alt="Modshine Interior Logo"
                 className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl object-contain bg-white p-1 border border-warm-border/80 shadow-sm group-hover:scale-105 transition-transform shrink-0"
               />

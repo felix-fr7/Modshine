@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Home, CookingPot, Briefcase, Key, ArrowRight, Layers, Sparkles, CheckCircle2 } from 'lucide-react';
 
 export default function ServicesSection({ settings, onOpenConsultation }) {
@@ -9,7 +9,7 @@ export default function ServicesSection({ settings, onOpenConsultation }) {
       title: "Residential Interior Design",
       subtitle: "Comfort • Aesthetics • Practicality",
       description: "We create elegant and functional living spaces tailored to your lifestyle, combining aesthetics, comfort, and practicality.",
-      image: "/assets/hero_living_room.jpg",
+      image: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878427/modshine/hero_living_room.jpg",
       deliverables: ["Complete Hall & Living Room Decor", "Master & Kids Bedroom Concepts", "Lighting & Ceiling Architecture", "Curated Soft Furnishings"]
     },
     {
@@ -18,7 +18,7 @@ export default function ServicesSection({ settings, onOpenConsultation }) {
       title: "Modular Kitchen & Furniture",
       subtitle: "Style • Durability • Efficiency",
       description: "Custom-designed modular kitchens, wardrobes, TV units, and storage solutions crafted for style, durability, and efficient space utilization.",
-      image: "/assets/kitchen_island.jpg",
+      image: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878434/modshine/kitchen_island.jpg",
       deliverables: ["Action TESA HDHMR Boilo Kitchens", "Floor-to-Ceiling Sliding Wardrobes", "Acoustic Fluted TV Units", "Sacred Backlit Pooja Mandirs"]
     },
     {
@@ -27,7 +27,7 @@ export default function ServicesSection({ settings, onOpenConsultation }) {
       title: "Commercial Interior Design",
       subtitle: "Productivity • Brand Identity",
       description: "From offices to retail spaces, we design professional environments that enhance productivity and strengthen your brand identity.",
-      image: "/assets/partition_wooden_slat.jpg",
+      image: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878461/modshine/partition_wooden_slat.jpg",
       deliverables: ["Corporate Offices & Executive Cabins", "Retail Showrooms & Boutiques", "Hospitality & Clinic Lounges", "Soundproof Partition Walls"]
     },
     {
@@ -36,7 +36,7 @@ export default function ServicesSection({ settings, onOpenConsultation }) {
       title: "Turnkey Interior Solutions",
       subtitle: "Concept to Handover",
       description: "We manage the complete project from concept, design, material selection, execution, and final handover with assured quality and timely delivery.",
-      image: "/assets/bedroom_twin_luxury.jpg",
+      image: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878425/modshine/bedroom_twin_luxury.jpg",
       deliverables: ["3D Realistic Walkthrough Visuals", "Single Point Accountability", "Factory-Direct Precision Joinery", "Fixed Timeline & Budget Assurance"]
     }
   ];
@@ -89,7 +89,7 @@ export default function ServicesSection({ settings, onOpenConsultation }) {
                 {/* Image Banner */}
                 <div className="relative h-60 overflow-hidden bg-brand-dark">
                   <img
-                    src={s.image || '/assets/hero_living_room.jpg'}
+                    src={s.image || 'https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878427/modshine/hero_living_room.jpg'}
                     alt={s.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />

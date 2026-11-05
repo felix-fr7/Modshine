@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Star, Quote, CheckCircle2, ShieldCheck, MapPin, Sparkles } from 'lucide-react';
 
 export default function TestimonialsSection({ settings, onOpenConsultation }) {
@@ -11,7 +11,7 @@ export default function TestimonialsSection({ settings, onOpenConsultation }) {
       rating: 5,
       text: "Modshine transformed our home in Kovilpatti beyond expectations. The acrylic kitchen finish and living room fluted partition look straight out of an architectural magazine.",
       date: "October 2026",
-      avatar: "/assets/page_5.jpg"
+      avatar: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878454/modshine/page_5.jpg"
     },
     {
       id: "t2",
@@ -21,7 +21,7 @@ export default function TestimonialsSection({ settings, onOpenConsultation }) {
       rating: 5,
       text: "The Action TESA HDHMR quality is fantastic. 100% water resistant and the German Hettich drawers are so silent and smooth. Timely delivery as promised!",
       date: "September 2026",
-      avatar: "/assets/kitchen_island.jpg"
+      avatar: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878434/modshine/kitchen_island.jpg"
     },
     {
       id: "t3",
@@ -31,7 +31,7 @@ export default function TestimonialsSection({ settings, onOpenConsultation }) {
       rating: 5,
       text: "The backlit temple pooja mandir and marble-veined TV unit have become the highlight of our living room. Every guest asks who did our interiors.",
       date: "August 2026",
-      avatar: "/assets/tv_unit_fluted_marble.jpg"
+      avatar: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878468/modshine/tv_unit_fluted_marble.jpg"
     }
   ];
 
@@ -90,7 +90,7 @@ export default function TestimonialsSection({ settings, onOpenConsultation }) {
               {/* Client Profile Footer */}
               <div className="pt-6 mt-6 border-t border-warm-border/70 flex items-center gap-3.5">
                 <img
-                  src={t.avatar || '/assets/page_5.jpg'}
+                  src={t.avatar || 'https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878454/modshine/page_5.jpg'}
                   alt={t.name}
                   className="w-12 h-12 rounded-full object-cover border-2 border-gold-champagne/40 shrink-0"
                 />
