@@ -10,11 +10,38 @@ import { Product } from './models/Product.js';
 import { Inquiry } from './models/Inquiry.js';
 import { Category } from './models/Category.js';
 import { Setting } from './models/Setting.js';
+import { v2 as cloudinary } from 'cloudinary';
 
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Cloudinary Configuration
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'pgn8z8k7',
+  api_key: process.env.CLOUDINARY_API_KEY || '273865224845667',
+  api_secret: process.env.CLOUDINARY_API_SECRET || 'GmTDLmlgOqKm5K_5ePhRCOMhnQ4',
+  secure: true
+});
+
+// Helper to extract Cloudinary public_id from a secure URL
+function getCloudinaryPublicId(url) {
+  if (!url || typeof url !== 'string' || !url.includes('cloudinary.com')) return null;
+  try {
+    const parts = url.split('/upload/');
+    if (parts.length < 2) return null;
+    const afterUpload = parts[1];
+    const segments = afterUpload.split('/');
+    const pathWithoutVersion = (segments[0].startsWith('v') && !isNaN(segments[0].slice(1)))
+      ? segments.slice(1).join('/')
+      : segments.join('/');
+    const lastDotIdx = pathWithoutVersion.lastIndexOf('.');
+    return lastDotIdx !== -1 ? pathWithoutVersion.substring(0, lastDotIdx) : pathWithoutVersion;
+  } catch (err) {
+    return null;
+  }
+}
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -87,6 +114,61 @@ mongoose.connect(MONGODB_URI, {
   });
 
 // ================= API ROUTES =================
+
+// ================= CLOUDINARY MEDIA APIS =================
+
+// Upload image (base64 or remote URL) to Cloudinary
+app.post('/api/upload', async (req, res) => {
+  try {
+    const { image, folder } = req.body;
+    if (!image) {
+      return res.status(400).json({ error: 'Image data is required' });
+    }
+
+    const uploadOptions = {
+      folder: folder || 'modshine',
+      resource_type: 'image',
+      transformation: [
+        { quality: 'auto', fetch_format: 'auto' }
+      ]
+    };
+
+    const result = await cloudinary.uploader.upload(image, uploadOptions);
+    res.json({
+      success: true,
+      url: result.secure_url,
+      public_id: result.public_id,
+      format: result.format,
+      width: result.width,
+      height: result.height
+    });
+  } catch (err) {
+    console.error('Cloudinary upload error:', err);
+    res.status(500).json({ error: err.message || 'Image upload failed' });
+  }
+});
+
+// Delete image from Cloudinary
+app.post('/api/upload/delete', async (req, res) => {
+  try {
+    const { public_id, url } = req.body;
+    const targetPublicId = public_id || getCloudinaryPublicId(url);
+
+    if (!targetPublicId) {
+      return res.status(400).json({ error: 'Valid public_id or Cloudinary URL required' });
+    }
+
+    const result = await cloudinary.uploader.destroy(targetPublicId);
+    res.json({
+      success: true,
+      result: result.result,
+      public_id: targetPublicId
+    });
+  } catch (err) {
+    console.error('Cloudinary delete error:', err);
+    res.status(500).json({ error: err.message || 'Failed to delete image from Cloudinary' });
+  }
+});
 
 // Root endpoint for Render health checks and browser verification
 app.get('/', (req, res) => {
@@ -231,6 +313,13 @@ app.put('/api/categories/:id', async (req, res) => {
 
 app.delete('/api/categories/:id', async (req, res) => {
   try {
+    const existingCat = localStore.getCategories().find(c => c.id === req.params.id || c.slug === req.params.id);
+    if (existingCat && existingCat.image && existingCat.image.includes('cloudinary.com')) {
+      const publicId = getCloudinaryPublicId(existingCat.image);
+      if (publicId) {
+        cloudinary.uploader.destroy(publicId).catch(e => console.warn('Cloudinary delete category image notice:', e.message));
+      }
+    }
     const success = localStore.deleteCategory(req.params.id);
     if (isMongoConnected) {
       try {
@@ -314,6 +403,13 @@ app.put('/api/products/:id', async (req, res) => {
 
 app.delete('/api/products/:id', async (req, res) => {
   try {
+    const existing = localStore.getProductById(req.params.id);
+    if (existing && existing.image && existing.image.includes('cloudinary.com')) {
+      const publicId = getCloudinaryPublicId(existing.image);
+      if (publicId) {
+        cloudinary.uploader.destroy(publicId).catch(e => console.warn('Cloudinary delete product image notice:', e.message));
+      }
+    }
     const success = localStore.deleteProduct(req.params.id);
     if (isMongoConnected) {
       try {

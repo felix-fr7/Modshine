@@ -25,3 +25,4 @@ const SettingSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 export const Setting = mongoose.models.Setting || mongoose.model('Setting', SettingSchema);
+

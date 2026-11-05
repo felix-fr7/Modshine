@@ -34,9 +34,102 @@ import {
   ChevronRight,
   Eye,
   Sliders,
-  Compass
+  Compass,
+  Upload,
+  Loader2
 } from 'lucide-react';
 import { apiUrl } from '../config/api.js';
+
+// Cloudinary Image Field with direct upload, live preview & delete
+function CloudinaryImageField({
+  label = "Image URL / Path",
+  value,
+  onChange,
+  uploadKey,
+  uploadingKey,
+  onUpload,
+  onDelete,
+  placeholder = "https://res.cloudinary.com/..."
+}) {
+  const isUploading = uploadingKey === uploadKey;
+
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center justify-between">
+        <label className="font-bold text-slate-300 block text-xs">{label}</label>
+        <span className="text-[10px] text-brand-primary font-medium flex items-center gap-1">
+          <Sparkles className="w-2.5 h-2.5" /> Cloudinary Enabled
+        </span>
+      </div>
+
+      <div className="flex gap-2">
+        <input
+          type="text"
+          value={value || ''}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder}
+          className="flex-1 px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-white text-xs focus:outline-none focus:border-brand-primary"
+        />
+
+        <label className={`px-3 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 cursor-pointer transition border shrink-0 ${
+          isUploading
+            ? 'bg-slate-800 text-slate-400 border-slate-700 pointer-events-none'
+            : 'bg-brand-primary/10 hover:bg-brand-primary/20 text-brand-primary border-brand-primary/30'
+        }`}>
+          {isUploading ? (
+            <>
+              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              <span>Uploading...</span>
+            </>
+          ) : (
+            <>
+              <Upload className="w-3.5 h-3.5" />
+              <span>Upload</span>
+            </>
+          )}
+          <input
+            type="file"
+            accept="image/*"
+            className="hidden"
+            disabled={isUploading}
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) {
+                onUpload(file, onChange, uploadKey);
+                e.target.value = '';
+              }
+            }}
+          />
+        </label>
+      </div>
+
+      {value && (
+        <div className="flex items-center gap-3 p-2 rounded-xl bg-slate-900/60 border border-slate-800/80">
+          <img
+            src={value}
+            alt="Preview"
+            className="w-12 h-12 object-cover rounded-lg border border-slate-700 shrink-0"
+            onError={(e) => { e.currentTarget.style.display = 'none'; }}
+          />
+          <div className="flex-1 min-w-0">
+            <p className="text-[11px] text-slate-300 truncate font-mono">{value}</p>
+            <p className="text-[10px] text-emerald-400 flex items-center gap-1">
+              <Check className="w-3 h-3" /> Ready
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => onDelete(value, () => onChange(''))}
+            className="p-1.5 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition"
+            title="Delete / Remove image"
+          >
+            <Trash2 className="w-4 h-4" />
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function AdminDashboard({ onBackToSite, onRefreshData }) {
   // Navigation tabs:
@@ -49,6 +142,7 @@ export default function AdminDashboard({ onBackToSite, onRefreshData }) {
   const [settings, setSettings] = useState(null);
   const [loading, setLoading] = useState(true);
   const [msgAlert, setMsgAlert] = useState(null);
+  const [uploadingKey, setUploadingKey] = useState(null);
 
   // Search & Filter state for products
   const [searchTerm, setSearchTerm] = useState('');
@@ -204,6 +298,65 @@ export default function AdminDashboard({ onBackToSite, onRefreshData }) {
   const showNotification = (text, type = 'success') => {
     setMsgAlert({ text, type });
     setTimeout(() => setMsgAlert(null), 4000);
+  };
+
+  // Cloudinary direct file upload handler
+  const handleCloudinaryFileUpload = async (file, onUploaded, key = 'image') => {
+    if (!file) return;
+    if (file.size > 10 * 1024 * 1024) {
+      showNotification('Image size exceeds 10MB limit', 'warning');
+      return;
+    }
+    setUploadingKey(key);
+    try {
+      const reader = new FileReader();
+      reader.onload = async () => {
+        try {
+          const base64Data = reader.result;
+          const res = await fetch(apiUrl('/api/upload'), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ image: base64Data, folder: 'modshine' })
+          });
+          const data = await res.json();
+          if (data.success && data.url) {
+            onUploaded(data.url);
+            showNotification('Image uploaded to Cloudinary successfully!');
+          } else {
+            showNotification(data.error || 'Cloudinary upload failed', 'warning');
+          }
+        } catch (uploadErr) {
+          console.error('Upload failed:', uploadErr);
+          showNotification('Failed to upload image to Cloudinary', 'warning');
+        } finally {
+          setUploadingKey(null);
+        }
+      };
+      reader.readAsDataURL(file);
+    } catch (err) {
+      console.error('File reading failed:', err);
+      setUploadingKey(null);
+    }
+  };
+
+  // Cloudinary image delete handler
+  const handleCloudinaryFileDelete = async (currentUrl, onCleared) => {
+    if (!currentUrl) return;
+    if (!window.confirm('Delete this image from Cloudinary?')) return;
+    try {
+      if (currentUrl.includes('cloudinary.com')) {
+        await fetch(apiUrl('/api/upload/delete'), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: currentUrl })
+        });
+      }
+      onCleared();
+      showNotification('Image removed!');
+    } catch (err) {
+      console.error('Failed to delete image:', err);
+      onCleared();
+    }
   };
 
   // Generic Save Settings Helper (updates backend + localStorage + parent App)
@@ -1039,16 +1192,18 @@ export default function AdminDashboard({ onBackToSite, onRefreshData }) {
                   />
                 </div>
 
-                <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-300 block">Hero Right Showcase Image URL</label>
-                  <input
-                    type="text"
+                <div className="space-y-1.5 sm:col-span-2">
+                  <CloudinaryImageField
+                    label="Hero Right Showcase Image"
                     value={settings.hero?.heroImage || ''}
-                    onChange={(e) => setSettings({
+                    uploadKey="hero"
+                    uploadingKey={uploadingKey}
+                    onUpload={handleCloudinaryFileUpload}
+                    onDelete={handleCloudinaryFileDelete}
+                    onChange={(newUrl) => setSettings({
                       ...settings,
-                      hero: { ...(settings.hero || {}), heroImage: e.target.value }
+                      hero: { ...(settings.hero || {}), heroImage: newUrl }
                     })}
-                    className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-white text-xs focus:outline-none focus:border-brand-primary"
                   />
                 </div>
 
@@ -2043,14 +2198,15 @@ export default function AdminDashboard({ onBackToSite, onRefreshData }) {
                   </select>
                 </div>
 
-                <div className="space-y-1">
-                  <label className="font-bold text-slate-300 block">Image URL / Path</label>
-                  <input
-                    type="text"
-                    required
+                <div className="space-y-1 sm:col-span-2">
+                  <CloudinaryImageField
+                    label="Product Display Image"
                     value={productForm.image}
-                    onChange={(e) => setProductForm({ ...productForm, image: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-white focus:outline-none focus:border-brand-primary"
+                    uploadKey="product"
+                    uploadingKey={uploadingKey}
+                    onUpload={handleCloudinaryFileUpload}
+                    onDelete={handleCloudinaryFileDelete}
+                    onChange={(newUrl) => setProductForm({ ...productForm, image: newUrl })}
                   />
                 </div>
 
@@ -2186,15 +2342,15 @@ export default function AdminDashboard({ onBackToSite, onRefreshData }) {
                 </div>
               </div>
 
-              <div className="space-y-1">
-                <label className="font-bold text-slate-300 block">Image URL / Path</label>
-                <input
-                  type="text"
-                  value={serviceForm.image}
-                  onChange={(e) => setServiceForm({ ...serviceForm, image: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-white focus:outline-none focus:border-brand-primary"
-                />
-              </div>
+              <CloudinaryImageField
+                label="Service Cover Image"
+                value={serviceForm.image}
+                uploadKey="service"
+                uploadingKey={uploadingKey}
+                onUpload={handleCloudinaryFileUpload}
+                onDelete={handleCloudinaryFileDelete}
+                onChange={(newUrl) => setServiceForm({ ...serviceForm, image: newUrl })}
+              />
 
               <div className="space-y-1">
                 <label className="font-bold text-slate-300 block">Description</label>
@@ -2289,15 +2445,15 @@ export default function AdminDashboard({ onBackToSite, onRefreshData }) {
                 </div>
               </div>
 
-              <div className="space-y-1">
-                <label className="font-bold text-slate-300 block">Image URL / Path</label>
-                <input
-                  type="text"
-                  value={categoryForm.image}
-                  onChange={(e) => setCategoryForm({ ...categoryForm, image: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-white focus:outline-none focus:border-brand-primary"
-                />
-              </div>
+              <CloudinaryImageField
+                label="Category Banner Image"
+                value={categoryForm.image}
+                uploadKey="category"
+                uploadingKey={uploadingKey}
+                onUpload={handleCloudinaryFileUpload}
+                onDelete={handleCloudinaryFileDelete}
+                onChange={(newUrl) => setCategoryForm({ ...categoryForm, image: newUrl })}
+              />
 
               <div className="space-y-1">
                 <label className="font-bold text-slate-300 block">Description</label>
@@ -2395,15 +2551,15 @@ export default function AdminDashboard({ onBackToSite, onRefreshData }) {
                 </div>
               </div>
 
-              <div className="space-y-1">
-                <label className="font-bold text-slate-300 block">Client Photo URL</label>
-                <input
-                  type="text"
-                  value={testimonialForm.avatar}
-                  onChange={(e) => setTestimonialForm({ ...testimonialForm, avatar: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-white focus:outline-none focus:border-brand-primary"
-                />
-              </div>
+              <CloudinaryImageField
+                label="Client Photo / Avatar"
+                value={testimonialForm.avatar}
+                uploadKey="testimonial"
+                uploadingKey={uploadingKey}
+                onUpload={handleCloudinaryFileUpload}
+                onDelete={handleCloudinaryFileDelete}
+                onChange={(newUrl) => setTestimonialForm({ ...testimonialForm, avatar: newUrl })}
+              />
 
               <div className="space-y-1">
                 <label className="font-bold text-slate-300 block">Review Feedback Text</label>
@@ -2526,16 +2682,15 @@ export default function AdminDashboard({ onBackToSite, onRefreshData }) {
             </div>
 
             <form onSubmit={handleSaveAboutGallery} className="space-y-4 text-xs">
-              <div className="space-y-1">
-                <label className="font-bold text-slate-300 block">Image URL / Path</label>
-                <input
-                  type="text"
-                  required
-                  value={aboutGalleryForm.url}
-                  onChange={(e) => setAboutGalleryForm({ ...aboutGalleryForm, url: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-white focus:outline-none focus:border-brand-primary"
-                />
-              </div>
+              <CloudinaryImageField
+                label="Portfolio Photo"
+                value={aboutGalleryForm.url}
+                uploadKey="gallery"
+                uploadingKey={uploadingKey}
+                onUpload={handleCloudinaryFileUpload}
+                onDelete={handleCloudinaryFileDelete}
+                onChange={(newUrl) => setAboutGalleryForm({ ...aboutGalleryForm, url: newUrl })}
+              />
 
               <div className="space-y-1">
                 <label className="font-bold text-slate-300 block">Photo Title</label>
