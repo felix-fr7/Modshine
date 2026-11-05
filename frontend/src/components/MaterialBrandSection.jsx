@@ -1,8 +1,8 @@
 import React from 'react';
 import { Layers, Award, CheckCircle2, Shield, Wrench } from 'lucide-react';
 
-export default function MaterialBrandSection() {
-  const boards = [
+export default function MaterialBrandSection({ settings }) {
+  const defaultBoards = [
     { name: "HDHMR Boilo", desc: "High Density High Moisture Resistance Boilo grade for 100% waterproof kitchens & vanities.", tag: "Action TESA" },
     { name: "BWP Plywood", desc: "Boiling Water Proof 710 marine grade plywood engineered to resist borer, termite & warping.", tag: "Greenply Marine" },
     { name: "UV High Gloss Board", desc: "Flawless mirror-sheen surface with anti-fingerprint and scratch-resistant coating.", tag: "Luxury Shutters" },
@@ -11,18 +11,7 @@ export default function MaterialBrandSection() {
     { name: "Fluted Louver Panels", desc: "Architectural 3D fluted panels (MN 8616) creating warm acoustic living backdrops.", tag: "Trending Wall Decor" },
   ];
 
-  const moodboardFinishes = [
-    { title: "Carra Marble", color: "from-stone-100 to-stone-300", type: "Stone Veins" },
-    { title: "Fluted Panel MN 8616", color: "from-amber-900 to-yellow-950", type: "3D Texture" },
-    { title: "Cashmere Matte", color: "from-zinc-700 to-zinc-900", type: "Super Matte" },
-    { title: "Warm Beige", color: "from-amber-100 to-amber-200", type: "Neutral Tone" },
-    { title: "Walnut Wood", color: "from-amber-800 to-stone-900", type: "Natural Grain" },
-    { title: "Textured Fabric", color: "from-stone-300 to-stone-400", type: "Boucle Upholstery" },
-    { title: "Black Accents", color: "from-neutral-900 to-black", type: "Profile Frames" },
-    { title: "Metal Finish", color: "from-amber-500 to-yellow-700", type: "Brushed Brass" },
-  ];
-
-  const brands = [
+  const defaultBrands = [
     { name: "Action TESA", category: "Engineered HDHMR Board", badge: "India's #1", desc: "Highest density, maximum screw holding capacity and 100% water defense." },
     { name: "Greenply", category: "BWP Marine Plywood", badge: "710 Certified", desc: "Zero-emission formaldehyde free marine grade plywood for lifelong peace of mind." },
     { name: "CenturyPly", category: "Architect Plywood", badge: "ViroKill & Fire", desc: "Nanotechnology surface protection with viral defense and borer proof warranty." },
@@ -30,6 +19,9 @@ export default function MaterialBrandSection() {
     { name: "Ebco", category: "Fittings & Accessories", badge: "Simplifying Lives", desc: "Ultra-smooth telescopic runners, aluminium profile glass doors, and magic corners." },
     { name: "Sleek", category: "Kitchen Accessories", badge: "Asian Paints", desc: "Stainless steel 304 wire baskets, cutlery trays, and tall pantry pull-out organizers." }
   ];
+
+  const boards = (settings?.materials && settings.materials.length > 0) ? settings.materials : defaultBoards;
+  const brands = (settings?.brands && settings.brands.length > 0) ? settings.brands : defaultBrands;
 
   return (
     <section id="materials" className="py-20 lg:py-28 bg-warm-cream/60 relative border-y border-warm-border/60">

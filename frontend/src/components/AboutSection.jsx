@@ -24,8 +24,7 @@ export default function AboutSection({ settings, onOpenConsultation }) {
   const [activeTab, setActiveTab] = useState('story');
   const [activeImageIdx, setActiveImageIdx] = useState(0);
 
-  // Authentic showcase gallery images directly from the ModShine portfolio
-  const showcaseImages = [
+  const defaultShowcaseImages = [
     {
       url: "/assets/about_montage_1.jpg",
       title: "Warm Architectural Living & Media Lounges",
@@ -55,6 +54,28 @@ export default function AboutSection({ settings, onOpenConsultation }) {
       desc: "Fluted bronze glass showcase with automatic magnetic door-sensor task lighting."
     }
   ];
+
+  const showcaseImages = (settings?.about?.showcaseGallery && settings.about.showcaseGallery.length > 0)
+    ? settings.about.showcaseGallery
+    : defaultShowcaseImages;
+
+  // Safe image index in case images were deleted
+  const currentImage = showcaseImages[activeImageIdx] || showcaseImages[0] || defaultShowcaseImages[0];
+
+  const stats = settings?.about?.stats || settings?.stats || {
+    projectsCompleted: 450,
+    happyFamilies: 420,
+    yearsExperience: 15,
+    warrantyYears: 10
+  };
+
+  const storyTitle = settings?.about?.title || 'Bespoke Interiors Tailored to Your Lifestyle, Without Metropolitan Markups';
+  const storyParagraphs = (settings?.about?.storyParagraphs && settings.about.storyParagraphs.length > 0)
+    ? settings.about.storyParagraphs
+    : [
+        "Modshine Interior was established to bridge the gap between premium architectural luxury and everyday South Indian homeowners. We eliminate middleman commissions by operating our own dedicated modular joinery production unit and design studio right here in Kovilpatti.",
+        "Every layout begins with a detailed 3D photorealistic visualization, allowing you to walk through your future kitchen, master wardrobe, and living room before manufacturing starts. We ensure zero surprises in cost, materials, or delivery timelines."
+      ];
 
   // Core Value Pillars
   const pillars = [
@@ -185,8 +206,8 @@ export default function AboutSection({ settings, onOpenConsultation }) {
               <div className="relative aspect-[16/11] sm:aspect-[16/10] overflow-hidden rounded-2xl bg-brand-darkest">
                 <img
                   key={activeImageIdx}
-                  src={showcaseImages[activeImageIdx].url}
-                  alt={showcaseImages[activeImageIdx].title}
+                  src={currentImage.url}
+                  alt={currentImage.title}
                   className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 animate-fadeIn"
                 />
 
@@ -196,7 +217,7 @@ export default function AboutSection({ settings, onOpenConsultation }) {
                 {/* Top Floating Badge: Category */}
                 <div className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/95 backdrop-blur-md text-brand-darkest text-xs font-bold shadow-md border border-white/50">
                   <Sparkles className="w-3.5 h-3.5 text-gold-rich" />
-                  <span>{showcaseImages[activeImageIdx].badge}</span>
+                  <span>{currentImage.badge}</span>
                 </div>
 
                 {/* Top Right Floating Badge: Material Assurance */}
@@ -208,13 +229,13 @@ export default function AboutSection({ settings, onOpenConsultation }) {
                 {/* Bottom Image Caption */}
                 <div className="absolute bottom-4 left-4 right-4 text-white">
                   <p className="text-[11px] font-semibold tracking-wider uppercase text-gold-champagne">
-                    {showcaseImages[activeImageIdx].category}
+                    {currentImage.category}
                   </p>
-                  <h3 className="font-serif text-lg sm:text-xl font-bold leading-snug drop-shadow-sm">
-                    {showcaseImages[activeImageIdx].title}
+                  <h3 className="font-serif text-lg sm:text-xl font-bold leading-snug drop-shadow-sm line-clamp-1">
+                    {currentImage.title}
                   </h3>
                   <p className="text-xs text-white/80 line-clamp-1 mt-0.5">
-                    {showcaseImages[activeImageIdx].desc}
+                    {currentImage.desc}
                   </p>
                 </div>
               </div>
@@ -232,7 +253,7 @@ export default function AboutSection({ settings, onOpenConsultation }) {
                     <span className="text-xs font-bold text-white ml-1">4.9 / 5</span>
                   </div>
                   <p className="font-serif text-xl sm:text-2xl font-bold text-white leading-tight">
-                    15+ Years <span className="text-xs font-normal text-emerald-200 block">Of Interior Excellence</span>
+                    {stats.yearsExperience || 15}+ Years <span className="text-xs font-normal text-emerald-200 block">Of Interior Excellence</span>
                   </p>
                 </div>
               </div>
@@ -252,7 +273,7 @@ export default function AboutSection({ settings, onOpenConsultation }) {
                     ))}
                     <span className="text-[10px] font-bold text-white ml-1">4.9/5 Rating</span>
                   </div>
-                  <p className="text-xs font-bold text-white">15+ Years Mastery • 450+ Homes</p>
+                  <p className="text-xs font-bold text-white">{stats.yearsExperience || 15}+ Years Mastery • {stats.projectsCompleted || 450}+ Homes</p>
                 </div>
               </div>
               <span className="text-[9px] font-bold uppercase tracking-wider text-gold-champagne bg-brand-primary/60 px-2 py-0.5 rounded border border-gold-champagne/20">
@@ -342,14 +363,13 @@ export default function AboutSection({ settings, onOpenConsultation }) {
               <div className="space-y-6 animate-fadeIn">
                 <div className="space-y-3">
                   <h3 className="font-serif text-2xl sm:text-3xl font-bold text-brand-darkest leading-snug">
-                    Bespoke Interiors Tailored to Your Lifestyle, Without Metropolitan Markups
+                    {storyTitle}
                   </h3>
-                  <p className="text-ink-body text-sm sm:text-base leading-relaxed">
-                    <strong>Modshine Interior</strong> was established to bridge the gap between premium architectural luxury and everyday South Indian homeowners. We eliminate middleman commissions by operating our own dedicated modular joinery production unit and design studio right here in Kovilpatti.
-                  </p>
-                  <p className="text-ink-muted text-xs sm:text-sm leading-relaxed">
-                    Every layout begins with a detailed 3D photorealistic visualization, allowing you to walk through your future kitchen, master wardrobe, and living room before manufacturing starts. We ensure zero surprises in cost, materials, or delivery timelines.
-                  </p>
+                  {storyParagraphs.map((para, pIdx) => (
+                    <p key={pIdx} className="text-ink-body text-sm sm:text-base leading-relaxed">
+                      {para}
+                    </p>
+                  ))}
                 </div>
 
                 {/* 4 Core Pillars Grid */}

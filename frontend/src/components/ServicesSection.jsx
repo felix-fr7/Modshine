@@ -1,11 +1,11 @@
 import React from 'react';
-import { Home, CookingPot, Briefcase, Key, ArrowRight, Layers } from 'lucide-react';
+import { Home, CookingPot, Briefcase, Key, ArrowRight, Layers, Sparkles, CheckCircle2 } from 'lucide-react';
 
-export default function ServicesSection({ onOpenConsultation }) {
-  const services = [
+export default function ServicesSection({ settings, onOpenConsultation }) {
+  const defaultServices = [
     {
       id: "residential",
-      icon: Home,
+      icon: "Home",
       title: "Residential Interior Design",
       subtitle: "Comfort • Aesthetics • Practicality",
       description: "We create elegant and functional living spaces tailored to your lifestyle, combining aesthetics, comfort, and practicality.",
@@ -14,7 +14,7 @@ export default function ServicesSection({ onOpenConsultation }) {
     },
     {
       id: "modular",
-      icon: CookingPot,
+      icon: "CookingPot",
       title: "Modular Kitchen & Furniture",
       subtitle: "Style • Durability • Efficiency",
       description: "Custom-designed modular kitchens, wardrobes, TV units, and storage solutions crafted for style, durability, and efficient space utilization.",
@@ -23,7 +23,7 @@ export default function ServicesSection({ onOpenConsultation }) {
     },
     {
       id: "commercial",
-      icon: Briefcase,
+      icon: "Briefcase",
       title: "Commercial Interior Design",
       subtitle: "Productivity • Brand Identity",
       description: "From offices to retail spaces, we design professional environments that enhance productivity and strengthen your brand identity.",
@@ -32,7 +32,7 @@ export default function ServicesSection({ onOpenConsultation }) {
     },
     {
       id: "turnkey",
-      icon: Key,
+      icon: "Key",
       title: "Turnkey Interior Solutions",
       subtitle: "Concept to Handover",
       description: "We manage the complete project from concept, design, material selection, execution, and final handover with assured quality and timely delivery.",
@@ -40,6 +40,21 @@ export default function ServicesSection({ onOpenConsultation }) {
       deliverables: ["3D Realistic Walkthrough Visuals", "Single Point Accountability", "Factory-Direct Precision Joinery", "Fixed Timeline & Budget Assurance"]
     }
   ];
+
+  const services = (settings?.services && settings.services.length > 0)
+    ? settings.services
+    : defaultServices;
+
+  const renderIcon = (iconName) => {
+    switch (iconName) {
+      case 'Home': return <Home className="w-6 h-6" />;
+      case 'CookingPot': return <CookingPot className="w-6 h-6" />;
+      case 'Briefcase': return <Briefcase className="w-6 h-6" />;
+      case 'Key': return <Key className="w-6 h-6" />;
+      case 'Layers': return <Layers className="w-6 h-6" />;
+      default: return <Sparkles className="w-6 h-6" />;
+    }
+  };
 
   return (
     <section id="services" className="py-20 lg:py-28 bg-white relative">
@@ -60,18 +75,21 @@ export default function ServicesSection({ onOpenConsultation }) {
         </div>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {services.map((s) => {
-            const Icon = s.icon;
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+          {services.map((s, idx) => {
+            const rawDeliverables = Array.isArray(s.deliverables)
+              ? s.deliverables
+              : (typeof s.deliverables === 'string' ? s.deliverables.split(',').map(d => d.trim()).filter(Boolean) : []);
+
             return (
               <div
-                key={s.id}
-                className="group rounded-2xl overflow-hidden border border-warm-border/80 bg-warm-canvas hover:border-brand-primary/40 transition-all duration-300 shadow-sm hover:shadow-luxury flex flex-col justify-between"
+                key={s.id || idx}
+                className="group rounded-2xl overflow-hidden border border-warm-border/80 bg-warm-canvas hover:border-brand-primary/40 transition-all duration-300 shadow-sm hover:shadow-luxury flex flex-col justify-between h-full"
               >
                 {/* Image Banner */}
                 <div className="relative h-60 overflow-hidden bg-brand-dark">
                   <img
-                    src={s.image}
+                    src={s.image || '/assets/hero_living_room.jpg'}
                     alt={s.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
@@ -79,15 +97,17 @@ export default function ServicesSection({ onOpenConsultation }) {
                   
                   {/* Icon Badge */}
                   <div className="absolute top-4 left-4 p-3 rounded-xl bg-brand-primary/90 text-gold-champagne backdrop-blur-md border border-gold-champagne/30 shadow-md">
-                    <Icon className="w-6 h-6" />
+                    {renderIcon(s.icon)}
                   </div>
 
                   {/* Subtitle tag */}
-                  <div className="absolute bottom-4 left-4 right-4">
-                    <span className="text-[11px] font-semibold uppercase tracking-wider text-gold-champagne bg-brand-darkest/80 px-2.5 py-1 rounded-md backdrop-blur-sm border border-gold-champagne/20">
-                      {s.subtitle}
-                    </span>
-                  </div>
+                  {s.subtitle && (
+                    <div className="absolute bottom-4 left-4 right-4">
+                      <span className="text-[11px] font-semibold uppercase tracking-wider text-gold-champagne bg-brand-darkest/80 px-2.5 py-1 rounded-md backdrop-blur-sm border border-gold-champagne/20">
+                        {s.subtitle}
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Content Body */}
@@ -101,14 +121,16 @@ export default function ServicesSection({ onOpenConsultation }) {
                     </p>
 
                     {/* Deliverables tags */}
-                    <div className="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
-                      {s.deliverables.map((item, i) => (
-                        <div key={i} className="flex items-center gap-1.5 text-xs text-ink-muted">
-                          <span className="w-1.5 h-1.5 rounded-full bg-gold-primary"></span>
-                          <span>{item}</span>
-                        </div>
-                      ))}
-                    </div>
+                    {rawDeliverables.length > 0 && (
+                      <div className="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        {rawDeliverables.map((item, i) => (
+                          <div key={i} className="flex items-center gap-1.5 text-xs text-ink-muted">
+                            <span className="w-1.5 h-1.5 rounded-full bg-gold-primary shrink-0"></span>
+                            <span className="truncate">{item}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
 
                   <div className="pt-4 border-t border-warm-border/60">
@@ -125,6 +147,11 @@ export default function ServicesSection({ onOpenConsultation }) {
             );
           })}
         </div>
+
+      </div>
+    </section>
+  );
+}
 
       </div>
     </section>

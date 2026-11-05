@@ -16,7 +16,104 @@ export const initialSettings = {
     yearsExperience: 15,
     warrantyYears: 10
   },
-  announcement: "Special Inaugural Offer: Factory-Direct Pricing & Modular Wardrobe consultation across all districts of Tamil Nadu!"
+  announcement: "Special Inaugural Offer: Factory-Direct Pricing & Modular Wardrobe consultation across all districts of Tamil Nadu!",
+  hero: {
+    motto: "DESIGN • INNOVATE • CREATE",
+    headline: "Decorate Your Home",
+    highlightText: "The Easy Way",
+    description: "Modshine Interior brings architectural sophistication to homes across Tamil Nadu. Specializing in customized modular kitchens, bespoke wardrobes, acoustic TV units, and traditional backlit pooja mandirs.",
+    ctaText: "Book Site Visit & Consultation",
+    heroImage: "/assets/hero_living_room.jpg",
+    heroImageBadge: "Customized In Kovilpatti",
+    heroImageTitle: "Warm Living & Lounge",
+    highlights: [
+      { id: "h1", icon: "ShieldCheck", title: "10-Year Warranty", subtitle: "HDHMR & Marine" },
+      { id: "h2", icon: "Award", title: "Hettich & Ebco", subtitle: "German hardware" },
+      { id: "h3", icon: "CheckCircle2", title: "450+ Homes", subtitle: "Handed over with joy" }
+    ]
+  },
+  about: {
+    badge: "Our Story & Legacy",
+    title: "15+ Years of Passionate Craftsmanship Across Tamil Nadu",
+    description: "Founded with a vision to make luxury modular interiors accessible, Modshine Interior blends timeless architectural elegance with modern German engineering.",
+    storyParagraphs: [
+      "Modshine Interior was founded in Kovilpatti with a clear vision: bring the exact same finish, precision joinery, and durable substrates found in high-end Chennai and Bangalore penthouses to every discerning homeowner in Tamil Nadu.",
+      "We operate our own state-of-the-art modular manufacturing facility equipped with German CNC edge-banding machinery. Every panel is engineered to withstand tropical climate, moisture, and daily household use with a rock-solid 10-year warranty."
+    ],
+    showcaseGallery: [
+      { id: "g1", url: "/assets/about_montage_1.jpg", title: "Warm Architectural Living & Media Lounges", category: "Living Spaces", badge: "Living Spaces", desc: "Balancing fluted acoustic louvers, natural marble veining, and warm cove backlighting." },
+      { id: "g2", url: "/assets/kitchen_island.jpg", title: "Linear Luxe Modular Island Kitchen", category: "Modular Kitchen", badge: "Modular Kitchen", desc: "Boilo HDHMR waterproof substrate with German Hettich InnoTech tandem runners." },
+      { id: "g3", url: "/assets/bedroom_twin_luxury.jpg", title: "Signature Master Bedroom Architectural Suite", category: "Master Bedroom", badge: "Master Bedroom", desc: "Dual illuminated arches with sound-dampening panels and floating cantilever nightstands." },
+      { id: "g4", url: "/assets/wardrobe_sage_green.jpg", title: "Bespoke Sage Green Wardrobe with Vitrine", category: "Custom Wardrobes", badge: "Custom Wardrobes", desc: "Fluted bronze glass showcase with automatic magnetic door-sensor task lighting." }
+    ]
+  },
+  services: [
+    {
+      id: "residential",
+      title: "Residential Interior Design",
+      subtitle: "Comfort • Aesthetics • Practicality",
+      description: "We create elegant and functional living spaces tailored to your lifestyle, combining aesthetics, comfort, and practicality.",
+      image: "/assets/hero_living_room.jpg",
+      deliverables: ["Complete Hall & Living Room Decor", "Master & Kids Bedroom Concepts", "Lighting & Ceiling Architecture", "Curated Soft Furnishings"]
+    },
+    {
+      id: "modular",
+      title: "Modular Kitchen & Furniture",
+      subtitle: "Style • Durability • Efficiency",
+      description: "Custom-designed modular kitchens, wardrobes, TV units, and storage solutions crafted for style, durability, and efficient space utilization.",
+      image: "/assets/kitchen_island.jpg",
+      deliverables: ["Action TESA HDHMR Boilo Kitchens", "Floor-to-Ceiling Sliding Wardrobes", "Acoustic Fluted TV Units", "Sacred Backlit Pooja Mandirs"]
+    },
+    {
+      id: "commercial",
+      title: "Commercial Interior Design",
+      subtitle: "Productivity • Brand Identity",
+      description: "From offices to retail spaces, we design professional environments that enhance productivity and strengthen your brand identity.",
+      image: "/assets/partition_wooden_slat.jpg",
+      deliverables: ["Corporate Offices & Executive Cabins", "Retail Showrooms & Boutiques", "Hospitality & Clinic Lounges", "Soundproof Partition Walls"]
+    },
+    {
+      id: "turnkey",
+      title: "Turnkey Interior Solutions",
+      subtitle: "Concept to Handover",
+      description: "We manage the complete project from concept, design, material selection, execution, and final handover with assured quality and timely delivery.",
+      image: "/assets/bedroom_twin_luxury.jpg",
+      deliverables: ["3D Realistic Walkthrough Visuals", "Single Point Accountability", "Factory-Direct Precision Joinery", "Fixed Timeline & Budget Assurance"]
+    }
+  ],
+  materials: [
+    { id: "m1", name: "HDHMR Boilo", desc: "High Density High Moisture Resistance Boilo grade for 100% waterproof kitchens & vanities.", tag: "Action TESA" },
+    { id: "m2", name: "BWP Plywood", desc: "Boiling Water Proof 710 marine grade plywood engineered to resist borer, termite & warping.", tag: "Greenply Marine" },
+    { id: "m3", name: "UV High Gloss Board", desc: "Flawless mirror-sheen surface with anti-fingerprint and scratch-resistant coating.", tag: "Luxury Shutters" },
+    { id: "m4", name: "MDF Precision Board", desc: "Ultra-fine density board ideal for intricate CNC jaali cutting and PU spray paint.", tag: "CNC & Mouldings" },
+    { id: "m5", name: "MR Plywood", desc: "Moisture-resistant plywood for bedroom wardrobes, living credenzas & study tables.", tag: "CenturyPly" },
+    { id: "m6", name: "Fluted Louver Panels", desc: "Architectural 3D fluted panels (MN 8616) creating warm acoustic living backdrops.", tag: "Trending Wall Decor" }
+  ],
+  brands: [
+    { id: "b1", name: "Action TESA", category: "Engineered HDHMR Board", badge: "India's #1", desc: "Highest density, maximum screw holding capacity and 100% water defense." },
+    { id: "b2", name: "Greenply", category: "BWP Marine Plywood", badge: "710 Certified", desc: "Zero-emission formaldehyde free marine grade plywood for lifelong peace of mind." },
+    { id: "b3", name: "CenturyPly", category: "Architect Plywood", badge: "ViroKill & Fire", desc: "Nanotechnology surface protection with viral defense and borer proof warranty." },
+    { id: "b4", name: "Hettich", category: "German Hardware & Hinges", badge: "Germany", desc: "Sensys soft-close integrated dampers and InnoTech precision drawer systems." },
+    { id: "b5", name: "Ebco", category: "Fittings & Accessories", badge: "Simplifying Lives", desc: "Ultra-smooth telescopic runners, aluminium profile glass doors, and magic corners." },
+    { id: "b6", name: "Sleek", category: "Kitchen Accessories", badge: "Asian Paints", desc: "Stainless steel 304 wire baskets, cutlery trays, and tall pantry pull-out organizers." }
+  ],
+  processSteps: [
+    { id: "p1", step: "01", title: "Discovery & Consultation", subtitle: "Talk to our Interior Designer & Get an Estimate", description: "Understand the client's requirements, lifestyle, and design preferences through in-depth discussion.", timeline: "Day 1 - 3", deliverable: "Lifestyle Analysis & Specification Plan", highlight: "No Obligation Consultation" },
+    { id: "p2", step: "02", title: "Site Measurement", subtitle: "Detailed Laser Measurement & Site Survey", description: "Detailed on-site laser inspection and accurate millimeter measurements to ensure precise factory planning.", timeline: "Day 4 - 6", deliverable: "Millimeter-Accurate Site Blueprint", highlight: "Zero Gap Laser Survey" },
+    { id: "p3", step: "03", title: "Concept & Moodboard", subtitle: "Detailed 2D/3D Drawing & Approval", description: "Develop 2D floor layouts, curated mood boards, and realistic 3D visualizations for client sign-off.", timeline: "Day 7 - 14", deliverable: "Photoreal 3D Visualizations & Color Boards", highlight: "100% Client Sign-Off" },
+    { id: "p4", step: "04", title: "Material Selection", subtitle: "Substrate & Hardware Finalization", description: "Select certified Action TESA HDHMR boards, Greenply BWP plywood, and German Hettich hardware.", timeline: "Day 15 - 18", deliverable: "Material Specification Certificate", highlight: "Factory-Certified Brands" },
+    { id: "p5", step: "05", title: "Factory Production", subtitle: "German CNC Edge-Banding & Pre-Assembly", description: "High-precision edge banding, boring, and preliminary assembly testing in our automated factory.", timeline: "Day 19 - 35", deliverable: "Precision-Finished Modular Units", highlight: "Strict Quality Checklist" },
+    { id: "p6", step: "06", title: "Installation & Handover", subtitle: "On-Site Installation & 10-Year Warranty", description: "Professional installation by expert carpenters, dust-free cleanup, final inspection, and warranty handover.", timeline: "Day 36 - 45", deliverable: "Completed Dream Home & 10-Year Card", highlight: "Turnkey Handover" }
+  ],
+  testimonials: [
+    { id: "t1", name: "Dr. K. Senthil Kumar", location: "Kovilpatti", project: "Full 3 BHK Turnkey Interior", rating: 5, text: "Modshine transformed our home in Kovilpatti beyond expectations. The acrylic kitchen finish and living room fluted partition look straight out of an architectural magazine.", date: "October 2026", avatar: "/assets/page_5.jpg" },
+    { id: "t2", name: "Ananya & Rajesh", location: "Tirunelveli", project: "Modular Kitchen & Master Wardrobe", rating: 5, text: "The Action TESA HDHMR quality is fantastic. 100% water resistant and the German Hettich drawers are so silent and smooth. Timely delivery as promised!", date: "September 2026", avatar: "/assets/kitchen_island.jpg" },
+    { id: "t3", name: "M. Vignesh", location: "Madurai", project: "Acoustic TV Unit & Pooja Mandir", rating: 5, text: "The backlit temple pooja mandir and marble-veined TV unit have become the highlight of our living room. Every guest asks who did our interiors.", date: "August 2026", avatar: "/assets/tv_unit_fluted_marble.jpg" }
+  ],
+  footer: {
+    aboutSnippet: "Tamil Nadu's trusted design-driven interior studio headquartered in Kovilpatti, specializing in customized modular kitchens, architectural wardrobes, TV consoles, and traditional temple pooja mandirs.",
+    copyright: "© 2026 Modshine Interior. All rights reserved."
+  }
 };
 
 export const initialCategories = [

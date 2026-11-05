@@ -171,6 +171,16 @@ export default function Navbar({ currentView, setCurrentView, settings, onOpenCo
                   <span>WhatsApp</span>
                 </a>
               </div>
+
+              <div className="pt-2 text-center">
+                <a
+                  href="/admin"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-[11px] text-ink-muted hover:text-brand-primary font-semibold"
+                >
+                  ⚙️ Admin Control Studio
+                </a>
+              </div>
             </div>
           </div>
         )}

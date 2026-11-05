@@ -72,6 +72,20 @@ class LocalStore {
     this.save();
     return newCat;
   }
+  updateCategory(id, updates) {
+    const idx = this.data.categories.findIndex(c => c.id === id || c.slug === id);
+    if (idx === -1) return null;
+    this.data.categories[idx] = { ...this.data.categories[idx], ...updates };
+    this.save();
+    return this.data.categories[idx];
+  }
+  deleteCategory(id) {
+    const idx = this.data.categories.findIndex(c => c.id === id || c.slug === id);
+    if (idx === -1) return false;
+    this.data.categories.splice(idx, 1);
+    this.save();
+    return true;
+  }
 
   // Products
   getProducts(filters = {}) {

@@ -2,8 +2,37 @@ import React from 'react';
 import { ArrowUpRight, ShieldCheck, Award, CheckCircle2, ChevronRight, Calculator, Sparkles, Clock } from 'lucide-react';
 
 export default function HeroSection({ settings, onOpenConsultation }) {
-  const motto = settings?.motto || 'DESIGN • INNOVATE • CREATE';
-  const tagline = settings?.tagline || 'DECORATE YOUR HOME THE EASY WAY';
+  const motto = settings?.hero?.motto || settings?.motto || 'DESIGN • INNOVATE • CREATE';
+  const headline = settings?.hero?.headline || 'Decorate Your Home';
+  const highlightText = settings?.hero?.highlightText || 'The Easy Way';
+  const description = settings?.hero?.description || 'Modshine Interior brings architectural sophistication to homes across Tamil Nadu. Specializing in customized modular kitchens, bespoke wardrobes, acoustic TV units, and traditional backlit pooja mandirs.';
+  const ctaText = settings?.hero?.ctaText || 'Book Site Visit & Consultation';
+  const heroImage = settings?.hero?.heroImage || '/assets/hero_living_clean.jpg';
+  const heroImageTitle = settings?.hero?.heroImageTitle || 'Minimalist Fluted TV & Ambient Lounge';
+  const heroImageBadge = settings?.hero?.heroImageBadge || 'Featured Execution';
+  const address = settings?.address || '24-A26, Pasuvandhanai Road, Kovilpatti, Tamil Nadu 628501';
+  const workingHours = settings?.workingHours || 'Monday - Sunday: 9:00 AM - 9:00 PM';
+  const serviceCoverage = settings?.serviceCoverage || 'Serving All Districts of Tamil Nadu';
+
+  const defaultHighlights = [
+    { id: 'h1', icon: 'ShieldCheck', title: '10-Year Warranty', subtitle: 'HDHMR & Marine' },
+    { id: 'h2', icon: 'Award', title: 'Hettich & Ebco', subtitle: 'German hardware' },
+    { id: 'h3', icon: 'CheckCircle2', title: '450+ Homes', subtitle: 'Handed over with joy' }
+  ];
+
+  const highlights = (settings?.hero?.highlights && settings.hero.highlights.length > 0)
+    ? settings.hero.highlights
+    : defaultHighlights;
+
+  const renderIcon = (iconName) => {
+    switch (iconName) {
+      case 'ShieldCheck': return <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 text-gold-champagne shrink-0 group-hover:scale-110 transition-transform" />;
+      case 'Award': return <Award className="w-4 h-4 sm:w-5 sm:h-5 text-gold-champagne shrink-0 group-hover:scale-110 transition-transform" />;
+      case 'CheckCircle2': return <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-gold-champagne shrink-0 group-hover:scale-110 transition-transform" />;
+      case 'Clock': return <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-gold-champagne shrink-0 group-hover:scale-110 transition-transform" />;
+      default: return <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-gold-champagne shrink-0 group-hover:scale-110 transition-transform" />;
+    }
+  };
 
   return (
     <section className="relative overflow-hidden bg-brand-darkest text-white pt-12 pb-20 lg:pt-20 lg:pb-28">
@@ -77,40 +106,31 @@ export default function HeroSection({ settings, onOpenConsultation }) {
 
             {/* Main Headline */}
             <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.18]">
-              Decorate Your Home <br />
-              <span className="gold-gradient-text italic font-normal">The Easy Way</span>
+              {headline} <br />
+              <span className="gold-gradient-text italic font-normal">{highlightText}</span>
             </h1>
 
             {/* Sub-headline */}
             <p className="text-sm sm:text-lg text-emerald-100/85 max-w-xl font-normal leading-relaxed">
-              Modshine Interior brings architectural sophistication to homes across Tamil Nadu. Specializing in customized modular kitchens, bespoke wardrobes, acoustic TV units, and traditional backlit pooja mandirs.
+              {description}
             </p>
 
             {/* Quick Guarantees & Highlights */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3 pt-2">
-              <div className="flex items-center gap-2 sm:gap-2.5 bg-brand-dark/60 backdrop-blur-md p-2.5 sm:p-3 rounded-xl border border-brand-medium/50 hover:border-gold-champagne/40 transition-colors group">
-                <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 text-gold-champagne shrink-0 group-hover:scale-110 transition-transform" />
-                <div className="text-xs">
-                  <p className="font-bold text-white text-[11px] sm:text-xs">10-Year Warranty</p>
-                  <p className="text-[10px] sm:text-[11px] text-emerald-200/70">HDHMR & Marine</p>
+              {highlights.map((h, idx) => (
+                <div
+                  key={h.id || idx}
+                  className={`flex items-center gap-2 sm:gap-2.5 bg-brand-dark/60 backdrop-blur-md p-2.5 sm:p-3 rounded-xl border border-brand-medium/50 hover:border-gold-champagne/40 transition-colors group ${
+                    idx === 2 ? 'col-span-2 sm:col-span-1' : ''
+                  }`}
+                >
+                  {renderIcon(h.icon)}
+                  <div className="text-xs min-w-0">
+                    <p className="font-bold text-white text-[11px] sm:text-xs truncate">{h.title}</p>
+                    <p className="text-[10px] sm:text-[11px] text-emerald-200/70 truncate">{h.subtitle}</p>
+                  </div>
                 </div>
-              </div>
-
-              <div className="flex items-center gap-2 sm:gap-2.5 bg-brand-dark/60 backdrop-blur-md p-2.5 sm:p-3 rounded-xl border border-brand-medium/50 hover:border-gold-champagne/40 transition-colors group">
-                <Award className="w-4 h-4 sm:w-5 sm:h-5 text-gold-champagne shrink-0 group-hover:scale-110 transition-transform" />
-                <div className="text-xs">
-                  <p className="font-bold text-white text-[11px] sm:text-xs">Hettich & Ebco</p>
-                  <p className="text-[10px] sm:text-[11px] text-emerald-200/70">German hardware</p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2 sm:gap-2.5 bg-brand-dark/60 backdrop-blur-md p-2.5 sm:p-3 rounded-xl border border-brand-medium/50 hover:border-gold-champagne/40 transition-colors group col-span-2 sm:col-span-1">
-                <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-gold-champagne shrink-0 group-hover:scale-110 transition-transform" />
-                <div className="text-xs">
-                  <p className="font-bold text-white text-[11px] sm:text-xs">450+ Homes</p>
-                  <p className="text-[10px] sm:text-[11px] text-emerald-200/70">Handed over with joy</p>
-                </div>
-              </div>
+              ))}
             </div>
 
             {/* High-Conversion CTA Buttons */}
@@ -119,7 +139,7 @@ export default function HeroSection({ settings, onOpenConsultation }) {
                 onClick={onOpenConsultation}
                 className="w-full sm:w-auto px-6 sm:px-7 py-3.5 sm:py-4 rounded-xl bg-gradient-to-r from-gold-primary via-gold-champagne to-gold-rich text-brand-darkest font-bold text-xs sm:text-sm tracking-wide shadow-gold-glow hover:brightness-110 hover:scale-[1.02] transition-all flex items-center justify-center gap-2 group"
               >
-                <span>Book Site Visit & Consultation</span>
+                <span>{ctaText}</span>
                 <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
               </button>
 
@@ -144,11 +164,11 @@ export default function HeroSection({ settings, onOpenConsultation }) {
             <div className="pt-2 space-y-1.5">
               <div className="flex items-center gap-2 text-[11px] sm:text-xs text-neutral-400">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
-                <span>Showroom at 24-A26 Pasuvandhanai Road, Kovilpatti • Serving All Tamil Nadu</span>
+                <span>Showroom at {address}</span>
               </div>
               <div className="flex items-center gap-2 text-[11px] sm:text-xs text-emerald-200/90 font-medium">
                 <Clock className="w-3.5 h-3.5 text-gold-champagne shrink-0" />
-                <span>Shop Hours: 09:00 AM to 09:00 PM</span>
+                <span>Shop Hours: {workingHours}</span>
               </div>
             </div>
 
@@ -164,8 +184,8 @@ export default function HeroSection({ settings, onOpenConsultation }) {
               {/* Main Image Container */}
               <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border-2 border-gold-champagne/40 bg-brand-dark group">
                 <img
-                  src="/assets/hero_living_clean.jpg"
-                  alt="Modshine Interior Luxury Modern Living Room"
+                  src={heroImage}
+                  alt={heroImageTitle}
                   className="w-full h-[280px] sm:h-[480px] object-cover object-center group-hover:scale-105 transition-transform duration-700 select-none"
                 />
 
@@ -174,12 +194,12 @@ export default function HeroSection({ settings, onOpenConsultation }) {
 
                 {/* Floating Badge on Image */}
                 <div className="absolute bottom-3 left-3 right-3 sm:bottom-5 sm:left-5 sm:right-5 p-3 sm:p-4 rounded-xl glass-dark border border-gold-champagne/30 flex items-center justify-between backdrop-blur-md">
-                  <div>
+                  <div className="min-w-0 pr-2">
                     <div className="flex items-center gap-1 text-[10px] sm:text-[11px] uppercase tracking-wider text-gold-champagne font-bold">
                       <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gold-primary" />
-                      <span>Featured Execution</span>
+                      <span>{heroImageBadge}</span>
                     </div>
-                    <p className="text-xs sm:text-sm font-serif font-bold text-white mt-0.5 line-clamp-1">Minimalist Fluted TV & Ambient Lounge</p>
+                    <p className="text-xs sm:text-sm font-serif font-bold text-white mt-0.5 line-clamp-1">{heroImageTitle}</p>
                     <p className="text-[10px] sm:text-[11px] text-emerald-200/70 line-clamp-1">Action TESA HDHMR • Carra Marble • LED Lighting</p>
                   </div>
                   <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gold-primary/20 border border-gold-champagne/40 flex items-center justify-center text-gold-champagne font-bold text-xs shrink-0 ml-2">
@@ -191,7 +211,7 @@ export default function HeroSection({ settings, onOpenConsultation }) {
               {/* Floating Tag Top Right */}
               <div className="absolute top-2 right-2 sm:-top-3 sm:-right-3 bg-brand-primary/95 text-white text-[11px] sm:text-xs px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full border border-gold-champagne/50 shadow-xl flex items-center gap-1.5 backdrop-blur-md">
                 <span className="w-2 h-2 rounded-full bg-gold-primary animate-ping"></span>
-                <span className="font-semibold">Serving All Districts of Tamil Nadu</span>
+                <span className="font-semibold">{serviceCoverage}</span>
               </div>
 
             </div>

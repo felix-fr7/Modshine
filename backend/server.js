@@ -121,6 +121,26 @@ app.post('/api/categories', (req, res) => {
   }
 });
 
+app.put('/api/categories/:id', (req, res) => {
+  try {
+    const updated = localStore.updateCategory(req.params.id, req.body);
+    if (!updated) return res.status(404).json({ error: 'Category not found' });
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.delete('/api/categories/:id', (req, res) => {
+  try {
+    const success = localStore.deleteCategory(req.params.id);
+    if (!success) return res.status(404).json({ error: 'Category not found' });
+    res.json({ success: true, message: 'Category deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Products / Furniture Items
 app.get('/api/products', async (req, res) => {
   try {

@@ -7,6 +7,7 @@ import DesignPhilosophy from './components/DesignPhilosophy.jsx';
 import CategoryCatalog from './components/CategoryCatalog.jsx';
 import MaterialBrandSection from './components/MaterialBrandSection.jsx';
 import ProcessSection from './components/ProcessSection.jsx';
+import TestimonialsSection from './components/TestimonialsSection.jsx';
 import CostEstimator from './components/CostEstimator.jsx';
 import ContactSection from './components/ContactSection.jsx';
 import Footer from './components/Footer.jsx';
@@ -25,9 +26,27 @@ const isAdminPath = () => {
 
 export default function App() {
   const [currentView, setCurrentView] = useState(() => (isAdminPath() ? 'admin' : 'site'));
-  const [products, setProducts] = useState(initialProducts);
-  const [categories, setCategories] = useState(initialCategories);
-  const [settings, setSettings] = useState(initialSettings);
+  const [products, setProducts] = useState(() => {
+    try {
+      const cached = localStorage.getItem('modshine_products');
+      if (cached) return JSON.parse(cached);
+    } catch (e) {}
+    return initialProducts;
+  });
+  const [categories, setCategories] = useState(() => {
+    try {
+      const cached = localStorage.getItem('modshine_categories');
+      if (cached) return JSON.parse(cached);
+    } catch (e) {}
+    return initialCategories;
+  });
+  const [settings, setSettings] = useState(() => {
+    try {
+      const cached = localStorage.getItem('modshine_settings');
+      if (cached) return JSON.parse(cached);
+    } catch (e) {}
+    return initialSettings;
+  });
   const [loading, setLoading] = useState(false);
 
   // Consultation Modal State
@@ -79,9 +98,18 @@ export default function App() {
           resSet.json()
         ]);
 
-        if (Array.isArray(dataProd) && dataProd.length > 0) setProducts(dataProd);
-        if (Array.isArray(dataCat) && dataCat.length > 0) setCategories(dataCat);
-        if (dataSet && typeof dataSet === 'object') setSettings(dataSet);
+        if (Array.isArray(dataProd) && dataProd.length > 0) {
+          setProducts(dataProd);
+          try { localStorage.setItem('modshine_products', JSON.stringify(dataProd)); } catch(e){}
+        }
+        if (Array.isArray(dataCat) && dataCat.length > 0) {
+          setCategories(dataCat);
+          try { localStorage.setItem('modshine_categories', JSON.stringify(dataCat)); } catch(e){}
+        }
+        if (dataSet && typeof dataSet === 'object') {
+          setSettings(dataSet);
+          try { localStorage.setItem('modshine_settings', JSON.stringify(dataSet)); } catch(e){}
+        }
       }
     } catch (err) {
       console.warn('Backend API connection warning, using curated portfolio data:', err);
@@ -155,6 +183,7 @@ export default function App() {
 
           {/* 3. Core Services */}
           <ServicesSection
+            settings={settings}
             onOpenConsultation={handleOpenConsultation}
           />
 
@@ -169,19 +198,26 @@ export default function App() {
           />
 
           {/* 6. Materials & Brands */}
-          <MaterialBrandSection />
+          <MaterialBrandSection settings={settings} />
 
           {/* 7. 6-Stage Process */}
           <ProcessSection
+            settings={settings}
             onOpenConsultation={handleOpenConsultation}
           />
 
-          {/* 8. Interactive Cost Estimator */}
+          {/* 8. Client Testimonials & Reviews */}
+          <TestimonialsSection
+            settings={settings}
+            onOpenConsultation={handleOpenConsultation}
+          />
+
+          {/* 9. Interactive Cost Estimator */}
           <CostEstimator
             onOpenConsultationWithEstimate={handleOpenConsultationWithEstimate}
           />
 
-          {/* 9. Contact & Live Lead Submission */}
+          {/* 10. Contact & Live Lead Submission */}
           <ContactSection
             settings={settings}
             initialInquiryData={contactPrefill}

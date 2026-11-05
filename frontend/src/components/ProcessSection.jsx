@@ -20,11 +20,11 @@ import {
   SlidersHorizontal
 } from 'lucide-react';
 
-export default function ProcessSection({ onOpenConsultation }) {
+export default function ProcessSection({ settings, onOpenConsultation }) {
   const [activeStep, setActiveStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true); 
 
-  const steps = [
+  const defaultSteps = [
     {
       step: "01",
       icon: MessagesSquare,
@@ -87,6 +87,23 @@ export default function ProcessSection({ onOpenConsultation }) {
     }
   ];
 
+  const steps = (settings?.processSteps && settings.processSteps.length > 0)
+    ? settings.processSteps
+    : defaultSteps;
+
+  const getStepIcon = (icon) => {
+    if (typeof icon === 'function' || (typeof icon === 'object' && icon !== null && icon.$$typeof)) return icon;
+    switch (icon) {
+      case 'MessagesSquare': return MessagesSquare;
+      case 'Ruler': return Ruler;
+      case 'Palette': return Palette;
+      case 'Layers': return Layers;
+      case 'Hammer': return Hammer;
+      case 'CheckCheck': return CheckCheck;
+      default: return CheckCircle2;
+    }
+  };
+
   // Auto-progress through the process animation
   useEffect(() => {
     if (!isPlaying) return;
@@ -96,7 +113,7 @@ export default function ProcessSection({ onOpenConsultation }) {
     return () => clearInterval(interval);
   }, [isPlaying, steps.length]);
 
-  const currentStepData = steps[activeStep];
+  const currentStepData = steps[activeStep] || steps[0] || defaultSteps[0];
 
   // ModShine Signature Brand Palette (Deep Emerald & Champagne Gold)
   const nodeBgClass = 'bg-gradient-to-br from-[#091c16] via-[#14453a] to-[#1a5749]';
@@ -196,7 +213,7 @@ export default function ProcessSection({ onOpenConsultation }) {
           <div className="grid grid-cols-6 gap-2 xl:gap-4 relative items-start">
             
             {steps.map((st, idx) => {
-              const Icon = st.icon;
+              const Icon = getStepIcon(st.icon);
               const isActive = activeStep === idx;
               const isPassed = activeStep >= idx;
 
@@ -331,7 +348,7 @@ export default function ProcessSection({ onOpenConsultation }) {
           {/* Mobile Horizontal Preview Scroller */}
           <div className="flex gap-4 overflow-x-auto pb-4 pt-2 px-1 snap-x no-scrollbar">
             {steps.map((st, idx) => {
-              const Icon = st.icon;
+              const Icon = getStepIcon(st.icon);
               const isActive = activeStep === idx;
               return (
                 <button
@@ -411,7 +428,7 @@ export default function ProcessSection({ onOpenConsultation }) {
               <div className={`w-16 h-16 sm:w-20 sm:h-20 rounded-2xl shrink-0 flex items-center justify-center text-white shadow-lg border border-gold-champagne/40 ${
                 nodeBgClass
               }`}>
-                {React.createElement(currentStepData.icon, {
+                {React.createElement(getStepIcon(currentStepData.icon), {
                   className: "w-8 h-8 sm:w-10 sm:h-10 text-gold-champagne",
                   strokeWidth: 1.8
                 })}
