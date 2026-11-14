@@ -262,12 +262,13 @@ if (MONGODB_URI) {
       isMongoConnected = true;
       mongoError = null;
       console.log('✅ Connected to MongoDB Atlas');
-      initMongoSync().then(() => auth.ensureDefaultAdmin()).catch((e) => console.warn('Admin seed notice:', e.message));
+      initMongoSync().then(() => auth.prepareAdmins()).catch((e) => console.warn('Admin seed notice:', e.message));
     })
     .catch((err) => {
       mongoError = cleanMongoError(err.message);
       console.warn('⚠️  MongoDB connection failed:', mongoError);
       console.warn('⚡ Falling back to local JSON storage (changes are NOT durable on Render).');
+      auth.prepareAdmins().catch((e) => console.warn('Admin seed notice:', e.message));
     });
   mongoose.connection.on('disconnected', () => { isMongoConnected = false; mongoError = 'disconnected'; });
   mongoose.connection.on('reconnected', () => { isMongoConnected = true; mongoError = null; });
@@ -465,5 +466,5 @@ app.use('/api', (req, res) => res.status(404).json({ error: 'Not found' }));
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Modshine Interior Server running at http://127.0.0.1:${PORT}`);
-  auth.ensureDefaultAdmin().catch((e) => console.warn('Admin seed notice:', e.message));
+  if (!process.env.MONGODB_URI) auth.prepareAdmins().catch((e) => console.warn('Admin seed notice:', e.message));
 });

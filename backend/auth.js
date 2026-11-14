@@ -63,6 +63,30 @@ export function createAuth(users) {
     console.log(`🔐 Created default admin user "${DEFAULT_ADMIN.username}" — change the password from Admin → Account.`);
   }
 
+  /**
+   * Password recovery: if ADMIN_RESET_PASSWORD is set on the server, the admin's
+   * password is set to it on start-up (and every other session is signed out).
+   * Remove the variable again after logging in.
+   */
+  async function applyPasswordReset() {
+    const newPassword = process.env.ADMIN_RESET_PASSWORD;
+    if (!newPassword) return;
+    const username = DEFAULT_ADMIN.username;
+    const existing = await users.getAdmin(username);
+    await users.saveAdmin({
+      ...(existing || { username }),
+      passwordHash: hashPassword(newPassword),
+      tokenSecret: newSecret(),
+      passwordChangedAt: Date.now(),
+    });
+    console.warn(`🔑 Admin "${username}" password was reset from ADMIN_RESET_PASSWORD. Remove that variable now.`);
+  }
+
+  async function prepareAdmins() {
+    await ensureDefaultAdmin();
+    await applyPasswordReset();
+  }
+
   function createToken(user) {
     const now = Date.now();
     const payload = Buffer.from(JSON.stringify({ sub: user.username, iat: now, exp: now + TOKEN_TTL_MS })).toString('base64url');
@@ -165,5 +189,5 @@ export function createAuth(users) {
     }
   }
 
-  return { ensureDefaultAdmin, loginHandler, requireAdmin, changePasswordHandler };
+  return { ensureDefaultAdmin, prepareAdmins, loginHandler, requireAdmin, changePasswordHandler };
 }
