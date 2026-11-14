@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, lazy, Suspense } from 'react';
 import Navbar from './components/Navbar.jsx';
 import HeroSection from './components/HeroSection.jsx';
 import AboutSection from './components/AboutSection.jsx';
@@ -11,7 +11,10 @@ import TestimonialsSection from './components/TestimonialsSection.jsx';
 import CostEstimator from './components/CostEstimator.jsx';
 import ContactSection from './components/ContactSection.jsx';
 import Footer from './components/Footer.jsx';
-import AdminApp from './admin/AdminApp.jsx';
+import { useSeo } from './seo/useSeo.js';
+
+// Admin studio is downloaded only when someone opens /admin
+const AdminApp = lazy(() => import('./admin/AdminApp.jsx'));
 import ConsultationModal from './components/ConsultationModal.jsx';
 import { Phone, MessageCircle } from 'lucide-react';
 import Marquee from './components/ui/Marquee.jsx';
@@ -128,6 +131,7 @@ export default function App() {
 
   // Website content = saved settings merged over defaults (see data/siteContent.js)
   const content = useMemo(() => mergeContent(settings), [settings]);
+  useSeo(content, products, currentView === 'site');
 
   // Cinematic smooth-scroll + scroll-driven 3D animations (live website only)
   useCinematic(currentView === 'site', `${products.length}-${categories.length}-${settings?.updatedAt || ''}`);
@@ -176,6 +180,7 @@ export default function App() {
 
       {/* Main Content Router */}
       {currentView === 'admin' ? (
+        <Suspense fallback={<div className="min-h-screen bg-warm-canvas" />}>
         <AdminApp
           onBackToSite={() => { loadInitialData(); navigateTo('site'); }}
           onContentSaved={(saved) => {
@@ -183,6 +188,7 @@ export default function App() {
             try { localStorage.setItem('modshine_settings', JSON.stringify(saved)); } catch (e) {}
           }}
         />
+        </Suspense>
       ) : (
         <main className="flex-grow pb-16 sm:pb-0">
           {/* 1. Hero Section */}
@@ -271,10 +277,10 @@ export default function App() {
           </div>
 
           {/* Mobile bottom action bar */}
-          <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-warm-canvas/95 backdrop-blur-xl border-t border-warm-border px-3 py-2.5 flex items-center gap-2">
+          <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-warm-canvas/95 backdrop-blur-xl border-t border-warm-border px-2.5 min-[380px]:px-3 py-2.5 pb-[max(0.625rem,env(safe-area-inset-bottom))] flex items-center gap-1.5 min-[380px]:gap-2">
             <a
               href={`tel:${settings?.phone || '+919994412345'}`}
-              className="flex-1 h-11 rounded-full border border-ink-charcoal/15 text-ink-charcoal font-semibold text-[11px] uppercase tracking-[0.1em] flex items-center justify-center gap-1.5"
+              className="flex-1 min-w-0 h-11 px-2 rounded-full border border-ink-charcoal/15 text-ink-charcoal font-semibold text-[10px] min-[380px]:text-[11px] uppercase tracking-[0.06em] min-[380px]:tracking-[0.1em] whitespace-nowrap flex items-center justify-center gap-1.5"
               title="Call Designer"
             >
               <Phone className="w-3.5 h-3.5 text-brand-primary" />
@@ -285,7 +291,7 @@ export default function App() {
               href={`https://wa.me/91${(settings?.phone || '9994412345').replace(/[^0-9]/g, '').slice(-10)}?text=Hello%20Modshine%20Interior%2C%20I%20would%20like%20to%20know%20more%20about%20your%20modular%20designs.`}
               target="_blank"
               rel="noreferrer"
-              className="flex-1 h-11 rounded-full border border-ink-charcoal/15 text-ink-charcoal font-semibold text-[11px] uppercase tracking-[0.1em] flex items-center justify-center gap-1.5"
+              className="flex-1 min-w-0 h-11 px-2 rounded-full border border-ink-charcoal/15 text-ink-charcoal font-semibold text-[10px] min-[380px]:text-[11px] uppercase tracking-[0.06em] min-[380px]:tracking-[0.1em] whitespace-nowrap flex items-center justify-center gap-1.5"
               title="Chat on WhatsApp"
             >
               <MessageCircle className="w-3.5 h-3.5 text-brand-accent" />
@@ -294,7 +300,7 @@ export default function App() {
 
             <button
               onClick={handleOpenConsultation}
-              className="flex-[1.5] h-11 rounded-full bg-brand-darkest text-warm-canvas font-semibold text-[11px] uppercase tracking-[0.1em] flex items-center justify-center"
+              className="flex-[1.6] min-w-0 h-11 px-3 rounded-full bg-brand-darkest text-warm-canvas font-semibold text-[10px] min-[380px]:text-[11px] uppercase tracking-[0.06em] min-[380px]:tracking-[0.1em] whitespace-nowrap flex items-center justify-center"
             >
               <span>Book Consultation</span>
             </button>

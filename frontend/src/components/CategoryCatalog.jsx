@@ -13,6 +13,7 @@ import {
   SlidersHorizontal 
 } from 'lucide-react';
 import SectionHeader from './ui/SectionHeader.jsx';
+import { cld, cldSrcSet } from '../utils/cloudinary.js';
 
 export default function CategoryCatalog({ settings, products, categories, onSelectProductForInquiry }) {
   const head = settings?.sections?.catalog || {};
@@ -33,7 +34,7 @@ export default function CategoryCatalog({ settings, products, categories, onSele
   });
 
   return (
-    <section id="catalog" className="relative py-24 lg:py-36 bg-warm-cream/60">
+    <section id="catalog" className="relative py-16 sm:py-20 bg-warm-cream/60">
       <div className="max-w-[1440px] mx-auto px-5 sm:px-6 lg:px-10">
 
         <SectionHeader
@@ -117,7 +118,11 @@ export default function CategoryCatalog({ settings, products, categories, onSele
                   >
                     <img
                       data-parallax="8"
-                      src={prod.image}
+                      src={cld(prod.image, { w: 800 })}
+                      srcSet={cldSrcSet(prod.image, [400, 600, 800, 1100])}
+                      sizes="(min-width: 1024px) 31vw, (min-width: 640px) 48vw, 92vw"
+                      loading="lazy"
+                      decoding="async"
                       alt={prod.title}
                       className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-[1.2s] ease-out"
                     />
@@ -217,7 +222,8 @@ export default function CategoryCatalog({ settings, products, categories, onSele
               {/* Image banner */}
               <div className="rounded-[4px] overflow-hidden h-44 sm:h-80 bg-brand-dark relative shadow-md">
                 <img
-                  src={activeModalProduct.image}
+                  src={cld(activeModalProduct.image, { w: 1400 })}
+                  decoding="async"
                   alt={activeModalProduct.title}
                   className="w-full h-full object-cover"
                 />

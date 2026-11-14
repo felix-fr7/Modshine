@@ -1,5 +1,6 @@
 import React from 'react';
 import { Phone, MapPin, Mail, ArrowUp, ShieldCheck, Heart } from 'lucide-react';
+import { cld, cldSrcSet } from '../utils/cloudinary.js';
 
 const InstagramIcon = (props) => (
   <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" {...props}>
@@ -30,8 +31,11 @@ export default function Footer({ settings, onOpenConsultation }) {
           <div className="lg:col-span-4 space-y-6">
             <div className="flex items-center gap-3">
               <img
-                src="https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878437/modshine/Logo.jpg"
+                src={cld('https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878437/modshine/Logo.jpg', { w: 96 })}
                 alt="Modshine Interior Logo"
+                loading="lazy"
+                width="48"
+                height="48"
                 className="w-12 h-12 rounded-full object-contain bg-white p-1 shrink-0"
               />
               <div>
@@ -106,19 +110,19 @@ export default function Footer({ settings, onOpenConsultation }) {
 
         {/* Monumental wordmark */}
         <div className="relative select-none pointer-events-none overflow-hidden" aria-hidden="true">
-          <p data-footer-mark className="font-serif font-medium uppercase text-center leading-[0.8] tracking-[0.06em] text-[19vw] lg:text-[16.5vw] 2xl:text-[15rem] pt-10 bg-gradient-to-b from-warm-canvas/[0.14] to-warm-canvas/0 bg-clip-text text-transparent">
+          <p data-footer-mark className="font-serif font-medium uppercase text-center leading-[0.8] tracking-[0.04em] text-[14.5vw] lg:text-[15vw] 2xl:text-[14rem] pt-10 whitespace-nowrap bg-gradient-to-b from-warm-canvas/[0.14] to-warm-canvas/0 bg-clip-text text-transparent">
             Modshine
           </p>
         </div>
 
         {/* Bottom bar */}
-        <div className="py-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-warm-canvas/45">
+        <div className="py-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-5 text-[11px] text-warm-canvas/45">
           <p className="text-center sm:text-left">{String(f.copyright || '').replace('{year}', new Date().getFullYear())}</p>
-          <div className="flex items-center gap-5">
-            <a href="/admin" className="hover:text-gold-champagne transition-colors">
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
+            <a href="/admin" className="hover:text-gold-champagne transition-colors whitespace-nowrap">
               Admin Studio
             </a>
-            <span className="flex items-center gap-1.5 text-warm-canvas/45">
+            <span className="flex items-center gap-1.5 text-warm-canvas/45 whitespace-nowrap">
               <span>{f.craftedLine}</span>
               <Heart className="w-3 h-3 text-gold-primary fill-gold-primary inline" />
             </span>

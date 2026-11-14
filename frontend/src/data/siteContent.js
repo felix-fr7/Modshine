@@ -18,6 +18,13 @@ export const defaultContent = {
   ...initialSettings,
   contentVersion: CONTENT_VERSION,
 
+  seo: {
+    title: 'Modshine Interior | Interior Designers & Modular Kitchen in Kovilpatti',
+    description: 'Interior designers in Kovilpatti for modular kitchens, wardrobes, TV units, pooja units & complete home interiors across Tamil Nadu. 10-year warranty.',
+    keywords: 'interior designers in Kovilpatti, modular kitchen Kovilpatti, interior design Tamil Nadu, wardrobe design, TV unit design, pooja unit design, home interiors Tirunelveli, interior designers Thoothukudi, Modshine Interior',
+    shareImage: '',
+  },
+
   hero: {
     ...initialSettings.hero,
     secondaryCtaText: 'Browse Modular Designs',

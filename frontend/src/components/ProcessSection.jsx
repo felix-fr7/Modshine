@@ -40,7 +40,7 @@ export default function ProcessSection({ settings, onOpenConsultation }) {
   const progressPct = steps.length > 1 ? (safeStep / (steps.length - 1)) * 100 : 100;
 
   return (
-    <section id="process" className="relative py-24 lg:py-36 bg-paper overflow-hidden">
+    <section id="process" className="relative py-16 sm:py-20 bg-paper overflow-hidden">
       <div className="max-w-[1440px] mx-auto px-5 sm:px-6 lg:px-10 relative">
 
         <SectionHeader

@@ -590,6 +590,74 @@ html.lenis body {
     display: flex;
     align-items: center;
   }
+  html.cinematic [data-scene='philosophy'] [data-scene-rail-track] {
+    display: block;
+  }
+}
+
+/* Pinned 3D card stack: Design Philosophy (phones & tablets, and short laptop screens) */
+@media (max-width: 1023px) and (min-height: 540px), (min-width: 1024px) and (min-height: 540px) and (max-height: 819px) {
+  html.cinematic [data-scene='philosophy'] {
+    /* height is set from JS according to the number of cards */
+    height: 360vh;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  html.cinematic [data-scene='philosophy'] > [data-scene-inner] {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100svh;
+    display: flex;
+    align-items: center;
+  }
+  html.cinematic [data-scene='philosophy'] [data-scene-header] > div {
+    margin-bottom: 1.5rem !important;
+  }
+  html.cinematic [data-scene='philosophy'] [data-scene-header] .eyebrow {
+    margin-bottom: -0.5rem;
+  }
+  html.cinematic [data-scene='philosophy'] [data-scene-header] h2 {
+    font-size: clamp(2.2rem, 8vw, 3.4rem);
+  }
+  html.cinematic [data-scene='philosophy'] [data-scene-header] p {
+    margin-top: 0.75rem;
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+  /* every card sits in the same grid cell → a physical stack */
+  html.cinematic [data-scene='philosophy'] [data-scene-grid] {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 32rem;
+    margin-inline: auto;
+    perspective: 1200px;
+    perspective-origin: 50% 0%;
+  }
+  html.cinematic [data-scene='philosophy'] [data-scene-grid] > [data-card] {
+    grid-area: 1 / 1;
+    padding: 1.6rem 1.6rem 1.4rem;
+    background: linear-gradient(160deg, #1b3029 0%, #12221d 100%);
+    box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    will-change: transform, opacity;
+  }
+  html.cinematic [data-scene='philosophy'] [data-scene-card-head] {
+    margin-bottom: 1.25rem;
+  }
+  html.cinematic [data-scene='philosophy'] [data-scene-num] {
+    font-size: 3.4rem;
+  }
+  html.cinematic [data-scene='philosophy'] [data-scene-rail-track] {
+    display: block;
+    max-width: 32rem;
+    margin: 1.75rem auto 0;
+  }
+}
+
+/* Phones: keep the stack clear of the fixed Call / WhatsApp / Book bar */
+@media (max-width: 639px) and (min-height: 540px) {
+  html.cinematic [data-scene='philosophy'] > [data-scene-inner] {
+    padding-bottom: 64px;
+  }
 }
 
 /* Hide-on-scroll navigation */

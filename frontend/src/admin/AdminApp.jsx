@@ -3,12 +3,14 @@ import { Loader2 } from 'lucide-react';
 import LoginScreen from './LoginScreen.jsx';
 import AdminStudio from './AdminStudio.jsx';
 import { getSession, clearSession, adminFetch, AuthError } from './adminApi.js';
+import { useNoIndex } from '../seo/useSeo.js';
 
 /** /admin entry: verifies the stored session, otherwise shows the login screen. */
 export default function AdminApp({ onBackToSite, onContentSaved }) {
   const [session, setSession] = useState(null);
   const [checking, setChecking] = useState(true);
   const [notice, setNotice] = useState('');
+  useNoIndex();
 
   useEffect(() => {
     const previousTitle = document.title;

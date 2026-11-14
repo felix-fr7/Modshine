@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { getIcon } from '../data/icons.js';
 import SectionHeader from './ui/SectionHeader.jsx';
+import { cld, cldSrcSet } from '../utils/cloudinary.js';
 
 export default function ServicesSection({ settings, onOpenConsultation }) {
   const head = settings?.sections?.services || {};
@@ -13,7 +14,7 @@ export default function ServicesSection({ settings, onOpenConsultation }) {
   };
 
   return (
-    <section id="services" className="relative py-24 lg:py-36 bg-warm-canvas">
+    <section id="services" className="relative py-16 sm:py-20 bg-warm-canvas">
       <div className="max-w-[1440px] mx-auto px-5 sm:px-6 lg:px-10">
 
         <SectionHeader
@@ -22,9 +23,10 @@ export default function ServicesSection({ settings, onOpenConsultation }) {
           title={head.title}
           highlight={head.titleHighlight}
           intro={head.intro}
+          className="!mb-20 lg:!mb-28"
         />
 
-        <div className="space-y-24 lg:space-y-36">
+        <div className="space-y-20 lg:space-y-28">
           {services.map((s, idx) => {
             const rawDeliverables = Array.isArray(s.deliverables)
               ? s.deliverables
@@ -42,7 +44,11 @@ export default function ServicesSection({ settings, onOpenConsultation }) {
                     <div data-reveal-img="up" className="relative aspect-[4/3] lg:aspect-[16/11] overflow-hidden rounded-[4px] bg-brand-dark">
                       <img
                         data-parallax="12"
-                        src={s.image || 'https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878427/modshine/hero_living_room.jpg'}
+                        src={cld(s.image || 'https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878427/modshine/hero_living_room.jpg', { w: 1200 })}
+                        srcSet={cldSrcSet(s.image, [600, 900, 1200, 1600])}
+                        sizes="(min-width: 1024px) 55vw, 95vw"
+                        loading="lazy"
+                        decoding="async"
                         alt={s.title}
                         className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-[1.4s] ease-out"
                       />

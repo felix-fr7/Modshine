@@ -16,6 +16,7 @@ import {
 import SectionHeader from './ui/SectionHeader.jsx';
 import RichText from './ui/RichText.jsx';
 import { getIcon } from '../data/icons.js';
+import { cld, cldSrcSet } from '../utils/cloudinary.js';
 
 export default function AboutSection({ settings, onOpenConsultation }) {
   const [activeTab, setActiveTab] = useState('story');
@@ -42,7 +43,7 @@ export default function AboutSection({ settings, onOpenConsultation }) {
   ];
 
   return (
-    <section id="about" className="relative py-24 lg:py-36 bg-paper overflow-clip">
+    <section id="about" className="relative py-16 sm:py-20 bg-paper overflow-clip">
       <div className="max-w-[1440px] mx-auto px-5 sm:px-6 lg:px-10 relative">
 
         <SectionHeader
@@ -66,7 +67,11 @@ export default function AboutSection({ settings, onOpenConsultation }) {
                 <div data-reveal-img="up" className="relative aspect-[4/5] overflow-hidden">
                   <img
                     key={activeImageIdx}
-                    src={currentImage.url}
+                    src={cld(currentImage.url, { w: 1000 })}
+                    srcSet={cldSrcSet(currentImage.url, [480, 800, 1000, 1400])}
+                    sizes="(min-width: 1024px) 460px, 90vw"
+                    loading="lazy"
+                    decoding="async"
                     alt={currentImage.title}
                     className="w-full h-full object-cover animate-fadeIn"
                   />
@@ -140,7 +145,7 @@ export default function AboutSection({ settings, onOpenConsultation }) {
                   title={img.title}
                 >
                   <span className={`block arch overflow-hidden aspect-[3/4] transition-all duration-500 ${activeImageIdx === idx ? 'ring-1 ring-offset-4 ring-offset-warm-canvas ring-gold-primary' : 'opacity-60 hover:opacity-100'}`}>
-                    <img src={img.url} alt={img.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    <img src={cld(img.url, { w: 240 })} alt={img.title} loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                   </span>
                   <span className={`block mt-2 text-[9px] sm:text-[10px] uppercase tracking-[0.12em] font-semibold truncate ${activeImageIdx === idx ? 'text-ink-charcoal' : 'text-ink-muted'}`}>
                     {img.badge}
@@ -328,7 +333,7 @@ export default function AboutSection({ settings, onOpenConsultation }) {
         </div>
 
         {/* Metrics ledger */}
-        <div className="mt-24 lg:mt-32 grid grid-cols-2 lg:grid-cols-4 border-y border-ink-charcoal/15">
+        <div className="mt-16 lg:mt-20 grid grid-cols-2 lg:grid-cols-4 border-y border-ink-charcoal/15">
           {metrics.map((m, i) => (
             <div
               key={m.id || m.label}

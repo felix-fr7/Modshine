@@ -1,13 +1,14 @@
 import React from 'react';
 import { Star, Quote, ShieldCheck, MapPin } from 'lucide-react';
 import SectionHeader from './ui/SectionHeader.jsx';
+import { cld, cldSrcSet } from '../utils/cloudinary.js';
 
 export default function TestimonialsSection({ settings }) {
   const head = settings?.sections?.testimonials || {};
   const testimonials = Array.isArray(settings?.testimonials) ? settings.testimonials : [];
 
   return (
-    <section id="reviews" className="relative py-24 lg:py-36 bg-warm-cream/60 overflow-hidden">
+    <section id="reviews" className="relative py-16 sm:py-20 bg-warm-cream/60 overflow-hidden">
       <div className="max-w-[1440px] mx-auto px-5 sm:px-6 lg:px-10">
 
         <SectionHeader
@@ -46,7 +47,9 @@ export default function TestimonialsSection({ settings }) {
 
               <figcaption className={`mt-10 pt-6 border-t flex items-center gap-4 ${idx % 3 === 1 ? 'border-white/10' : 'border-warm-border'}`}>
                 <img
-                  src={t.avatar || 'https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878454/modshine/page_5.jpg'}
+                  src={cld(t.avatar || 'https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878454/modshine/page_5.jpg', { w: 160, h: 160, crop: 'fill', gravity: 'auto' })}
+                  loading="lazy"
+                  decoding="async"
                   alt={t.name}
                   className="w-14 h-14 arch object-cover shrink-0"
                 />

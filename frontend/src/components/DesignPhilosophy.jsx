@@ -8,7 +8,7 @@ export default function DesignPhilosophy({ settings }) {
   const pillars = Array.isArray(philosophy.pillars) ? philosophy.pillars : [];
 
   return (
-    <section data-scene="philosophy" className="relative py-24 lg:py-32 bg-brand-darkest text-warm-canvas overflow-clip">
+    <section data-scene="philosophy" className="relative py-16 sm:py-20 bg-brand-darkest text-warm-canvas overflow-clip">
       <div data-scene-inner className="relative w-full">
         {/* Atmosphere */}
         <div className="absolute inset-0 pointer-events-none">
@@ -20,6 +20,7 @@ export default function DesignPhilosophy({ settings }) {
 
         <div className="max-w-[1440px] mx-auto px-5 sm:px-6 lg:px-10 relative z-10 w-full">
 
+          <div data-scene-header>
           <SectionHeader
             dark
             center
@@ -30,8 +31,9 @@ export default function DesignPhilosophy({ settings }) {
             intro={head.intro}
             className="!mb-12 lg:!mb-16"
           />
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 stage-3d">
+          <div data-scene-grid className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 stage-3d">
             {pillars.map((p) => {
               const Icon = getIcon(p.icon);
               return (
@@ -42,8 +44,8 @@ export default function DesignPhilosophy({ settings }) {
                 >
                   <div className="absolute top-0 left-7 right-7 lg:left-9 lg:right-9 h-px bg-gradient-to-r from-transparent via-gold-primary/70 to-transparent" />
 
-                  <div className="flex items-start justify-between mb-10">
-                    <span className="font-serif italic text-6xl lg:text-7xl leading-none text-gold-primary/80">
+                  <div data-scene-card-head className="flex items-start justify-between mb-10">
+                    <span data-scene-num className="font-serif italic text-6xl lg:text-7xl leading-none text-gold-primary/80">
                       {p.num}
                     </span>
                     <span className="w-12 h-12 rounded-full border border-gold-champagne/30 flex items-center justify-center text-gold-champagne group-hover:bg-gold-primary group-hover:text-brand-darkest transition-all duration-500">
@@ -73,7 +75,7 @@ export default function DesignPhilosophy({ settings }) {
           </div>
 
           {/* Scroll progress rail for the pinned scene */}
-          <div className="hidden lg:block mt-12 h-px w-full bg-white/10 overflow-hidden">
+          <div data-scene-rail-track className="hidden mt-12 h-px w-full bg-white/10 overflow-hidden">
             <div data-scene-rail className="h-full w-full origin-left bg-gradient-to-r from-gold-rich via-gold-champagne to-gold-primary" style={{ transform: 'scaleX(0)' }} />
           </div>
         </div>

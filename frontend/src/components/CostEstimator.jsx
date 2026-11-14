@@ -45,7 +45,7 @@ export default function CostEstimator({ settings, onOpenConsultationWithEstimate
   );
 
   return (
-    <section id="estimator" className="relative py-24 lg:py-36 bg-warm-canvas">
+    <section id="estimator" className="relative py-16 sm:py-20 bg-warm-canvas">
       <div className="max-w-[1440px] mx-auto px-5 sm:px-6 lg:px-10">
 
         <SectionHeader

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Layers, CheckCircle2, Shield } from 'lucide-react';
 import SectionHeader from './ui/SectionHeader.jsx';
+import { cld, cldSrcSet } from '../utils/cloudinary.js';
 
 export default function MaterialBrandSection({ settings }) {
   const head = settings?.sections?.materials || {};
@@ -10,7 +11,7 @@ export default function MaterialBrandSection({ settings }) {
   const moodboardFinishes = Array.isArray(page.moodboard) ? page.moodboard : [];
 
   return (
-    <section id="materials" className="relative py-24 lg:py-36 bg-warm-canvas">
+    <section id="materials" className="relative py-16 sm:py-20 bg-warm-canvas">
       <div className="max-w-[1440px] mx-auto px-5 sm:px-6 lg:px-10">
 
         <SectionHeader
@@ -70,7 +71,7 @@ export default function MaterialBrandSection({ settings }) {
                   className="arch aspect-[3/5] ring-1 ring-white/10 group-hover:-translate-y-2 transition-transform duration-500 relative overflow-hidden bg-cover bg-center"
                   style={{
                     backgroundImage: f.image
-                      ? `url("${f.image}")`
+                      ? `url("${cld(f.image, { w: 320 })}")`
                       : `linear-gradient(to bottom, ${f.colorFrom || '#d6d3d1'}, ${f.colorTo || '#78716c'})`,
                   }}
                 >
@@ -98,7 +99,7 @@ export default function MaterialBrandSection({ settings }) {
                 data-card
                 className="group relative p-7 lg:p-9 border-r border-b border-ink-charcoal/15 flex flex-col gap-6 hover:bg-white/70 transition-colors duration-500"
               >
-                <div className="flex justify-between items-start gap-3">
+                <div className="flex flex-wrap justify-between items-start gap-3">
                   <span className="font-serif text-4xl font-medium text-ink-charcoal leading-none">{br.name}</span>
                   <span className="text-[9px] font-semibold uppercase tracking-[0.16em] text-gold-rich border border-gold-primary/40 px-2.5 py-1 rounded-full whitespace-nowrap">
                     {br.badge}

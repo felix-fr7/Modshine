@@ -91,10 +91,10 @@ function buildFooterMark(scope) {
   if (!mark) return;
   gsap.fromTo(
     mark,
-    { yPercent: 45, letterSpacing: '0.2em' },
+    { yPercent: 45, letterSpacing: '0.12em' },
     {
       yPercent: 0,
-      letterSpacing: '0.06em',
+      letterSpacing: '0.04em',
       ease: 'none',
       scrollTrigger: { trigger: mark, start: 'top bottom', end: 'bottom bottom', scrub: 1 },
     }
@@ -219,7 +219,8 @@ function buildHero(scope, { fine, desktop }, cleanups) {
   const cue = hero.querySelector('[data-hero-cue]');
   const media = hero.querySelector('[data-hero-media]');
 
-  const rest = desktop ? { rx: 4, ry: -10 } : { rx: 0, ry: 0 };
+  const plate = hero.querySelector('[data-hero-plate]');
+  const rest = desktop ? { rx: 4, ry: -10 } : { rx: 6, ry: -9 };
 
   // Initial (pre-curtain) state
   gsap.set(lines, { yPercent: 115, rotate: 3 });
@@ -243,7 +244,13 @@ function buildHero(scope, { fine, desktop }, cleanups) {
   if (cue) tl.to(cue, { opacity: 1, duration: 1 }, 2);
 
   let introDone = false;
-  tl.eventCallback('onComplete', () => { introDone = true; });
+  tl.eventCallback('onComplete', () => {
+    introDone = true;
+    // Idle "levitating" plate — keeps the 3D alive on every device
+    if (plate) {
+      gsap.to(plate, { y: -10, rotationX: 4, rotationY: -3, duration: 3.2, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+    }
+  });
   const off = onIntroReady(() => tl.play());
   cleanups.push(off);
 
@@ -278,13 +285,36 @@ function buildHero(scope, { fine, desktop }, cleanups) {
     });
   }
 
+  // Touch devices: tilt the showcase with the phone's gyroscope (Android / browsers
+  // that expose orientation without a permission prompt) and gently with scroll.
+  if (!fine && inner) {
+    const rx = gsap.quickTo(inner, 'rotationX', { duration: 1.1, ease: 'power3.out' });
+    const ry = gsap.quickTo(inner, 'rotationY', { duration: 1.1, ease: 'power3.out' });
+    let base = null;
+    const onOrient = (e) => {
+      if (!introDone || e.beta == null || e.gamma == null) return;
+      if (!base) base = { beta: e.beta, gamma: e.gamma };
+      const db = gsap.utils.clamp(-25, 25, e.beta - base.beta);
+      const dg = gsap.utils.clamp(-25, 25, e.gamma - base.gamma);
+      rx(rest.rx - db * 0.6);
+      ry(rest.ry + dg * 0.8);
+    };
+    const needsPermission = typeof window.DeviceOrientationEvent?.requestPermission === 'function';
+    if (!needsPermission) {
+      window.addEventListener('deviceorientation', onOrient, { passive: true });
+      cleanups.push(() => window.removeEventListener('deviceorientation', onOrient));
+    }
+  }
+
   // Cinematic scroll-out: text lifts away, showcase sinks back in depth
   const out = gsap.timeline({
     scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: 0.9 },
     defaults: { ease: 'none' },
   });
   if (text) out.to(text, { y: -140, opacity: 0.05 }, 0);
-  if (visual) out.to(visual, { y: desktop ? -60 : -20, opacity: 0.2 }, 0);
+  if (visual) out.to(visual, desktop
+    ? { y: -60, opacity: 0.2 }
+    : { y: -40, rotationX: 18, scale: 0.92, opacity: 0.25, transformPerspective: 900 }, 0);
   if (bg) out.to(bg, { yPercent: 22 }, 0);
   if (media) out.to(media, { scale: 1.12, filter: 'brightness(0.55)' }, 0);
   if (cue) out.to(cue, { opacity: 0, duration: 0.2 }, 0);
@@ -315,6 +345,93 @@ function buildPhilosophyScene(scope) {
   tl.to({}, { duration: 0.6 }); // hold the composed frame before releasing
 }
 
+function buildPhilosophyStack(scope, cleanups) {
+  const scene = scope.querySelector('[data-scene="philosophy"]');
+  if (!scene) return;
+  const cards = gsap.utils.toArray(scene.querySelectorAll('[data-scene-grid] > [data-card]'));
+  const rail = scene.querySelector('[data-scene-rail]');
+  if (!cards.length) return;
+
+  // ~one viewport of scroll per card, plus room to arrive and to linger
+  scene.style.height = `${Math.round((cards.length * 0.85 + 1.3) * 100)}vh`;
+  cleanups.push(() => { scene.style.height = ''; });
+
+  const grid = scene.querySelector('[data-scene-grid]');
+  const header = scene.querySelector('[data-scene-header]');
+  const fit = () => {
+    if (!grid || !header) return;
+    grid.style.transform = '';
+    grid.style.marginBottom = '';
+    const inner = scene.querySelector('[data-scene-inner]');
+    const padBottom = inner ? parseFloat(getComputedStyle(inner).paddingBottom) || 0 : 0;
+    const avail = window.innerHeight - padBottom - header.offsetHeight - 56;
+    const need = grid.offsetHeight;
+    const s = need > 0 ? Math.min(1, avail / need) : 1;
+    if (s < 1) {
+      grid.style.transformOrigin = '50% 0';
+      grid.style.transform = `scale(${s.toFixed(3)})`;
+      grid.style.marginBottom = `${-Math.round((1 - s) * need)}px`;
+    }
+  };
+  fit();
+  ScrollTrigger.addEventListener('refreshInit', fit);
+  cleanups.push(() => {
+    ScrollTrigger.removeEventListener('refreshInit', fit);
+    if (grid) { grid.style.transform = ''; grid.style.marginBottom = ''; grid.style.transformOrigin = ''; }
+  });
+
+  gsap.set(cards, { transformOrigin: '50% 100%', force3D: true });
+  const tl = gsap.timeline({
+    scrollTrigger: { trigger: scene, start: 'top 45%', end: 'bottom bottom', scrub: 0.8 },
+    defaults: { ease: 'power2.inOut' },
+  });
+
+  cards.forEach((card, i) => {
+    const at = i === 0 ? 0 : i * 1.15;
+    tl.fromTo(
+      card,
+      { yPercent: i === 0 ? 40 : 95, rotationX: -55, z: -260, scale: 0.94 },
+      { yPercent: 0, rotationX: 0, z: 0, scale: 1, duration: 1 },
+      at
+    );
+    // become solid early so the card behind never shows through
+    tl.fromTo(card, { opacity: 0 }, { opacity: 1, duration: 0.25, ease: 'none' }, at);
+    if (i > 0) {
+      // previous cards fold back into the stack
+      cards.slice(0, i).forEach((prev, k) => {
+        const depth = i - k;
+        tl.to(prev, {
+          yPercent: -7 * depth,
+          scale: 1 - 0.06 * depth,
+          z: -120 * depth,
+          rotationX: 8,
+          opacity: depth > 2 ? 0 : 0.55 - 0.2 * (depth - 1),
+          duration: 1,
+        }, i * 1.15);
+      });
+    }
+  });
+  if (rail) tl.fromTo(rail, { scaleX: 0 }, { scaleX: 1, duration: tl.duration(), ease: 'none' }, 0);
+  tl.to({}, { duration: 0.5 });
+}
+
+/* Touch screens have no hover — give framed images a scroll-driven 3D sway instead */
+function buildTouchTilt(scope) {
+  gsap.utils.toArray('[data-tilt]', scope).forEach((el, i) => {
+    const side = i % 2 === 0 ? 1 : -1;
+    gsap.fromTo(
+      el,
+      { rotationX: 12, rotationY: 6 * side, transformPerspective: 900, transformOrigin: '50% 50%' },
+      {
+        rotationX: -10,
+        rotationY: -6 * side,
+        ease: 'none',
+        scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: 0.6 },
+      }
+    );
+  });
+}
+
 /* ------------------------------------------------------------------ */
 /* Global pointer FX: 3D tilt + glare on [data-tilt]                   */
 /* ------------------------------------------------------------------ */
@@ -334,7 +451,7 @@ function installTilt() {
     const target = last.target instanceof Element ? last.target.closest('[data-tilt]') : null;
     if (current && current !== target) reset(current);
     current = target;
-    if (!target || gsap.isTweening(target)) return;
+    if (!target || gsap.isTweening(target) || window.innerWidth < 1024) return;
     const r = target.getBoundingClientRect();
     const nx = (last.clientX - r.left) / r.width - 0.5;
     const ny = (last.clientY - r.top) / r.height - 0.5;
@@ -404,17 +521,20 @@ export function useCinematic(enabled, refreshKey) {
         desktop: '(min-width: 1024px)',
         fine: '(hover: hover) and (pointer: fine)',
         scene: '(min-width: 1024px) and (min-height: 820px)',
+        stack: '(max-width: 1023px) and (min-height: 540px), (min-width: 1024px) and (min-height: 540px) and (max-height: 819px)',
       },
       (ctx) => {
         const c = ctx.conditions;
         const cleanups = [];
         buildHero(main, c, cleanups);
         buildHeadings(main);
-        buildCards(main, c.scene);
+        buildCards(main, c.scene || c.stack);
         buildImageReveals(main);
         buildParallax(main, cleanups);
         buildCounters(main, cleanups);
         if (c.scene) buildPhilosophyScene(main);
+        else if (c.stack) buildPhilosophyStack(main, cleanups);
+        if (!c.fine || !c.desktop) buildTouchTilt(main);
         buildFooterMark(main);
         return () => cleanups.forEach((fn) => fn());
       }

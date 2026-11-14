@@ -92,7 +92,7 @@ export default function ContactSection({ settings, initialInquiryData, onInquiry
   );
 
   return (
-    <section id="contact" className="relative py-24 lg:py-36 bg-paper">
+    <section id="contact" className="relative py-16 sm:py-20 bg-paper">
       <div className="max-w-[1440px] mx-auto px-5 sm:px-6 lg:px-10">
 
         <SectionHeader

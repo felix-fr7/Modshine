@@ -27,7 +27,7 @@ export default function SectionHeader({
 
   if (center) {
     return (
-      <div className={`max-w-3xl mx-auto text-center mb-14 lg:mb-20 ${className}`}>
+      <div className={`max-w-3xl mx-auto text-center mb-12 lg:mb-16 ${className}`}>
         <div className="flex flex-col items-center gap-6">
           <div className={`eyebrow ${dark ? 'text-gold-champagne' : ''}`}>
             {index && <span className="eyebrow-index">{index}</span>}
@@ -45,7 +45,7 @@ export default function SectionHeader({
   }
 
   return (
-    <div className={`grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-end mb-14 lg:mb-20 ${className}`}>
+    <div className={`grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-end mb-12 lg:mb-16 ${className}`}>
       <div className="lg:col-span-7 flex flex-col gap-6">
         <div className={`eyebrow ${dark ? 'text-gold-champagne' : ''}`}>
           {index && <span className="eyebrow-index">{index}</span>}

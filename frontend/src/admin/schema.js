@@ -1,5 +1,5 @@
 import {
-  Building2, Sparkles, Compass, Layers, Feather, Package, Gem, Workflow, Quote, Calculator, MessageCircle, Footprints,
+  Building2, Sparkles, Compass, Layers, Feather, Package, Gem, Workflow, Quote, Calculator, MessageCircle, Footprints, Search,
 } from 'lucide-react';
 
 /**
@@ -40,6 +40,30 @@ const optionList = (key, title, withDesc, withBadge) => ({
 });
 
 export const CONTENT_SECTIONS = [
+  {
+    id: 'seo',
+    label: 'SEO & Google',
+    icon: Search,
+    description: 'How the website appears in Google search results and in WhatsApp / Facebook link previews. The live page updates on save; the Google-readable HTML copy and sitemap refresh on the next deploy.',
+    groups: [
+      {
+        type: 'fields',
+        title: 'Google search result',
+        fields: [
+          { key: 'seo.title', label: 'Page title', wide: true, hint: 'Best under 60–65 characters. Put your main keyword + city first, e.g. “Interior Designers in Kovilpatti”.' },
+          { key: 'seo.description', label: 'Description', type: 'textarea', rows: 3, hint: 'Best 140–160 characters. Shown under the title in Google.' },
+          { key: 'seo.keywords', label: 'Keywords (comma separated)', type: 'textarea', rows: 2, hint: 'Used by Bing and other engines. Google mostly reads the page content itself.' },
+        ],
+      },
+      {
+        type: 'fields',
+        title: 'Link preview image',
+        fields: [
+          { key: 'seo.shareImage', label: 'Share image (WhatsApp / Facebook)', type: 'image', folder: 'seo', aspect: 'aspect-[1200/630]', hint: 'Leave empty to use the hero photo. Cropped to 1200×630.' },
+        ],
+      },
+    ],
+  },
   {
     id: 'company',
     label: 'Company & Contact',

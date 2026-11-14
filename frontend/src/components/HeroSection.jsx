@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowUpRight, ChevronRight, Calculator, Sparkles, Clock, MapPin } from 'lucide-react';
 import { getIcon } from '../data/icons.js';
+import { cld, cldSrcSet } from '../utils/cloudinary.js';
 
 export default function HeroSection({ settings, onOpenConsultation }) {
   const motto = settings?.hero?.motto || settings?.motto || 'DESIGN • INNOVATE • CREATE';
@@ -32,8 +33,11 @@ export default function HeroSection({ settings, onOpenConsultation }) {
       <div data-hero-bg className="absolute inset-0 -z-10">
         <div data-hero-media className="absolute inset-0">
           <img
-            src={heroImage}
+            src={cld(heroImage, { w: 1920 })}
+            srcSet={cldSrcSet(heroImage, [768, 1280, 1920, 2560])}
+            sizes="100vw"
             alt={heroImageTitle}
+            decoding="async"
             className="w-full h-full object-cover object-center select-none"
             fetchpriority="high"
           />
@@ -102,7 +106,7 @@ export default function HeroSection({ settings, onOpenConsultation }) {
               </span>
             </div>
 
-            <div className="glass-dark rounded-[4px] p-5 sm:p-6 pt-8 shadow-[0_40px_80px_-30px_rgba(0,0,0,0.7)]">
+            <div data-hero-plate className="glass-dark rounded-[4px] p-5 sm:p-6 pt-8 shadow-[0_40px_80px_-30px_rgba(0,0,0,0.7)]">
               <div className="flex items-start justify-between gap-4">
                 <div className="min-w-0">
                   <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.24em] text-gold-champagne font-semibold">

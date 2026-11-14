@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Phone, MapPin, Menu, X, ArrowRight, MessageCircle, ArrowUpRight } from 'lucide-react';
+import { cld, cldSrcSet } from '../utils/cloudinary.js';
 
 const LOGO = 'https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878437/modshine/Logo.jpg';
 
@@ -103,18 +104,20 @@ export default function Navbar({ currentView, setCurrentView, settings, onOpenCo
           <div className={`flex items-center justify-between gap-6 transition-all duration-500 ${scrolled ? 'h-16 sm:h-[70px]' : 'h-16 sm:h-20'}`}>
 
             {/* Logo */}
-            <button onClick={handleLogoClick} className="flex items-center gap-3 group shrink-0 text-left" aria-label="Modshine Interior — back to top">
+            <button onClick={handleLogoClick} className="flex items-center gap-2.5 min-[360px]:gap-3 group min-w-0 text-left" aria-label="Modshine Interior — back to top">
               <img
-                src={LOGO}
+                src={cld(LOGO, { w: 96 })}
                 alt="Modshine Interior Logo"
+                width="44"
+                height="44"
                 className="w-10 h-10 sm:w-11 sm:h-11 rounded-full object-contain bg-white p-1 ring-1 ring-warm-border group-hover:ring-gold-primary transition-all shrink-0"
               />
-              <div className="flex flex-col leading-none">
+              <div className="flex flex-col leading-none min-w-0">
                 <div className="flex items-baseline gap-2">
-                  <span className="font-serif text-[1.35rem] sm:text-[1.6rem] font-semibold tracking-[0.14em] text-ink-charcoal uppercase">
+                  <span className="font-serif text-[1.15rem] min-[360px]:text-[1.35rem] sm:text-[1.6rem] font-semibold tracking-[0.1em] min-[360px]:tracking-[0.14em] text-ink-charcoal uppercase">
                     Modshine
                   </span>
-                  <span className="text-[9px] tracking-[0.3em] font-semibold text-gold-rich">
+                  <span className="text-[8px] min-[360px]:text-[9px] tracking-[0.2em] min-[360px]:tracking-[0.3em] font-semibold text-gold-rich">
                     INTERIOR
                   </span>
                 </div>
