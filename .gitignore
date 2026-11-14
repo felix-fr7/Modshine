@@ -26,3 +26,6 @@ Thumbs.db
 console.log*
 *.tmp
 .agents/
+
+# Local admin accounts (password hashes)
+backend/data/admins.json

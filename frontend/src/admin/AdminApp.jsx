@@ -48,5 +48,5 @@ export default function AdminApp({ onBackToSite, onContentSaved }) {
     return <LoginScreen notice={notice} onBackToSite={onBackToSite} onLoggedIn={(s) => { setNotice(''); setSession(s); }} />;
   }
 
-  return <AdminStudio session={session} onLogout={logout} onBackToSite={onBackToSite} onContentSaved={onContentSaved} />;
+  return <AdminStudio session={session} onLogout={logout} onBackToSite={onBackToSite} onContentSaved={onContentSaved} onSessionChange={setSession} />;
 }

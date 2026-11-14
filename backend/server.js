@@ -10,12 +10,13 @@ import { v2 as cloudinary } from 'cloudinary';
 dotenv.config();
 
 // Imported after dotenv so auth sees the env vars
-const { loginHandler, requireAdmin, isAuthConfigured } = await import('./auth.js');
+const { createAuth } = await import('./auth.js');
 const { localStore } = await import('./data/storage.js');
 const { Product } = await import('./models/Product.js');
 const { Inquiry } = await import('./models/Inquiry.js');
 const { Category } = await import('./models/Category.js');
 const { Setting } = await import('./models/Setting.js');
+const { AdminUser } = await import('./models/AdminUser.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -170,6 +171,32 @@ const store = {
   },
 };
 
+// Admin users — MongoDB when connected, otherwise data/admins.json
+const adminUsers = {
+  async getAdmin(username) {
+    if (!username) return null;
+    if (isMongoConnected) {
+      const doc = await AdminUser.findOne({ username }).lean();
+      if (!doc) return null;
+      const { _id, __v, createdAt, updatedAt, ...user } = doc;
+      return user;
+    }
+    return localStore.getAdmins().find((u) => u.username === username) || null;
+  },
+  async countAdmins() {
+    if (isMongoConnected) return AdminUser.countDocuments();
+    return localStore.getAdmins().length;
+  },
+  async saveAdmin(user) {
+    if (isMongoConnected) {
+      await AdminUser.updateOne({ username: user.username }, { $set: user }, { upsert: true });
+    } else {
+      localStore.saveAdmin(user);
+    }
+  },
+};
+const auth = createAuth(adminUsers);
+
 // Delete Cloudinary images that are no longer referenced anywhere in the site data
 async function cleanupOrphanImages(candidateUrls) {
   if (!cloudinaryReady || !candidateUrls || candidateUrls.size === 0) return;
@@ -231,7 +258,7 @@ if (MONGODB_URI) {
     .then(() => {
       isMongoConnected = true;
       console.log('✅ Connected to MongoDB Atlas');
-      initMongoSync();
+      initMongoSync().then(() => auth.ensureDefaultAdmin()).catch((e) => console.warn('Admin seed notice:', e.message));
     })
     .catch((err) => {
       console.warn('⚠️  MongoDB connection failed:', err.message);
@@ -266,7 +293,7 @@ const healthPayload = () => ({
   appName: 'Modshine Interior API',
   database: isMongoConnected ? 'MongoDB Atlas (Connected)' : 'Local JSON Engine (Active)',
   cloudinary: cloudinaryReady ? 'configured' : 'missing env',
-  adminLogin: isAuthConfigured() ? 'configured' : 'missing env',
+  adminLogin: 'database',
   timestamp: new Date().toISOString(),
 });
 
@@ -319,14 +346,16 @@ app.post('/api/inquiries', wrap(async (req, res) => {
 // ======================================================================
 // Admin auth
 // ======================================================================
-app.post('/api/auth/login', loginHandler);
-app.get('/api/auth/me', requireAdmin, (req, res) => res.json({ username: req.admin.sub, expiresAt: req.admin.exp }));
+app.post('/api/auth/login', auth.loginHandler);
+app.get('/api/auth/me', auth.requireAdmin, (req, res) => res.json({ username: req.admin.sub, expiresAt: req.admin.exp }));
 
 // ======================================================================
 // Admin-only routes
 // ======================================================================
 const admin = express.Router();
-admin.use(requireAdmin);
+admin.use(auth.requireAdmin);
+
+admin.post('/account/password', auth.changePasswordHandler);
 
 admin.get('/overview', wrap(async (req, res) => {
   const [products, categories, inquiries] = await Promise.all([
@@ -429,5 +458,5 @@ app.use('/api', (req, res) => res.status(404).json({ error: 'Not found' }));
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Modshine Interior Server running at http://127.0.0.1:${PORT}`);
-  if (!isAuthConfigured()) console.warn('⚠️  ADMIN_USERNAME / ADMIN_PASSWORD not set — admin login disabled.');
+  auth.ensureDefaultAdmin().catch((e) => console.warn('Admin seed notice:', e.message));
 });

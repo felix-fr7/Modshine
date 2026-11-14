@@ -12,6 +12,8 @@ import {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const DB_FILE = path.join(__dirname, 'db.json');
+// Admin users are kept out of db.json (which is committed) — this file is gitignored.
+const ADMINS_FILE = path.join(__dirname, 'admins.json');
 
 // In-Memory & Local JSON persistent storage
 class LocalStore {
@@ -179,6 +181,25 @@ class LocalStore {
     this.data.inquiries.splice(idx, 1);
     this.save();
     return true;
+  }
+
+  // Admin users (separate, gitignored file)
+  getAdmins() {
+    try {
+      if (fs.existsSync(ADMINS_FILE)) {
+        const list = JSON.parse(fs.readFileSync(ADMINS_FILE, 'utf-8').replace(/^﻿/, ''));
+        return Array.isArray(list) ? list : [];
+      }
+    } catch (err) {
+      console.warn('Could not read admins.json:', err.message);
+    }
+    return [];
+  }
+  saveAdmin(user) {
+    const list = this.getAdmins().filter((u) => u.username !== user.username);
+    list.push(user);
+    fs.writeFileSync(ADMINS_FILE, JSON.stringify(list, null, 2), 'utf-8');
+    return user;
   }
 
   // Reset to seed

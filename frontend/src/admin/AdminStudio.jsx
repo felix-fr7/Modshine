@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   LayoutDashboard, Package, FolderTree, Inbox, LogOut, ExternalLink, Save, RotateCcw, Loader2, Menu, X,
-  AlertTriangle, CheckCircle2, Database, CloudCheck, ArrowRight,
+  AlertTriangle, CheckCircle2, Database, CloudCheck, ArrowRight, KeyRound,
 } from 'lucide-react';
+import AccountPanel from './AccountPanel.jsx';
 import { CONTENT_SECTIONS } from './schema.js';
 import { SchemaField, getPath, setPath } from './fields.jsx';
 import ListEditor from './ListEditor.jsx';
@@ -156,7 +157,7 @@ function Dashboard({ overview, products, categories, inquiries, go }) {
 // ---------------------------------------------------------------------------
 // Studio shell
 // ---------------------------------------------------------------------------
-export default function AdminStudio({ session, onLogout, onBackToSite, onContentSaved }) {
+export default function AdminStudio({ session, onLogout, onBackToSite, onContentSaved, onSessionChange }) {
   const [page, setPage] = useState('dashboard');
   const [navOpen, setNavOpen] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -260,6 +261,7 @@ export default function AdminStudio({ session, onLogout, onBackToSite, onContent
       ],
     },
     { heading: 'Leads', items: [{ id: 'inquiries', label: 'Enquiries', icon: Inbox, count: newLeads, highlight: newLeads > 0 }] },
+    { heading: 'Settings', items: [{ id: 'account', label: 'Account & Password', icon: KeyRound }] },
   ];
 
   const section = CONTENT_SECTIONS.find((s) => s.id === page);
@@ -268,6 +270,7 @@ export default function AdminStudio({ session, onLogout, onBackToSite, onContent
     products: ['Catalog designs', 'Add, edit or delete the designs shown in the portfolio. Changes go live immediately.'],
     categories: ['Categories', 'Filters shown above the portfolio. Changes go live immediately.'],
     inquiries: ['Enquiries', 'Leads from the contact form and booking popup.'],
+    account: ['Account & Password', 'Change the admin password. Other signed-in devices are signed out automatically.'],
   };
   const [title, subtitle] = section ? [section.label, section.description] : titles[page] || ['', ''];
 
@@ -355,6 +358,7 @@ export default function AdminStudio({ session, onLogout, onBackToSite, onContent
             {section && <ContentSection section={section} draft={draft} setDraft={setDraft} confirm={confirm} />}
             {page === 'products' && <ProductsEditor products={products} categories={categories} reload={loadCollections} confirm={confirm} toast={toast} onAuthError={onAuthError} />}
             {page === 'categories' && <CategoriesEditor categories={categories} products={products} reload={loadCollections} confirm={confirm} toast={toast} onAuthError={onAuthError} />}
+            {page === 'account' && <AccountPanel session={session} onSessionChange={onSessionChange} toast={toast} onAuthError={onAuthError} />}
             {page === 'inquiries' && <InquiriesEditor inquiries={inquiries} reload={loadInquiries} confirm={confirm} toast={toast} onAuthError={onAuthError} />}
           </>
         )}

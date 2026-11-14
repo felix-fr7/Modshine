@@ -57,6 +57,14 @@ export async function login(username, password) {
   return session;
 }
 
+/** Change the admin password. The server rotates the session, so we store the new token. */
+export async function changePassword(currentPassword, newPassword) {
+  const data = await adminFetch('/api/admin/account/password', { method: 'POST', body: { currentPassword, newPassword } });
+  const session = { token: data.token, username: data.username, expiresAt: Date.now() + data.expiresIn };
+  saveSession(session);
+  return session;
+}
+
 /** Authenticated request to /api/admin/* (or any path). Throws AuthError on 401. */
 export async function adminFetch(path, { method = 'GET', body } = {}) {
   const session = getSession();
