@@ -9,6 +9,7 @@ import {
   ArrowRight,
   ShieldCheck 
 } from 'lucide-react';
+import SectionHeader from './ui/SectionHeader.jsx';
 import { apiUrl } from '../config/api.js';
 
 const InstagramIcon = (props) => (
@@ -20,6 +21,10 @@ const InstagramIcon = (props) => (
 );
 
 export default function ContactSection({ settings, initialInquiryData, onInquirySubmitted }) {
+  const head = settings?.sections?.contact || {};
+  const c = settings?.contact || {};
+  const serviceOptions = Array.isArray(c.serviceOptions) ? c.serviceOptions : [];
+  const budgetOptions = Array.isArray(c.budgetOptions) ? c.budgetOptions : [];
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -74,149 +79,112 @@ export default function ContactSection({ settings, initialInquiryData, onInquiry
     }
   };
 
+  const InfoRow = ({ icon: Icon, label, children }) => (
+    <div className="flex items-start gap-4 py-5 border-b border-white/10">
+      <span className="w-10 h-10 rounded-full border border-gold-champagne/30 flex items-center justify-center text-gold-champagne shrink-0">
+        <Icon className="w-4 h-4" strokeWidth={1.5} />
+      </span>
+      <div className="min-w-0">
+        <strong className="block text-[10px] uppercase tracking-[0.2em] text-gold-champagne font-semibold mb-1">{label}</strong>
+        {children}
+      </div>
+    </div>
+  );
+
   return (
-    <section id="contact" className="py-20 lg:py-28 bg-white relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Top Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-light text-brand-primary text-xs font-semibold tracking-wider uppercase border border-brand-primary/20">
-            <Mail className="w-3.5 h-3.5 text-gold-rich" />
-            <span>Connect With Us</span>
-          </div>
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-darkest tracking-tight">
-            Let's Build Your Dream Space
-          </h2>
-          <p className="text-ink-muted text-sm sm:text-base leading-relaxed">
-            From concept to completion, we create elegant interiors tailored to your lifestyle. Get in touch and let's bring your vision to life.
-          </p>
-        </div>
+    <section id="contact" className="relative py-24 lg:py-36 bg-paper">
+      <div className="max-w-[1440px] mx-auto px-5 sm:px-6 lg:px-10">
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          
-          {/* Left Column: Kovilpatti Showroom & Contact Cards (from Page 12 of PDF) */}
-          <div className="lg:col-span-5 space-y-6">
-            
-            {/* Showroom Address Card */}
-            <div className="bg-brand-darkest text-white rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-gold-champagne/30 shadow-2xl relative overflow-hidden space-y-5 sm:space-y-6">
-              
-              <div>
-                <span className="text-[11px] uppercase tracking-widest text-gold-champagne font-semibold block mb-1">
-                  Design Studio & Showroom
-                </span>
-                <h3 className="font-serif text-2xl font-bold text-white">
-                  Modshine Interior
-                </h3>
-                <p className="text-xs text-emerald-100/70 mt-1 italic">
-                  Decorate Your Home The Easy Way
-                </p>
-              </div>
+        <SectionHeader
+          index="09"
+          eyebrow={head.eyebrow}
+          title={head.title}
+          highlight={head.titleHighlight}
+          intro={head.intro}
+        />
 
-              <div className="space-y-4 pt-2 border-t border-brand-medium/40 text-sm">
-                
-                {/* Address */}
-                <div className="flex items-start gap-3.5">
-                  <div className="w-10 h-10 rounded-xl bg-brand-primary/80 border border-gold-champagne/20 flex items-center justify-center text-gold-champagne shrink-0 mt-0.5">
-                    <MapPin className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <strong className="block text-xs uppercase tracking-wider text-gold-champagne font-semibold mb-0.5">Office Address</strong>
-                    <p className="text-xs text-emerald-100/90 leading-relaxed font-normal">
-                      {settings?.address || '24-A26, Pasuvandhanai Road, Kovilpatti, Tamil Nadu 628501'}
-                    </p>
-                  </div>
-                </div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-0 items-stretch rounded-[4px] overflow-hidden lg:border lg:border-warm-border">
 
-                {/* Primary & Secondary Phone */}
-                <div className="flex items-start gap-3.5">
-                  <div className="w-10 h-10 rounded-xl bg-brand-primary/80 border border-gold-champagne/20 flex items-center justify-center text-gold-champagne shrink-0 mt-0.5">
-                    <Phone className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <strong className="block text-xs uppercase tracking-wider text-gold-champagne font-semibold mb-0.5">Direct Line & WhatsApp</strong>
-                    <div className="flex flex-col gap-1 text-xs">
-                      <a href={`tel:${settings?.phone || '+919994412345'}`} className="hover:text-gold-champagne font-bold text-white transition-colors">
-                        {settings?.phone || '+91 99944 12345'}
-                      </a>
-                      <a href={`tel:${settings?.secondaryPhone || '08220805159'}`} className="hover:text-gold-champagne text-emerald-100 transition-colors">
-                        {settings?.secondaryPhone || '082208 05159'}
-                      </a>
-                    </div>
-                  </div>
-                </div>
+          {/* Studio card */}
+          <div data-card className="lg:col-span-5 bg-brand-darkest text-warm-canvas p-7 sm:p-10 lg:p-12 relative overflow-hidden rounded-[4px] lg:rounded-none flex flex-col">
+            <div className="absolute -bottom-32 -right-32 w-[380px] h-[380px] arch border border-white/[0.06] pointer-events-none" />
+            <div className="absolute -top-20 -left-20 w-72 h-72 rounded-full bg-gold-primary/10 blur-[100px] pointer-events-none" />
 
-                {/* Instagram & Social */}
-                <div className="flex items-start gap-3.5">
-                  <div className="w-10 h-10 rounded-xl bg-brand-primary/80 border border-gold-champagne/20 flex items-center justify-center text-gold-champagne shrink-0 mt-0.5">
-                    <InstagramIcon className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <strong className="block text-xs uppercase tracking-wider text-gold-champagne font-semibold mb-0.5">Instagram & Portfolio</strong>
-                    <a 
-                      href="https://instagram.com" 
-                      target="_blank" 
-                      rel="noreferrer"
-                      className="text-xs text-gold-champagne hover:underline"
-                    >
-                      {settings?.instagram || '@modshine.interior'}
-                    </a>
-                  </div>
-                </div>
-
-                {/* Working Hours */}
-                <div className="flex items-start gap-3.5">
-                  <div className="w-10 h-10 rounded-xl bg-brand-primary/80 border border-gold-champagne/20 flex items-center justify-center text-gold-champagne shrink-0 mt-0.5">
-                    <Clock className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <strong className="block text-xs uppercase tracking-wider text-gold-champagne font-semibold mb-0.5">Studio Hours</strong>
-                    <p className="text-xs text-emerald-100/90 leading-relaxed font-normal">
-                      {settings?.workingHours || 'Monday - Saturday: 9:00 AM - 8:30 PM'}
-                    </p>
-                  </div>
-                </div>
-
-              </div>
-
-              {/* Service Areas */}
-              <div className="pt-4 border-t border-brand-medium/40">
-                <span className="text-[11px] text-neutral-400 block mb-1">Service Coverage:</span>
-                <p className="text-xs font-semibold text-emerald-200 leading-relaxed">
-                  {settings?.serviceCoverage || 'Full Tamil Nadu (Chennai • Coimbatore • Madurai • Tirunelveli • Trichy • Salem • Kovilpatti & All 38 Districts)'}
-                </p>
-              </div>
-
+            <div className="relative">
+              <span className="text-[10px] uppercase tracking-[0.24em] text-gold-champagne font-semibold block mb-3">
+                {c.studioLabel}
+              </span>
+              <h3 className="display text-4xl sm:text-5xl text-warm-canvas">
+                {c.studioTitle}
+              </h3>
+              <p className="font-serif italic text-lg text-warm-canvas/60 mt-2">
+                {c.studioSubtitle}
+              </p>
             </div>
 
-            {/* Quick Call Box */}
-            <div className="p-5 rounded-2xl bg-warm-canvas border border-warm-border flex items-center justify-between">
-              <div>
-                <p className="text-xs font-bold text-brand-darkest">Prefer an immediate call?</p>
-                <p className="text-xs text-ink-muted">Speak with our principal designer right away.</p>
-              </div>
-              <a
-                href={`tel:${settings?.phone || '+919994412345'}`}
-                className="px-4 py-2.5 rounded-xl bg-brand-primary hover:bg-brand-dark text-white text-xs font-semibold tracking-wide flex items-center gap-1.5 shadow-sm"
-              >
-                <Phone className="w-3.5 h-3.5" />
-                <span>Call Now</span>
-              </a>
+            <div className="relative mt-8 border-t border-white/10">
+              <InfoRow icon={MapPin} label="Office Address">
+                <p className="text-sm text-warm-canvas/80 leading-relaxed">
+                  {settings?.address || '24-A26, Pasuvandhanai Road, Kovilpatti, Tamil Nadu 628501'}
+                </p>
+              </InfoRow>
+
+              <InfoRow icon={Phone} label="Direct Line & WhatsApp">
+                <div className="flex flex-col gap-0.5 text-sm">
+                  <a href={`tel:${settings?.phone || '+919994412345'}`} className="font-serif text-xl text-warm-canvas hover:text-gold-champagne transition-colors">
+                    {settings?.phone || '+91 99944 12345'}
+                  </a>
+                  <a href={`tel:${settings?.secondaryPhone || '08220805159'}`} className="text-warm-canvas/65 hover:text-gold-champagne transition-colors">
+                    {settings?.secondaryPhone || '082208 05159'}
+                  </a>
+                </div>
+              </InfoRow>
+
+              <InfoRow icon={InstagramIcon} label="Instagram & Portfolio">
+                <a href="https://instagram.com" target="_blank" rel="noreferrer" className="text-sm text-gold-champagne hover:underline">
+                  {settings?.instagram || '@modshine.interior'}
+                </a>
+              </InfoRow>
+
+              <InfoRow icon={Clock} label="Studio Hours">
+                <p className="text-sm text-warm-canvas/80 leading-relaxed">
+                  {settings?.workingHours || 'Monday - Saturday: 9:00 AM - 8:30 PM'}
+                </p>
+              </InfoRow>
             </div>
 
+            <div className="relative pt-6">
+              <span className="text-[10px] uppercase tracking-[0.2em] text-warm-canvas/45 block mb-1.5">Service Coverage:</span>
+              <p className="text-[13px] text-warm-canvas/80 leading-relaxed">
+                {settings?.serviceCoverage || 'Full Tamil Nadu (Chennai • Coimbatore • Madurai • Tirunelveli • Trichy • Salem • Kovilpatti & All 38 Districts)'}
+              </p>
+            </div>
+
+            <div className="relative mt-auto pt-10">
+              <div className="flex items-center justify-between gap-4 rounded-[4px] bg-white/[0.04] border border-white/10 p-5">
+                <div>
+                  <p className="text-sm font-semibold text-warm-canvas">{c.callTitle}</p>
+                  <p className="text-xs text-warm-canvas/55">{c.callText}</p>
+                </div>
+                <a href={`tel:${settings?.phone || '+919994412345'}`} className="btn-brass !px-5 !py-3 shrink-0">
+                  <Phone className="w-3.5 h-3.5" />
+                  <span>Call Now</span>
+                </a>
+              </div>
+            </div>
           </div>
 
-          {/* Right Column: Lead Capture Form */}
-          <div className="lg:col-span-7 bg-warm-canvas rounded-2xl sm:rounded-3xl p-4 sm:p-10 border border-warm-border shadow-sm">
-            
+          {/* Form */}
+          <div data-card className="lg:col-span-7 bg-warm-canvas p-7 sm:p-10 lg:p-14 rounded-[4px] lg:rounded-none border border-warm-border lg:border-0">
             {submitted ? (
-              <div className="text-center py-12 space-y-4 animate-fadeIn">
-                <div className="w-16 h-16 rounded-full bg-emerald-100 text-brand-primary flex items-center justify-center mx-auto shadow-md">
-                  <CheckCircle className="w-10 h-10" />
+              <div className="h-full flex flex-col items-center justify-center text-center py-12 space-y-5 animate-fadeIn">
+                <div className="w-20 h-20 rounded-full border border-gold-primary/50 text-brand-primary flex items-center justify-center">
+                  <CheckCircle className="w-9 h-9" strokeWidth={1.25} />
                 </div>
-                <h3 className="font-serif text-3xl font-bold text-brand-darkest">
-                  Inquiry Received!
+                <h3 className="display text-5xl text-ink-charcoal">
+                  {c.successTitle}
                 </h3>
-                <p className="text-sm text-ink-body max-w-md mx-auto leading-relaxed">
+                <p className="text-[15px] text-ink-body max-w-md mx-auto leading-relaxed">
                   Thank you, <strong>{formData.name}</strong>. Our Modshine interior designer will call you at <strong>{formData.phone}</strong> shortly to discuss your floor plan and arrange an on-site consultation.
                 </p>
                 <div className="pt-4">
@@ -234,36 +202,33 @@ export default function ContactSection({ settings, initialInquiryData, onInquiry
                         message: ''
                       });
                     }}
-                    className="px-6 py-2.5 rounded-xl bg-brand-primary text-white text-xs font-semibold"
+                    className="btn-dark"
                   >
                     Send Another Request
                   </button>
                 </div>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-5">
-                
-                <div className="border-b border-warm-border pb-4">
-                  <h3 className="font-serif text-2xl font-bold text-brand-darkest">
-                    Request an Interior Design Consultation
+              <form onSubmit={handleSubmit} className="space-y-8">
+                <div>
+                  <h3 className="font-serif text-3xl sm:text-4xl font-medium text-ink-charcoal leading-tight">
+                    {c.formTitle}
                   </h3>
-                  <p className="text-xs text-ink-muted mt-1">
-                    Fill in your details and our team will get in touch with layout plans within 2 hours.
+                  <p className="text-sm text-ink-muted mt-2">
+                    {c.formIntro}
                   </p>
                 </div>
 
                 {errorMsg && (
-                  <div className="p-3.5 rounded-xl bg-red-50 text-red-800 text-xs border border-red-200">
+                  <div className="p-4 rounded-[4px] bg-[#f6e7e2] text-[#8a3d2b] text-xs border border-[#e8cbc1]">
                     {errorMsg}
                   </div>
                 )}
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  
-                  {/* Full Name */}
-                  <div className="space-y-1">
-                    <label className="text-xs font-semibold text-brand-darkest block">
-                      Full Name <span className="text-red-500">*</span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-7">
+                  <div>
+                    <label className="field-label">
+                      Full Name <span className="text-gold-rich">*</span>
                     </label>
                     <input
                       type="text"
@@ -271,14 +236,13 @@ export default function ContactSection({ settings, initialInquiryData, onInquiry
                       placeholder="e.g. Suresh Ramanathan"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-xl border border-warm-border bg-white text-sm text-ink-body focus:outline-none focus:border-brand-primary shadow-sm"
+                      className="field"
                     />
                   </div>
 
-                  {/* Phone */}
-                  <div className="space-y-1">
-                    <label className="text-xs font-semibold text-brand-darkest block">
-                      Phone Number <span className="text-red-500">*</span>
+                  <div>
+                    <label className="field-label">
+                      Phone Number <span className="text-gold-rich">*</span>
                     </label>
                     <input
                       type="tel"
@@ -286,116 +250,81 @@ export default function ContactSection({ settings, initialInquiryData, onInquiry
                       placeholder="+91 98421 XXXXX"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-xl border border-warm-border bg-white text-sm text-ink-body focus:outline-none focus:border-brand-primary shadow-sm"
+                      className="field"
                     />
                   </div>
 
-                  {/* Email */}
-                  <div className="space-y-1">
-                    <label className="text-xs font-semibold text-brand-darkest block">
-                      Email Address (Optional)
-                    </label>
+                  <div>
+                    <label className="field-label">Email Address (Optional)</label>
                     <input
                       type="email"
                       placeholder="your.email@example.com"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-xl border border-warm-border bg-white text-sm text-ink-body focus:outline-none focus:border-brand-primary shadow-sm"
+                      className="field"
                     />
                   </div>
 
-                  {/* City */}
-                  <div className="space-y-1">
-                    <label className="text-xs font-semibold text-brand-darkest block">
-                      City / Location
-                    </label>
+                  <div>
+                    <label className="field-label">City / Location</label>
                     <input
                       type="text"
                       placeholder="e.g. Chennai / Coimbatore / Kovilpatti / Madurai"
                       value={formData.city}
                       onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-xl border border-warm-border bg-white text-sm text-ink-body focus:outline-none focus:border-brand-primary shadow-sm"
+                      className="field"
                     />
                   </div>
 
-                  {/* Service Needed */}
-                  <div className="space-y-1">
-                    <label className="text-xs font-semibold text-brand-darkest block">
-                      Required Service
-                    </label>
+                  <div>
+                    <label className="field-label">Required Service</label>
                     <select
                       value={formData.service}
                       onChange={(e) => setFormData({ ...formData, service: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-xl border border-warm-border bg-white text-sm text-ink-body focus:outline-none focus:border-brand-primary shadow-sm"
+                      className="field"
                     >
-                      <option value="Modular Kitchen">Modular Kitchen</option>
-                      <option value="Full Height Wardrobe">Full Height Wardrobe</option>
-                      <option value="TV Unit & Fluted Wall">TV Unit & Fluted Wall</option>
-                      <option value="Partition & Room Divider">Partition & Room Divider</option>
-                      <option value="Traditional Pooja Mandir">Traditional Pooja Mandir</option>
-                      <option value="Complete 2 BHK Interior">Complete 2 BHK Interior</option>
-                      <option value="Complete 3 BHK Turnkey">Complete 3 BHK Turnkey</option>
-                      <option value="Commercial Office / Store">Commercial Office / Store</option>
+                      {serviceOptions.map((o) => <option key={o} value={o}>{o}</option>)}
                     </select>
                   </div>
 
-                  {/* Budget Preference */}
-                  <div className="space-y-1">
-                    <label className="text-xs font-semibold text-brand-darkest block">
-                      Target Budget Tier
-                    </label>
+                  <div>
+                    <label className="field-label">Target Budget Tier</label>
                     <select
                       value={formData.budget}
                       onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-xl border border-warm-border bg-white text-sm text-ink-body focus:outline-none focus:border-brand-primary shadow-sm"
+                      className="field"
                     >
-                      <option value="Essential Modular">Essential Modular</option>
-                      <option value="Standard Package">Standard Package</option>
-                      <option value="Premium Tier">Premium Tier</option>
-                      <option value="Luxury Turnkey">Luxury Turnkey</option>
-                      <option value="Custom Architecture">Custom Architecture</option>
-                      <option value="Flexible / Discuss on Call">Flexible / Discuss on Call</option>
+                      {budgetOptions.map((o) => <option key={o} value={o}>{o}</option>)}
                     </select>
                   </div>
-
                 </div>
 
-                {/* Message */}
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold text-brand-darkest block">
-                    Your Requirements & Floor Details
-                  </label>
+                <div>
+                  <label className="field-label">Your Requirements & Floor Details</label>
                   <textarea
                     rows={3}
                     placeholder="Tell us about your space (e.g. 3BHK newly constructed villa in Chennai or Kovilpatti, looking for L-shaped kitchen and master bedroom wardrobe)..."
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl border border-warm-border bg-white text-sm text-ink-body focus:outline-none focus:border-brand-primary shadow-sm"
+                    className="field resize-none"
                   ></textarea>
                 </div>
 
-                {/* Submit button */}
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full py-4 rounded-xl bg-brand-primary hover:bg-brand-dark text-white font-bold text-sm tracking-wide shadow-luxury hover:shadow-luxury-lg transition-all flex items-center justify-center gap-2 group disabled:opacity-50"
-                >
-                  <Send className="w-4 h-4 text-gold-champagne" />
-                  <span>{loading ? 'Submitting...' : 'Submit Design Inquiry'}</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </button>
-
-                <p className="text-[11px] text-ink-muted text-center">
-                  🔒 We respect your privacy. Your details are strictly used to schedule your interior consultation.
-                </p>
-
+                <div className="flex flex-col sm:flex-row sm:items-center gap-5 pt-2">
+                  <button type="submit" disabled={loading} className="btn-dark group sm:min-w-[280px]">
+                    <Send className="w-4 h-4 text-gold-champagne" />
+                    <span>{loading ? 'Submitting...' : c.submitText}</span>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </button>
+                  <p className="text-[11px] text-ink-muted leading-relaxed">
+                    {c.privacyNote}
+                  </p>
+                </div>
               </form>
             )}
-
           </div>
 
         </div>
-
       </div>
     </section>
   );

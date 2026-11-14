@@ -1,8 +1,47 @@
-﻿import React, { useState } from 'react';
-import { Phone, MapPin, Menu, X, ArrowRight, MessageCircle } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Phone, MapPin, Menu, X, ArrowRight, MessageCircle, ArrowUpRight } from 'lucide-react';
+
+const LOGO = 'https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878437/modshine/Logo.jpg';
 
 export default function Navbar({ currentView, setCurrentView, settings, onOpenConsultation }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [navHidden, setNavHidden] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const lastY = useRef(0);
+
+  // Cinematic hide-on-scroll-down / reveal-on-scroll-up navigation
+  useEffect(() => {
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+        const delta = y - lastY.current;
+        setScrolled(y > 40);
+        if (y < 160) setNavHidden(false);
+        else if (delta > 6) setNavHidden(true);
+        else if (delta < -6) setNavHidden(false);
+        lastY.current = y;
+        ticking = false;
+      });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // Lock page scroll while the full-screen mobile menu is open
+  useEffect(() => {
+    if (!mobileMenuOpen) return undefined;
+    const lenis = window.__lenis;
+    lenis?.stop();
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = prev;
+      lenis?.start();
+    };
+  }, [mobileMenuOpen]);
 
   const navLinks = [
     { label: 'About', href: '#about' },
@@ -18,36 +57,38 @@ export default function Navbar({ currentView, setCurrentView, settings, onOpenCo
     if (currentView !== 'site' && setCurrentView) {
       setCurrentView('site');
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (window.__lenis) window.__lenis.scrollTo(0);
+    else window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const phoneDisplay = settings?.phone || '+91 99944 12345';
+  const phoneHref = `tel:${settings?.phone || '+919994412345'}`;
+  const whatsappHref = `https://wa.me/91${(settings?.phone || '9994412345').replace(/[^0-9]/g, '').slice(-10)}?text=Hello%20Modshine%20Interior%2C%20I%20would%20like%20to%20discuss%20my%20interior%20design%20requirements.`;
+
   return (
-    <header className="sticky top-0 z-50 w-full">
+    <header className={`sticky top-0 z-50 w-full nav-shell ${navHidden && !mobileMenuOpen ? 'nav-hidden' : ''}`}>
       {/* Top Announcement Bar */}
-      <div className="bg-brand-darkest text-gold-champagne text-xs py-2 px-3 sm:px-4 border-b border-brand-medium/30">
-        <div className="max-w-7xl mx-auto flex justify-between items-center gap-2">
-          <div className="flex items-center space-x-2 sm:space-x-4 text-[11px] sm:text-xs">
-            <span className="flex items-center gap-1 font-medium text-emerald-200 truncate max-w-[170px] sm:max-w-none">
-              <MapPin className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gold-primary shrink-0" />
-              <span>Showroom: Kovilpatti • Serving All Tamil Nadu</span>
+      <div className="bg-brand-darkest text-warm-canvas/80 text-[11px] py-2 px-4 sm:px-6 lg:px-10">
+        <div className="max-w-[1440px] mx-auto flex justify-between items-center gap-3">
+          <div className="flex items-center gap-4 min-w-0">
+            <span className="flex items-center gap-1.5 tracking-[0.08em] truncate">
+              <MapPin className="w-3 h-3 text-gold-primary shrink-0" />
+              <span className="truncate">Showroom: Kovilpatti • Serving All Tamil Nadu</span>
             </span>
-            <span className="text-brand-medium hidden xs:inline">|</span>
-            <a
-              href={`tel:${settings?.phone || '+919994412345'}`}
-              className="hidden xs:flex items-center gap-1 hover:text-white transition-colors"
-            >
-              <Phone className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gold-primary shrink-0" />
-              <span className="font-semibold tracking-wide">{settings?.phone || '+91 99944 12345'}</span>
+            <span className="hidden sm:inline h-3 w-px bg-white/15" />
+            <a href={phoneHref} className="hidden sm:flex items-center gap-1.5 hover:text-gold-champagne transition-colors">
+              <Phone className="w-3 h-3 text-gold-primary shrink-0" />
+              <span className="font-semibold tracking-[0.08em]">{phoneDisplay}</span>
             </a>
           </div>
 
-          <div className="flex items-center space-x-2 text-[11px]">
-            <span className="text-neutral-300 hidden md:inline">
+          <div className="flex items-center gap-2 shrink-0">
+            <span className="hidden md:inline text-gold-champagne/90 tracking-[0.04em] truncate max-w-[560px]">
               {settings?.announcement ? settings.announcement.replace('✨', '').trim() : '10-Year Warranty on HDHMR Boilo Modular Kitchens'}
             </span>
             <a
-              href={`tel:${settings?.phone || '+919994412345'}`}
-              className="xs:hidden flex items-center gap-1 text-[11px] font-bold text-gold-champagne bg-brand-primary/60 px-2 py-0.5 rounded border border-gold-champagne/30"
+              href={phoneHref}
+              className="sm:hidden flex items-center gap-1 font-semibold text-gold-champagne border border-gold-champagne/30 rounded-full px-2.5 py-0.5"
             >
               <Phone className="w-3 h-3" />
               <span>Call</span>
@@ -56,135 +97,129 @@ export default function Navbar({ currentView, setCurrentView, settings, onOpenCo
         </div>
       </div>
 
-      {/* Main Luxury Navigation Bar */}
-      <nav className="glass-panel border-b border-warm-border/60 shadow-sm transition-all relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 sm:h-20 gap-4 xl:gap-8">
+      {/* Main Navigation */}
+      <nav className={`relative transition-all duration-500 ${scrolled ? 'glass-panel shadow-[0_10px_40px_-20px_rgba(14,26,22,0.25)]' : 'bg-warm-canvas border-b border-warm-border/70'}`}>
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10">
+          <div className={`flex items-center justify-between gap-6 transition-all duration-500 ${scrolled ? 'h-16 sm:h-[70px]' : 'h-16 sm:h-20'}`}>
 
             {/* Logo */}
-            <div
-              onClick={handleLogoClick}
-              className="cursor-pointer flex items-center space-x-2.5 sm:space-x-3 group shrink-0"
-            >
+            <button onClick={handleLogoClick} className="flex items-center gap-3 group shrink-0 text-left" aria-label="Modshine Interior — back to top">
               <img
-                src="https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878437/modshine/Logo.jpg"
+                src={LOGO}
                 alt="Modshine Interior Logo"
-                className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl object-contain bg-white p-1 border border-warm-border/80 shadow-sm group-hover:scale-105 transition-transform shrink-0"
+                className="w-10 h-10 sm:w-11 sm:h-11 rounded-full object-contain bg-white p-1 ring-1 ring-warm-border group-hover:ring-gold-primary transition-all shrink-0"
               />
-              <div className="flex flex-col">
-                <div className="flex items-center gap-1.5 sm:gap-2">
-                  <span className="font-serif text-lg sm:text-2xl font-bold tracking-tight text-brand-darkest uppercase leading-none">
+              <div className="flex flex-col leading-none">
+                <div className="flex items-baseline gap-2">
+                  <span className="font-serif text-[1.35rem] sm:text-[1.6rem] font-semibold tracking-[0.14em] text-ink-charcoal uppercase">
                     Modshine
                   </span>
-                  <span className="font-sans text-[9px] sm:text-[10px] tracking-widest font-bold px-1.5 py-0.5 rounded bg-brand-light text-brand-primary border border-brand-primary/20">
+                  <span className="text-[9px] tracking-[0.3em] font-semibold text-gold-rich">
                     INTERIOR
                   </span>
                 </div>
-                <span className="text-[8px] sm:text-[9px] tracking-wider text-ink-muted uppercase font-semibold mt-0.5 sm:mt-1 truncate max-w-[180px] sm:max-w-none">
+                <span className="text-[8px] sm:text-[9px] tracking-[0.22em] text-ink-muted uppercase font-medium mt-1 truncate max-w-[200px] sm:max-w-none">
                   {settings?.tagline || 'DECORATE YOUR HOME THE EASY WAY'}
                 </span>
               </div>
-            </div>
+            </button>
 
-            {/* Desktop Navigation Links */}
-            <div className="hidden lg:flex items-center justify-center flex-1 gap-4 xl:gap-7">
+            {/* Desktop Links */}
+            <div className="hidden lg:flex items-center justify-center flex-1 gap-6 xl:gap-9">
               {navLinks.map((link) => (
                 <a
                   key={link.label}
                   href={link.href}
-                  className="text-xs xl:text-sm font-semibold text-ink-body hover:text-brand-primary transition-colors tracking-wide relative group py-1 whitespace-nowrap"
+                  className="relative text-[11px] xl:text-[12px] font-semibold uppercase tracking-[0.18em] text-ink-body hover:text-ink-charcoal transition-colors py-2 group whitespace-nowrap"
                 >
                   {link.label}
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gold-primary transition-all duration-300 group-hover:w-full"></span>
+                  <span className="absolute left-0 -bottom-0.5 h-px w-full bg-gold-primary origin-right scale-x-0 transition-transform duration-500 group-hover:origin-left group-hover:scale-x-100" />
                 </a>
               ))}
             </div>
 
-            {/* Right Action CTA (Desktop) */}
+            {/* CTA */}
             <div className="hidden sm:flex items-center shrink-0">
-              <button
-                onClick={onOpenConsultation}
-                className="px-4 xl:px-5 py-2.5 rounded-full bg-brand-primary hover:bg-brand-dark text-white font-semibold text-xs xl:text-sm tracking-wide shadow-luxury hover:shadow-luxury-lg transition-all flex items-center gap-2 group border border-gold-champagne/30 whitespace-nowrap"
-              >
+              <button onClick={onOpenConsultation} className="btn-dark !px-5 !py-3 group">
                 <span>Book Free Consultation</span>
-                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform text-gold-champagne" />
+                <ArrowRight className="w-3.5 h-3.5 text-gold-champagne group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
 
-            {/* Mobile Hamburger Button */}
+            {/* Mobile toggle */}
             <div className="lg:hidden flex items-center shrink-0">
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-2 rounded-xl text-ink-body hover:text-brand-primary hover:bg-warm-cream focus:outline-none transition-colors"
+                className="w-11 h-11 rounded-full border border-warm-border flex items-center justify-center text-ink-charcoal hover:border-ink-charcoal transition-colors"
                 aria-label="Toggle navigation menu"
+                aria-expanded={mobileMenuOpen}
               >
-                {mobileMenuOpen ? <X className="w-6 h-6 text-brand-primary" /> : <Menu className="w-6 h-6" />}
+                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
             </div>
           </div>
         </div>
 
-        {/* Mobile Dropdown Menu with Backdrop */}
-        {mobileMenuOpen && (
-          <div className="lg:hidden border-t border-warm-border bg-white/98 backdrop-blur-xl shadow-2xl px-4 pt-3 pb-6 space-y-4 animate-fadeIn max-h-[85vh] overflow-y-auto">
-            <div className="grid grid-cols-2 gap-2 pb-3 border-b border-warm-border">
-              {navLinks.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="px-3 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-brand-darkest hover:bg-brand-light hover:text-brand-primary transition-colors flex items-center justify-between border border-warm-border/50"
-                >
-                  <span>{link.label}</span>
-                  <span className="text-[10px] text-gold-rich font-bold">→</span>
-                </a>
-              ))}
-            </div>
+      </nav>
 
-            <div className="flex flex-col gap-2.5">
+      {/* Full-screen Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="lg:hidden absolute top-full inset-x-0 h-[calc(100svh-96px)] z-40 bg-warm-canvas animate-fadeIn overflow-y-auto">
+          <div className="px-6 pt-6 pb-10 flex flex-col min-h-full">
+            <ul className="divide-y divide-warm-border border-y border-warm-border">
+              {navLinks.map((link, i) => (
+                <li key={link.label}>
+                  <a
+                    href={link.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-baseline justify-between py-4 group"
+                  >
+                    <span className="flex items-baseline gap-4">
+                      <span className="font-serif italic text-sm text-gold-primary">0{i + 1}</span>
+                      <span className="font-serif text-3xl font-medium text-ink-charcoal group-hover:text-brand-primary transition-colors">{link.label}</span>
+                    </span>
+                    <ArrowUpRight className="w-5 h-5 text-ink-muted group-hover:text-gold-rich transition-colors" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-8 flex flex-col gap-3">
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
                   onOpenConsultation();
                 }}
-                className="w-full py-3.5 rounded-xl bg-brand-primary hover:bg-brand-dark text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-luxury"
+                className="btn-dark w-full"
               >
                 <span>Book Free Consultation</span>
                 <ArrowRight className="w-4 h-4 text-gold-champagne" />
               </button>
 
-              <div className="grid grid-cols-2 gap-2">
-                <a
-                  href={`tel:${settings?.phone || '+919994412345'}`}
-                  className="py-2.5 px-3 rounded-xl border border-warm-border bg-warm-cream/70 text-brand-darkest font-semibold text-xs flex items-center justify-center gap-1.5"
-                >
-                  <Phone className="w-3.5 h-3.5 text-brand-primary" />
+              <div className="grid grid-cols-2 gap-3">
+                <a href={phoneHref} className="btn-line !py-3.5">
+                  <Phone className="w-3.5 h-3.5" />
                   <span>Call Us</span>
                 </a>
-                <a
-                  href={`https://wa.me/91${(settings?.phone || '9994412345').replace(/[^0-9]/g, '').slice(-10)}?text=Hello%20Modshine%20Interior%2C%20I%20would%20like%20to%20discuss%20my%20interior%20design%20requirements.`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="py-2.5 px-3 rounded-xl border border-emerald-300 bg-emerald-50 text-emerald-900 font-semibold text-xs flex items-center justify-center gap-1.5"
-                >
-                  <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
+                <a href={whatsappHref} target="_blank" rel="noreferrer" className="btn-line !py-3.5">
+                  <MessageCircle className="w-3.5 h-3.5" />
                   <span>WhatsApp</span>
                 </a>
               </div>
+            </div>
 
-              <div className="pt-2 text-center">
-                <a
-                  href="/admin"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-[11px] text-ink-muted hover:text-brand-primary font-semibold"
-                >
-                  ⚙️ Admin Control Studio
-                </a>
-              </div>
+            <div className="mt-auto pt-10 text-center">
+              <a
+                href="/admin"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-[11px] text-ink-muted hover:text-brand-primary font-semibold tracking-[0.1em]"
+              >
+                ⚙️ Admin Control Studio
+              </a>
             </div>
           </div>
-        )}
-      </nav>
+        </div>
+      )}
     </header>
   );
 }

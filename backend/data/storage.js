@@ -1,7 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import mongoose from 'express'; // placeholder import, will import real mongoose below
 import {
   initialSettings,
   initialCategories,
@@ -30,7 +29,7 @@ class LocalStore {
   load() {
     try {
       if (fs.existsSync(DB_FILE)) {
-        const raw = fs.readFileSync(DB_FILE, 'utf-8');
+        const raw = fs.readFileSync(DB_FILE, 'utf-8').replace(/^\uFEFF/, '');
         const parsed = JSON.parse(raw);
         if (parsed.products && parsed.products.length > 0) {
           this.data = parsed;

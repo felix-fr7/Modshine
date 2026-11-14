@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Navbar from './components/Navbar.jsx';
 import HeroSection from './components/HeroSection.jsx';
 import AboutSection from './components/AboutSection.jsx';
@@ -11,11 +11,15 @@ import TestimonialsSection from './components/TestimonialsSection.jsx';
 import CostEstimator from './components/CostEstimator.jsx';
 import ContactSection from './components/ContactSection.jsx';
 import Footer from './components/Footer.jsx';
-import AdminDashboard from './components/AdminDashboard.jsx';
+import AdminApp from './admin/AdminApp.jsx';
 import ConsultationModal from './components/ConsultationModal.jsx';
-import { Phone } from 'lucide-react';
+import { Phone, MessageCircle } from 'lucide-react';
+import Marquee from './components/ui/Marquee.jsx';
 import { apiUrl } from './config/api.js';
 import { initialProducts, initialCategories, initialSettings } from './data/defaultData.js';
+import { mergeContent } from './data/siteContent.js';
+import CinematicLayer from './cinematic/CinematicLayer.jsx';
+import { useCinematic } from './cinematic/useCinematic.js';
 
 // Helper to check if current browser URL matches the admin endpoint
 const isAdminPath = () => {
@@ -122,6 +126,12 @@ export default function App() {
     loadInitialData();
   }, []);
 
+  // Website content = saved settings merged over defaults (see data/siteContent.js)
+  const content = useMemo(() => mergeContent(settings), [settings]);
+
+  // Cinematic smooth-scroll + scroll-driven 3D animations (live website only)
+  useCinematic(currentView === 'site', `${products.length}-${categories.length}-${settings?.updatedAt || ''}`);
+
   // Handlers
   const handleOpenConsultation = () => {
     setModalPrefill(null);
@@ -149,84 +159,95 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-warm-canvas text-ink-body font-sans flex flex-col selection:bg-brand-primary selection:text-white">
+    <div className="min-h-screen bg-warm-canvas text-ink-body font-sans flex flex-col">
       
+      {/* Cinematic overlays: preloader, scroll progress, cursor, grain */}
+      {currentView === 'site' && <CinematicLayer />}
+
       {/* Navigation Bar (Rendered only on live website) */}
       {currentView === 'site' && (
         <Navbar
           currentView={currentView}
           setCurrentView={navigateTo}
-          settings={settings}
+          settings={content}
           onOpenConsultation={handleOpenConsultation}
         />
       )}
 
       {/* Main Content Router */}
       {currentView === 'admin' ? (
-        <AdminDashboard
-          onBackToSite={() => navigateTo('site')}
-          onRefreshData={loadInitialData}
+        <AdminApp
+          onBackToSite={() => { loadInitialData(); navigateTo('site'); }}
+          onContentSaved={(saved) => {
+            setSettings(saved);
+            try { localStorage.setItem('modshine_settings', JSON.stringify(saved)); } catch (e) {}
+          }}
         />
       ) : (
         <main className="flex-grow pb-16 sm:pb-0">
           {/* 1. Hero Section */}
           <HeroSection
-            settings={settings}
+            settings={content}
             onOpenConsultation={handleOpenConsultation}
           />
 
+          {/* Category ticker */}
+          <Marquee items={categories.map((c) => c.name)} />
+
           {/* 2. About Us */}
           <AboutSection
-            settings={settings}
+            settings={content}
             onOpenConsultation={handleOpenConsultation}
           />
 
           {/* 3. Core Services */}
           <ServicesSection
-            settings={settings}
+            settings={content}
             onOpenConsultation={handleOpenConsultation}
           />
 
           {/* 4. Design Philosophy */}
-          <DesignPhilosophy />
+          <DesignPhilosophy settings={content} />
 
           {/* 5. Dynamic Furniture & Modular Catalog */}
           <CategoryCatalog
+            settings={content}
             products={products}
             categories={categories}
             onSelectProductForInquiry={handleSelectProductForInquiry}
           />
 
           {/* 6. Materials & Brands */}
-          <MaterialBrandSection settings={settings} />
+          <MaterialBrandSection settings={content} />
 
           {/* 7. 6-Stage Process */}
           <ProcessSection
-            settings={settings}
+            settings={content}
             onOpenConsultation={handleOpenConsultation}
           />
 
           {/* 8. Client Testimonials & Reviews */}
           <TestimonialsSection
-            settings={settings}
+            settings={content}
             onOpenConsultation={handleOpenConsultation}
           />
 
           {/* 9. Interactive Cost Estimator */}
           <CostEstimator
+            settings={content}
             onOpenConsultationWithEstimate={handleOpenConsultationWithEstimate}
           />
 
           {/* 10. Contact & Live Lead Submission */}
           <ContactSection
-            settings={settings}
+            settings={content}
             initialInquiryData={contactPrefill}
             onInquirySubmitted={() => loadInitialData()}
           />
 
           {/* 10. Footer */}
           <Footer
-            settings={settings}
+            settings={content}
             onOpenConsultation={handleOpenConsultation}
           />
         </main>
@@ -235,25 +256,25 @@ export default function App() {
       {/* Floating & Mobile Quick Action Widgets (only on live website) */}
       {currentView === 'site' && (
         <>
-          {/* Desktop Floating Action Pill (sm and above) */}
-          <div className="hidden sm:flex fixed bottom-6 right-6 z-40 flex-col items-end gap-3">
+          {/* Desktop floating call button */}
+          <div className="hidden sm:flex fixed bottom-7 right-7 z-40">
             <a
               href={`tel:${settings?.phone || '+919994412345'}`}
-              className="p-3.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-luxury hover:scale-110 transition-all flex items-center gap-2 group border border-white/20"
+              className="group flex items-center gap-0 hover:gap-3 h-14 pl-[18px] pr-[18px] hover:pr-6 rounded-full bg-brand-darkest text-gold-champagne shadow-luxury-lg border border-gold-champagne/30 transition-all duration-500"
               title="Call Modshine Showroom"
             >
-              <Phone className="w-5 h-5" />
-              <span className="hidden group-hover:inline text-xs font-bold pr-1">
+              <Phone className="w-5 h-5 shrink-0" strokeWidth={1.5} />
+              <span className="max-w-0 overflow-hidden whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.16em] text-warm-canvas group-hover:max-w-[160px] transition-all duration-500">
                 Call Designer
               </span>
             </a>
           </div>
 
-          {/* Mobile Bottom Sticky Action Bar (Phones under 640px) */}
-          <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/98 backdrop-blur-lg border-t border-warm-border/80 px-3 py-2.5 flex items-center justify-between gap-2 shadow-2xl">
+          {/* Mobile bottom action bar */}
+          <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-warm-canvas/95 backdrop-blur-xl border-t border-warm-border px-3 py-2.5 flex items-center gap-2">
             <a
               href={`tel:${settings?.phone || '+919994412345'}`}
-              className="flex-1 py-2.5 px-2 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-brand-darkest font-bold text-xs flex items-center justify-center gap-1.5 border border-warm-border"
+              className="flex-1 h-11 rounded-full border border-ink-charcoal/15 text-ink-charcoal font-semibold text-[11px] uppercase tracking-[0.1em] flex items-center justify-center gap-1.5"
               title="Call Designer"
             >
               <Phone className="w-3.5 h-3.5 text-brand-primary" />
@@ -264,16 +285,16 @@ export default function App() {
               href={`https://wa.me/91${(settings?.phone || '9994412345').replace(/[^0-9]/g, '').slice(-10)}?text=Hello%20Modshine%20Interior%2C%20I%20would%20like%20to%20know%20more%20about%20your%20modular%20designs.`}
               target="_blank"
               rel="noreferrer"
-              className="flex-1 py-2.5 px-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-900 font-bold text-xs flex items-center justify-center gap-1.5 border border-emerald-300"
+              className="flex-1 h-11 rounded-full border border-ink-charcoal/15 text-ink-charcoal font-semibold text-[11px] uppercase tracking-[0.1em] flex items-center justify-center gap-1.5"
               title="Chat on WhatsApp"
             >
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <MessageCircle className="w-3.5 h-3.5 text-brand-accent" />
               <span>WhatsApp</span>
             </a>
 
             <button
               onClick={handleOpenConsultation}
-              className="flex-[1.5] py-2.5 px-2.5 rounded-xl bg-brand-primary hover:bg-brand-dark text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md border border-gold-champagne/30"
+              className="flex-[1.5] h-11 rounded-full bg-brand-darkest text-warm-canvas font-semibold text-[11px] uppercase tracking-[0.1em] flex items-center justify-center"
             >
               <span>Book Consultation</span>
             </button>
@@ -283,6 +304,7 @@ export default function App() {
 
       {/* Consultation Booking Modal */}
       <ConsultationModal
+        settings={content}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         prefillData={modalPrefill}

@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
+import { cleanJSON } from './_json.js';
 
 const ProductSchema = new mongoose.Schema({
+  id: { type: String, index: true },
   title: { type: String, required: true },
   category: { type: String, required: true },
   categoryName: { type: String },
@@ -16,8 +18,9 @@ const ProductSchema = new mongoose.Schema({
   hardware: { type: String },
   finish: { type: String },
   description: { type: String },
-  specifications: [{ label: String, value: String }],
-  features: [String]
-}, { timestamps: true });
+  specifications: [{ _id: false, label: String, value: String }],
+  features: [String],
+  order: { type: Number, default: 0 }
+}, { timestamps: true, toJSON: cleanJSON });
 
 export const Product = mongoose.models.Product || mongoose.model('Product', ProductSchema);

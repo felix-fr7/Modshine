@@ -1,126 +1,82 @@
-﻿import React from 'react';
-import { Star, Quote, CheckCircle2, ShieldCheck, MapPin, Sparkles } from 'lucide-react';
+import React from 'react';
+import { Star, Quote, ShieldCheck, MapPin } from 'lucide-react';
+import SectionHeader from './ui/SectionHeader.jsx';
 
-export default function TestimonialsSection({ settings, onOpenConsultation }) {
-  const defaultTestimonials = [
-    {
-      id: "t1",
-      name: "Dr. K. Senthil Kumar",
-      location: "Kovilpatti",
-      project: "Full 3 BHK Turnkey Interior",
-      rating: 5,
-      text: "Modshine transformed our home in Kovilpatti beyond expectations. The acrylic kitchen finish and living room fluted partition look straight out of an architectural magazine.",
-      date: "October 2026",
-      avatar: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878454/modshine/page_5.jpg"
-    },
-    {
-      id: "t2",
-      name: "Ananya & Rajesh",
-      location: "Tirunelveli",
-      project: "Modular Kitchen & Master Wardrobe",
-      rating: 5,
-      text: "The Action TESA HDHMR quality is fantastic. 100% water resistant and the German Hettich drawers are so silent and smooth. Timely delivery as promised!",
-      date: "September 2026",
-      avatar: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878434/modshine/kitchen_island.jpg"
-    },
-    {
-      id: "t3",
-      name: "M. Vignesh",
-      location: "Madurai",
-      project: "Acoustic TV Unit & Pooja Mandir",
-      rating: 5,
-      text: "The backlit temple pooja mandir and marble-veined TV unit have become the highlight of our living room. Every guest asks who did our interiors.",
-      date: "August 2026",
-      avatar: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878468/modshine/tv_unit_fluted_marble.jpg"
-    }
-  ];
-
-  const testimonials = (settings?.testimonials && settings.testimonials.length > 0)
-    ? settings.testimonials
-    : defaultTestimonials;
+export default function TestimonialsSection({ settings }) {
+  const head = settings?.sections?.testimonials || {};
+  const testimonials = Array.isArray(settings?.testimonials) ? settings.testimonials : [];
 
   return (
-    <section id="reviews" className="py-20 lg:py-28 bg-[#fbf9f4] relative overflow-hidden border-t border-warm-border/60">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-light text-brand-primary text-xs font-semibold tracking-wider uppercase border border-brand-primary/20">
-            <Sparkles className="w-3.5 h-3.5 text-gold-rich" />
-            <span>Client Stories & Satisfaction</span>
-          </div>
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-darkest tracking-tight">
-            Loved by 450+ Families Across Tamil Nadu
-          </h2>
-          <p className="text-ink-muted text-base sm:text-lg leading-relaxed">
-            Real feedback from discerning homeowners who experienced our factory-direct precision joinery, zero site dust, and punctual 45-day turnkey delivery.
-          </p>
-        </div>
+    <section id="reviews" className="relative py-24 lg:py-36 bg-warm-cream/60 overflow-hidden">
+      <div className="max-w-[1440px] mx-auto px-5 sm:px-6 lg:px-10">
 
-        {/* Testimonials Responsive Grid with Uniform Height Alignment */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch">
+        <SectionHeader
+          index="07"
+          eyebrow={head.eyebrow}
+          title={head.title}
+          highlight={head.titleHighlight}
+          intro={head.intro}
+        />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 items-stretch">
           {testimonials.map((t, idx) => (
-            <div
+            <figure
               key={t.id || idx}
-              className="bg-white rounded-3xl p-6 sm:p-8 border border-warm-border hover:border-gold-champagne/80 shadow-sm hover:shadow-luxury transition-all duration-300 flex flex-col justify-between h-full group"
+              data-card
+              className={`group relative flex flex-col justify-between h-full rounded-[4px] p-8 lg:p-10 transition-colors duration-500 ${
+                idx % 3 === 1
+                  ? 'bg-brand-darkest text-warm-canvas'
+                  : 'bg-warm-canvas border border-warm-border hover:border-gold-primary/50'
+              }`}
             >
-              <div className="space-y-4">
-                {/* Rating & Verified Tag */}
+              <div>
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-1 text-gold-primary">
-                    {[...Array(t.rating || 5)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-gold-primary text-gold-primary" />
+                  <Quote className={`w-10 h-10 ${idx % 3 === 1 ? 'text-gold-primary' : 'text-gold-primary/60'}`} strokeWidth={1} />
+                  <div className="flex items-center gap-0.5">
+                    {[...Array(Math.max(0, Math.min(5, Number(t.rating) || 5)))].map((_, i) => (
+                      <Star key={i} className="w-3.5 h-3.5 fill-gold-primary text-gold-primary" />
                     ))}
                   </div>
-                  <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
-                    <ShieldCheck className="w-3 h-3 text-emerald-600" />
-                    Verified Client
-                  </span>
                 </div>
 
-                {/* Review Quote Body */}
-                <div className="relative pt-1">
-                  <Quote className="w-8 h-8 text-gold-champagne/30 absolute -top-3 -left-2 -z-0 pointer-events-none" />
-                  <p className="text-sm text-ink-body leading-relaxed italic relative z-10">
-                    "{t.text}"
-                  </p>
-                </div>
+                <blockquote className={`mt-7 font-serif text-[1.45rem] sm:text-[1.6rem] leading-[1.35] italic ${idx % 3 === 1 ? 'text-warm-canvas' : 'text-ink-charcoal'}`}>
+                  "{t.text}"
+                </blockquote>
               </div>
 
-              {/* Client Profile Footer */}
-              <div className="pt-6 mt-6 border-t border-warm-border/70 flex items-center gap-3.5">
+              <figcaption className={`mt-10 pt-6 border-t flex items-center gap-4 ${idx % 3 === 1 ? 'border-white/10' : 'border-warm-border'}`}>
                 <img
                   src={t.avatar || 'https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878454/modshine/page_5.jpg'}
                   alt={t.name}
-                  className="w-12 h-12 rounded-full object-cover border-2 border-gold-champagne/40 shrink-0"
+                  className="w-14 h-14 arch object-cover shrink-0"
                 />
                 <div className="min-w-0 flex-1">
-                  <h4 className="font-serif text-base font-bold text-brand-darkest truncate group-hover:text-brand-primary transition-colors">
-                    {t.name}
-                  </h4>
-                  <div className="flex items-center gap-2 text-xs text-ink-muted">
-                    <span className="flex items-center gap-0.5 truncate">
-                      <MapPin className="w-3 h-3 text-brand-primary shrink-0" />
-                      {t.location || 'Tamil Nadu'}
-                    </span>
-                    <span>•</span>
-                    <span className="text-gold-dark font-medium truncate">{t.project}</span>
+                  <div className="flex items-center gap-2">
+                    <h4 className={`font-serif text-xl font-semibold truncate ${idx % 3 === 1 ? 'text-warm-canvas' : 'text-ink-charcoal'}`}>
+                      {t.name}
+                    </h4>
+                    <ShieldCheck className="w-3.5 h-3.5 text-brand-accent shrink-0" aria-label="Verified Client" />
                   </div>
+                  <div className={`flex items-center gap-1.5 text-[11px] ${idx % 3 === 1 ? 'text-warm-canvas/55' : 'text-ink-muted'}`}>
+                    <MapPin className="w-3 h-3 text-gold-primary shrink-0" />
+                    <span className="truncate">{t.location || 'Tamil Nadu'}</span>
+                    <span>•</span>
+                    <span className="truncate text-gold-rich">{t.project}</span>
+                  </div>
+                  <span className={`mt-1 inline-block text-[9px] font-semibold uppercase tracking-[0.18em] ${idx % 3 === 1 ? 'text-gold-champagne/70' : 'text-brand-accent'}`}>
+                    Verified Client
+                  </span>
                 </div>
-              </div>
-            </div>
+              </figcaption>
+            </figure>
           ))}
         </div>
 
-        {/* Bottom Guarantee Banner */}
-        <div className="mt-12 text-center">
-          <p className="text-xs text-ink-muted">
-            100% Genuine Client Testimonials from Kovilpatti, Madurai, Tirunelveli, Chennai, and Tuticorin site executions.
-          </p>
-        </div>
+        <p className="mt-14 text-center text-[11px] uppercase tracking-[0.16em] text-ink-muted">
+          {settings?.testimonialsNote}
+        </p>
 
       </div>
     </section>
   );
 }
-

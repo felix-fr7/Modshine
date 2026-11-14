@@ -1,96 +1,82 @@
 import React from 'react';
-import { Compass, Palette, Feather, Layers } from 'lucide-react';
+import { getIcon } from '../data/icons.js';
+import SectionHeader from './ui/SectionHeader.jsx';
 
-export default function DesignPhilosophy() {
-  const pillars = [
-    {
-      num: "01",
-      icon: Compass,
-      title: "Functional Planning",
-      quote: "We maximize every square foot through smart space planning, ensuring comfort, efficiency, and seamless day-to-day living.",
-      detail: "Ergonomic kitchen work triangles, concealed wire management, optimized wardrobe heights, and clutter-free storage engineered for daily life."
-    },
-    {
-      num: "02",
-      icon: Palette,
-      title: "Aesthetic Excellence",
-      quote: "Every space is designed with a balance of elegance, modern aesthetics, and timeless appeal, creating interiors that reflect your unique personality.",
-      detail: "Curated palettes of warm beige, cashmere matte, fluted walnut panels, and Italian Carra marble textures that never feel dated."
-    },
-    {
-      num: "03",
-      icon: Feather,
-      title: "Impactful Designs",
-      quote: "By combining creativity, premium materials, and meticulous attention to detail, we deliver interiors that leave a lasting impression.",
-      detail: "Seamless joinery, concealed LED profiles, CNC laser-cut jaali motifs, and tactile fabrics that evoke luxury from the first glance."
-    }
-  ];
+export default function DesignPhilosophy({ settings }) {
+  const head = settings?.sections?.philosophy || {};
+  const philosophy = settings?.philosophy || {};
+  const pillars = Array.isArray(philosophy.pillars) ? philosophy.pillars : [];
 
   return (
-    <section className="py-20 lg:py-24 bg-brand-darkest text-white relative overflow-hidden">
-      {/* Decorative background grid & glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(#1c5c4f_1px,transparent_1px)] [background-size:24px_24px] opacity-20 pointer-events-none"></div>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-brand-primary/20 blur-[120px] pointer-events-none"></div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
-        {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-dark border border-gold-champagne/30 text-gold-champagne text-xs font-semibold tracking-widest uppercase">
-            <Layers className="w-3.5 h-3.5 text-gold-primary" />
-            <span>Guiding Principles</span>
-          </div>
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight">
-            Our Design Philosophy
-          </h2>
-          <p className="text-emerald-100/70 text-sm sm:text-base leading-relaxed">
-            Rooted in thoughtful architecture and master joinery, we balance visual poise with enduring functional durability.
-          </p>
+    <section data-scene="philosophy" className="relative py-24 lg:py-32 bg-brand-darkest text-warm-canvas overflow-clip">
+      <div data-scene-inner className="relative w-full">
+        {/* Atmosphere */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[500px] bg-brand-primary/40 blur-[160px] rounded-full" />
+          <div className="absolute -top-20 right-0 w-[420px] h-[420px] bg-gold-primary/10 blur-[140px] rounded-full" />
+          <div className="absolute inset-y-0 left-10 w-px bg-white/[0.05] hidden lg:block" />
+          <div className="absolute inset-y-0 right-10 w-px bg-white/[0.05] hidden lg:block" />
         </div>
 
-        {/* Pillars Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {pillars.map((p) => {
-            const Icon = p.icon;
-            return (
-              <div
-                key={p.num}
-                className="group relative rounded-2xl p-8 bg-brand-dark/70 backdrop-blur-md border border-brand-medium/30 hover:border-gold-champagne/50 transition-all duration-300 shadow-luxury flex flex-col justify-between"
-              >
-                {/* Top Number & Icon */}
-                <div className="flex items-center justify-between mb-6">
-                  <span className="font-serif text-3xl font-bold text-gold-champagne/60 group-hover:text-gold-primary transition-colors">
-                    {p.num}
-                  </span>
-                  <div className="w-12 h-12 rounded-xl bg-brand-primary/60 border border-gold-champagne/20 flex items-center justify-center text-gold-champagne group-hover:scale-110 transition-transform">
-                    <Icon className="w-6 h-6" />
-                  </div>
-                </div>
+        <div className="max-w-[1440px] mx-auto px-5 sm:px-6 lg:px-10 relative z-10 w-full">
 
-                {/* Content */}
-                <div className="space-y-4">
-                  <h3 className="font-serif text-2xl font-bold text-white group-hover:text-gold-champagne transition-colors">
+          <SectionHeader
+            dark
+            center
+            index="03"
+            eyebrow={head.eyebrow}
+            title={head.title}
+            highlight={head.titleHighlight}
+            intro={head.intro}
+            className="!mb-12 lg:!mb-16"
+          />
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 stage-3d">
+            {pillars.map((p) => {
+              const Icon = getIcon(p.icon);
+              return (
+                <div
+                  key={p.id || p.num}
+                  data-card
+                  className="group relative rounded-[4px] p-7 lg:p-9 bg-white/[0.03] border border-white/10 hover:border-gold-champagne/40 hover:bg-white/[0.05] transition-colors duration-500 flex flex-col"
+                >
+                  <div className="absolute top-0 left-7 right-7 lg:left-9 lg:right-9 h-px bg-gradient-to-r from-transparent via-gold-primary/70 to-transparent" />
+
+                  <div className="flex items-start justify-between mb-10">
+                    <span className="font-serif italic text-6xl lg:text-7xl leading-none text-gold-primary/80">
+                      {p.num}
+                    </span>
+                    <span className="w-12 h-12 rounded-full border border-gold-champagne/30 flex items-center justify-center text-gold-champagne group-hover:bg-gold-primary group-hover:text-brand-darkest transition-all duration-500">
+                      <Icon className="w-5 h-5" strokeWidth={1.5} />
+                    </span>
+                  </div>
+
+                  <h3 className="font-serif text-3xl font-medium text-warm-canvas">
                     {p.title}
                   </h3>
-                  <blockquote className="text-emerald-100/90 text-sm italic leading-relaxed border-l-2 border-gold-primary/60 pl-3">
+                  <blockquote className="mt-4 font-serif text-lg lg:text-xl italic leading-snug text-warm-canvas/80">
                     "{p.quote}"
                   </blockquote>
-                  <p className="text-emerald-200/60 text-xs leading-relaxed pt-2">
+                  <p className="mt-5 text-warm-canvas/50 text-[13px] leading-relaxed">
                     {p.detail}
                   </p>
-                </div>
 
-                {/* Bottom line accent */}
-                <div className="mt-6 pt-4 border-t border-brand-medium/30">
-                  <span className="text-[11px] uppercase tracking-wider text-gold-champagne/70 font-semibold">
-                    Modshine Standard
-                  </span>
+                  <div className="mt-auto pt-8">
+                    <span className="eyebrow text-gold-champagne/70 !tracking-[0.24em] !text-[10px]">
+                      <span className="eyebrow-rule" />
+                      {philosophy.footerLabel}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
+
+          {/* Scroll progress rail for the pinned scene */}
+          <div className="hidden lg:block mt-12 h-px w-full bg-white/10 overflow-hidden">
+            <div data-scene-rail className="h-full w-full origin-left bg-gradient-to-r from-gold-rich via-gold-champagne to-gold-primary" style={{ transform: 'scaleX(0)' }} />
+          </div>
         </div>
-
       </div>
     </section>
   );

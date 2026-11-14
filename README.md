@@ -23,7 +23,8 @@ d:/ModShine/
 │   │   └── db.json           # Live JSON database
 │   ├── models/               # Mongoose schemas (Product, Inquiry, Category, Setting)
 │   ├── public/assets/        # High-res interior imagery & cropped renders
-│   ├── .env                  # Port (5000) & MongoDB URI
+│   ├── .env                  # Secrets (not committed) — see .env.example
+│   ├── auth.js               # Admin login + token verification
 │   ├── package.json
 │   └── server.js             # Express REST API endpoints
 │
@@ -41,9 +42,10 @@ d:/ModShine/
 │   │   │   ├── ProcessSection.jsx    # 6-Step roadmap from PDF Page 5
 │   │   │   ├── CostEstimator.jsx     # Interactive live budget calculator
 │   │   │   ├── ContactSection.jsx    # Live lead capture & Kovilpatti showroom
-│   │   │   ├── AdminDashboard.jsx    # Full CRUD Admin panel
 │   │   │   ├── ConsultationModal.jsx # Quick booking popup
 │   │   │   └── Footer.jsx            # Address, phone & guarantees
+│   │   ├── admin/                # Admin Studio (login, content editor, designs, leads)
+│   │   ├── data/siteContent.js   # All website content defaults + merge logic
 │   │   ├── App.jsx
 │   │   ├── index.css
 │   │   └── main.jsx
@@ -62,7 +64,7 @@ d:/ModShine/
 ### 🌐 Live Production Deployment
 - **Backend API (Render)**: `https://modshine-j90i.onrender.com`
 - **API Health Check**: `https://modshine-j90i.onrender.com/api/health`
-- **Overview Endpoint**: `https://modshine-j90i.onrender.com/api/overview`
+- **Admin Studio**: `<your-site>/admin` (login required)
 
 ### 1. Backend Server (Local Port 5000)
 ```bash
@@ -83,12 +85,15 @@ npm run dev
 
 ## ⚡ Dynamic Features
 
-1. **Admin Portal**:
-   - Click the **"Admin Portal"** button in the top navigation bar.
-   - **Products Management**: Add, edit, or delete modular furniture items with custom board types, hardware brands, prices, and images. Changes reflect instantly on the landing page!
-   - **Leads & Inquiries**: View all consultations submitted through the customer landing page form. Update statuses (`New`, `Contacted`, `In-Progress`, `Completed`) with a single click.
-   - **Showroom Settings**: Edit phone numbers (`+91 99944 12345` / `082208 05159`), address, announcement banner, and hours.
-   - **Reset Defaults**: Instantly restore the original 12 curated designs from the PDF presentation.
+1. **Admin Studio** (`/admin`, username + password login):
+   - **Every website section is editable** — Hero, About, Services, Design Philosophy, Catalog texts, Materials & Brands, Process, Testimonials, Estimator, Contact & Forms, Footer and company details. Lists can be added to, edited, duplicated, re-ordered and deleted. Click **Save changes** to publish.
+   - **Designs & Categories**: add / edit / delete portfolio items; changes go live immediately.
+   - **Enquiries**: view leads, change status, call / WhatsApp, export CSV, delete.
+   - **Images** are uploaded to **Cloudinary** only (files or pasted links are copied into Cloudinary). Images that are no longer used anywhere are removed from Cloudinary automatically.
+
+   **Server environment variables** (local: `backend/.env`, production: Render → Environment) — see `backend/.env.example`:
+   `MONGODB_URI`, `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`, `ADMIN_USERNAME`, `ADMIN_PASSWORD`, `AUTH_SECRET`.
+   In MongoDB Atlas → Network Access, allow the Render server (or `0.0.0.0/0`) so the live API uses the database instead of temporary local storage.
 
 2. **Interactive Cost Estimator**:
    - Clients can choose their project scope (Kitchen, Wardrobe, TV Unit, 2BHK, 3BHK), board type (Action TESA HDHMR Boilo, Greenply Marine Ply), hardware tier (German Hettich, Ebco), and calculate their budget in real-time.

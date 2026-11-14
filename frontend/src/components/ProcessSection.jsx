@@ -1,483 +1,281 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  MessagesSquare, 
-  Ruler, 
-  Palette, 
-  Layers, 
-  Hammer, 
-  CheckCheck,
+import {
   ArrowRight,
-  ArrowDown,
-  Compass,
   Play,
   Pause,
   Sparkles,
-  ShieldCheck,
   ChevronRight,
   ChevronLeft,
   Clock,
   CheckCircle2,
-  SlidersHorizontal
 } from 'lucide-react';
+import SectionHeader from './ui/SectionHeader.jsx';
+import { getIcon } from '../data/icons.js';
+
+const STEP_ICON_FALLBACK = ['MessagesSquare', 'Ruler', 'Palette', 'Layers', 'Hammer', 'CheckCheck'];
 
 export default function ProcessSection({ settings, onOpenConsultation }) {
   const [activeStep, setActiveStep] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true); 
+  const [isPlaying, setIsPlaying] = useState(true);
 
-  const defaultSteps = [
-    {
-      step: "01",
-      icon: MessagesSquare,
-      title: "Discovery & Consultation",
-      subtitle: "Talk to our Interior Designer & Get an Estimate",
-      description: "Understand the client's requirements, lifestyle, budget, and design preferences through in-depth discussion.",
-      timeline: "Day 1 - 3",
-      deliverable: "Lifestyle Analysis & Transparent Estimate",
-      highlight: "No Obligation Consultation"
-    },
-    {
-      step: "02",
-      icon: Ruler,
-      title: "Site Measurement",
-      subtitle: "Detailed Laser Measurement & Site Survey",
-      description: "Detailed on-site laser inspection and accurate millimeter measurements to ensure precise factory planning.",
-      timeline: "Day 4 - 6",
-      deliverable: "Millimeter-Accurate Site Blueprint",
-      highlight: "Zero Gap Laser Survey"
-    },
-    {
-      step: "03",
-      icon: Palette,
-      title: "Concept & Moodboard",
-      subtitle: "Detailed 2D/3D Drawing & Approval",
-      description: "Develop 2D floor layouts, curated mood boards, and realistic 3D visualizations for client sign-off.",
-      timeline: "Day 7 - 14",
-      deliverable: "Photoreal 3D Visualizations & Color Boards",
-      highlight: "100% Client Sign-Off"
-    },
-    {
-      step: "04",
-      icon: Layers,
-      title: "Material Selection",
-      subtitle: "Curated Finishes, Hardware & Laminates",
-      description: "Choose laminates, finishes, hardware (Hettich/Ebco), lighting, and color palettes that suit your lifestyle.",
-      timeline: "Day 15 - 20",
-      deliverable: "Hardware Specs & Finish Samples Swatch",
-      highlight: "Branded Hettich / Ebco"
-    },
-    {
-      step: "05",
-      icon: Hammer,
-      title: "Execution & Quality Control",
-      subtitle: "Production at Own Factories & Execution",
-      description: "Precision CNC manufacturing, swift on-site installation, and multi-tier quality checks to ensure zero flaws.",
-      timeline: "Day 21 - 40",
-      deliverable: "German CNC Machined Modular Units",
-      highlight: "In-House Factory Precision"
-    },
-    {
-      step: "06",
-      icon: CheckCheck,
-      title: "Project Handover",
-      subtitle: "On-Time Handover & 10-Year Warranty",
-      description: "Final deep clean, client walkthrough inspection, warranty certificates, and timely handover with total satisfaction.",
-      timeline: "Day 45 Punctual",
-      deliverable: "10-Year Warranty & Handover Keys",
-      highlight: "Punctual Delivery Handover"
-    }
-  ];
+  const head = settings?.sections?.process || {};
+  const process = settings?.process || {};
+  const steps = Array.isArray(settings?.processSteps) ? settings.processSteps : [];
 
-  const steps = (settings?.processSteps && settings.processSteps.length > 0)
-    ? settings.processSteps
-    : defaultSteps;
-
-  const getStepIcon = (icon) => {
-    if (typeof icon === 'function' || (typeof icon === 'object' && icon !== null && icon.$$typeof)) return icon;
-    switch (icon) {
-      case 'MessagesSquare': return MessagesSquare;
-      case 'Ruler': return Ruler;
-      case 'Palette': return Palette;
-      case 'Layers': return Layers;
-      case 'Hammer': return Hammer;
-      case 'CheckCheck': return CheckCheck;
-      default: return CheckCircle2;
-    }
-  };
+  const getStepIcon = (icon, idx) => getIcon(icon || STEP_ICON_FALLBACK[idx], CheckCircle2);
 
   // Auto-progress through the process animation
   useEffect(() => {
-    if (!isPlaying) return;
+    if (!isPlaying || steps.length < 2) return undefined;
     const interval = setInterval(() => {
       setActiveStep((prev) => (prev + 1) % steps.length);
     }, 4200);
     return () => clearInterval(interval);
   }, [isPlaying, steps.length]);
 
-  const currentStepData = steps[activeStep] || steps[0] || defaultSteps[0];
+  if (steps.length === 0) return null;
+  const safeStep = Math.min(activeStep, steps.length - 1);
+  const currentStepData = steps[safeStep];
 
-  // ModShine Signature Brand Palette (Deep Emerald & Champagne Gold)
-  const nodeBgClass = 'bg-gradient-to-br from-[#091c16] via-[#14453a] to-[#1a5749]';
-  const nodeBorderActive = 'border-gold-champagne ring-4 ring-gold-champagne/40 shadow-[0_0_35px_rgba(196,159,100,0.45)]';
-  const nodePillBg = 'bg-brand-primary text-gold-champagne border border-gold-champagne/60';
+  const progressPct = steps.length > 1 ? (safeStep / (steps.length - 1)) * 100 : 100;
 
   return (
-    <section id="process" className="py-20 lg:py-28 bg-[#fdfcf9] relative overflow-hidden">
-      
-      {/* Background Decorative Ambient Glows */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-gradient-to-r from-brand-light/60 via-gold-light/40 to-brand-light/60 blur-3xl pointer-events-none rounded-full" />
-      <div className="absolute -top-12 right-12 w-64 h-64 bg-gold-champagne/15 rounded-full blur-2xl pointer-events-none" />
+    <section id="process" className="relative py-24 lg:py-36 bg-paper overflow-hidden">
+      <div className="max-w-[1440px] mx-auto px-5 sm:px-6 lg:px-10 relative">
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14 space-y-4">
-          
-          {/* Top Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white text-brand-primary text-xs font-semibold tracking-wider uppercase border border-warm-border shadow-sm">
-            <Compass className="w-3.5 h-3.5 text-gold-rich animate-spin-slow" />
-            <span>Proven 6-Stage Roadmap</span>
-          </div>
-          
-          {/* Main Title */}
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-darkest tracking-tight">
-            Our Transparent Design & Build Process
-          </h2>
-
-          {/* Reference Banner: Design, Production & Execution Under One Roof */}
-          <div className="inline-block">
-            <span className="font-serif text-base sm:text-xl font-medium text-brand-primary/90 italic tracking-wide">
-              "Design, Production & Execution By Just One Company"
-            </span>
-          </div>
-          
-          <p className="text-ink-muted text-sm sm:text-base leading-relaxed">
-            From your very first sketch to the day you step into your completed dream home, our phased approach ensures complete transparency, zero hidden costs, and punctual handover.
-          </p>
-
-          {/* Interactive Player Controls */}
-          <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
-            
-            {/* Auto-Play Toggle */}
-            <button
-              onClick={() => setIsPlaying(!isPlaying)}
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white hover:bg-warm-canvas border border-warm-border text-xs font-medium text-ink-body shadow-sm hover:border-gold-champagne transition-all"
-              title={isPlaying ? "Pause automated progression" : "Play automated progression"}
-            >
-              {isPlaying ? (
-                <>
-                  <Pause className="w-3.5 h-3.5 text-gold-rich fill-current" />
-                  <span>Auto-Advancing</span>
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-                </>
-              ) : (
-                <>
-                  <Play className="w-3.5 h-3.5 text-gold-rich fill-current" />
-                  <span>Resume Flow</span>
-                </>
+        <SectionHeader
+          index="06"
+          eyebrow={head.eyebrow}
+          title={head.title}
+          highlight={head.titleHighlight}
+          intro={
+            <>
+              {process.quote && (
+                <span className="block font-serif italic text-2xl sm:text-[1.7rem] leading-snug text-brand-primary mb-4">
+                  {process.quote}
+                </span>
               )}
-            </button>
+              {head.intro}
+            </>
+          }
+        />
 
-            {/* Quick Step Indicators */}
-            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-warm-border shadow-sm">
-              {steps.map((st, idx) => (
-                <button
-                  key={st.step}
-                  onClick={() => {
-                    setActiveStep(idx);
-                    setIsPlaying(false);
-                  }}
-                  className={`w-2.5 h-2.5 rounded-full transition-all ${
-                    activeStep === idx 
-                      ? 'w-6 bg-gold-primary ring-2 ring-gold-champagne/40' 
-                      : 'bg-warm-border hover:bg-neutral-400'
-                  }`}
-                  aria-label={`Jump to stage ${st.step}`}
-                />
-              ))}
-            </div>
+        {/* Player controls */}
+        <div className="flex flex-wrap items-center gap-3 mb-12">
+          <button
+            onClick={() => setIsPlaying(!isPlaying)}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-ink-charcoal/15 hover:border-ink-charcoal text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-body transition-colors"
+            title={isPlaying ? "Pause automated progression" : "Play automated progression"}
+          >
+            {isPlaying ? (
+              <>
+                <Pause className="w-3 h-3 text-gold-rich fill-current" />
+                <span>Auto-Advancing</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-brand-accent animate-ping" />
+              </>
+            ) : (
+              <>
+                <Play className="w-3 h-3 text-gold-rich fill-current" />
+                <span>Resume Flow</span>
+              </>
+            )}
+          </button>
 
-            {/* Active Stage Indicator Pill */}
-            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-brand-light text-brand-primary border border-brand-primary/20 text-xs font-semibold">
-              <span className="w-2 h-2 rounded-full bg-gold-rich" />
-              <span>Phase {currentStepData.step} in Focus</span>
-            </div>
-
+          <div className="inline-flex items-center gap-1.5 px-3 py-2.5 rounded-full border border-ink-charcoal/15">
+            {steps.map((st, idx) => (
+              <button
+                key={st.id || st.step}
+                onClick={() => {
+                  setActiveStep(idx);
+                  setIsPlaying(false);
+                }}
+                className={`h-1.5 rounded-full transition-all duration-500 ${safeStep === idx ? 'w-6 bg-gold-primary' : 'w-1.5 bg-ink-charcoal/20 hover:bg-ink-charcoal/50'}`}
+                aria-label={`Jump to stage ${st.step}`}
+              />
+            ))}
           </div>
 
+          <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-brand-primary">
+            Phase {currentStepData.step} in Focus
+          </span>
         </div>
 
-        {/* ======================================================== */}
-        {/* DESKTOP & LARGE SCREENS: CONNECTED CIRCULAR ARROW FLOW   */}
-        {/* ======================================================== */}
+        {/* DESKTOP: timeline */}
         <div className="hidden lg:block mb-16">
-          <div className="grid grid-cols-6 gap-2 xl:gap-4 relative items-start">
-            
-            {steps.map((st, idx) => {
-              const Icon = getStepIcon(st.icon);
-              const isActive = activeStep === idx;
-              const isPassed = activeStep >= idx;
+          <div className="relative">
+            {/* rail */}
+            <div className="absolute top-[34px] left-[calc(100%/12)] right-[calc(100%/12)] h-px bg-ink-charcoal/15">
+              <div className="h-full bg-gold-primary transition-all duration-700 ease-out" style={{ width: `${progressPct}%` }} />
+              <div className="animate-flow-arrow opacity-60" />
+            </div>
 
-              return (
-                <div 
-                  key={st.step} 
-                  className="flex flex-col items-center relative group"
-                  onMouseEnter={() => setIsPlaying(false)}
-                >
-                  
-                  {/* Top Connector Arrow to Next Node (Rendered between idx and idx+1) */}
-                  {idx < steps.length - 1 && (
-                    <div 
-                      className="absolute top-[48px] xl:top-[54px] z-0 flex items-center pointer-events-none"
-                      style={{
-                        left: 'calc(50% + 50px)',
-                        width: 'calc(100% - 16px)'
+            <div className="grid grid-cols-6 gap-4 xl:gap-6 relative">
+              {steps.map((st, idx) => {
+                const Icon = getStepIcon(st.icon, idx);
+                const isActive = safeStep === idx;
+                const isPassed = safeStep >= idx;
+                return (
+                  <div
+                    key={st.id || st.step}
+                    className="flex flex-col items-center text-center group"
+                    onMouseEnter={() => setIsPlaying(false)}
+                  >
+                    <button
+                      onClick={() => {
+                        setActiveStep(idx);
+                        setIsPlaying(false);
                       }}
+                      className="relative focus:outline-none"
+                      aria-label={`Select stage ${st.step}: ${st.title}`}
                     >
-                      {/* Flowing Connector Line */}
-                      <div className="relative w-full h-[2.5px] bg-warm-border rounded-full overflow-hidden">
-                        {/* Shimmering Animated Beam */}
-                        <div className="animate-flow-arrow" />
-                        {/* Completed fill */}
-                        <div 
-                          className={`h-full transition-all duration-700 ${
-                            isPassed ? 'bg-gradient-to-r from-gold-primary to-gold-champagne' : 'bg-transparent'
-                          }`} 
-                        />
-                      </div>
-                      
-                      {/* Directional Arrow Head */}
-                      <div className={`-ml-2 shrink-0 transition-all duration-500 ${
-                        isPassed ? 'text-gold-rich scale-110' : 'text-warm-muted'
-                      }`}>
-                        <ArrowRight className="w-4 h-4 xl:w-5 xl:h-5 animate-arrow-nudge" strokeWidth={2.5} />
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Circular Node Button */}
-                  <button
-                    onClick={() => {
-                      setActiveStep(idx);
-                      setIsPlaying(false);
-                    }}
-                    className="relative focus:outline-none z-10 group/btn"
-                    aria-label={`Select stage ${st.step}: ${st.title}`}
-                  >
-                    {/* Step Number Tag Floating on Top */}
-                    <div className="flex justify-center mb-2">
-                      <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase transition-all shadow-sm ${
-                        isActive 
-                          ? `${nodePillBg} scale-110 ring-2 ring-gold-champagne/60` 
-                          : 'bg-white text-ink-muted border border-warm-border group-hover/btn:border-gold-champagne'
-                      }`}>
-                        Step {st.step}
-                      </span>
-                    </div>
-
-                    {/* Circular Interactive Bubble */}
-                    <div className="relative">
-                      {/* Animated Radar Wave on Active */}
                       {isActive && (
-                        <div className="absolute -inset-2.5 rounded-full border-2 border-gold-champagne/60 animate-radar-wave pointer-events-none" />
+                        <span className="absolute -inset-2 rounded-full border border-gold-primary/60 animate-radar-wave pointer-events-none" />
                       )}
+                      <span className={`relative w-[68px] h-[68px] rounded-full flex items-center justify-center transition-all duration-500 border ${
+                        isActive
+                          ? 'bg-brand-darkest border-brand-darkest text-gold-champagne scale-110 shadow-luxury'
+                          : isPassed
+                            ? 'bg-warm-canvas border-gold-primary text-brand-primary'
+                            : 'bg-warm-canvas border-ink-charcoal/15 text-ink-muted group-hover:border-ink-charcoal group-hover:text-ink-charcoal'
+                      }`}>
+                        <Icon className="w-6 h-6" strokeWidth={1.4} />
+                      </span>
+                    </button>
 
-                      {/* Main Circle */}
-                      <div
-                        className={`w-24 h-24 xl:w-28 xl:h-28 rounded-full flex flex-col items-center justify-center text-white transition-all duration-500 cursor-pointer border-2 shadow-md ${
-                          nodeBgClass
-                        } ${
-                          isActive 
-                            ? `${nodeBorderActive} scale-110` 
-                            : 'border-white/40 group-hover/btn:scale-105 group-hover/btn:border-gold-champagne/60 group-hover/btn:shadow-lg'
-                        }`}
-                      >
-                        {/* Centered Stage Icon */}
-                        <Icon className={`w-9 h-9 xl:w-10 xl:h-10 transition-transform duration-300 ${
-                          isActive ? 'scale-110 text-gold-champagne' : 'text-white group-hover/btn:scale-110'
-                        }`} strokeWidth={1.75} />
-                      </div>
-                    </div>
-                  </button>
-
-                  {/* Step Title Below Circle */}
-                  <h3 
-                    onClick={() => {
-                      setActiveStep(idx);
-                      setIsPlaying(false);
-                    }}
-                    className={`font-serif text-sm xl:text-base font-bold text-center mt-4 transition-colors cursor-pointer px-1 line-clamp-2 ${
-                      isActive ? 'text-brand-primary' : 'text-brand-darkest hover:text-brand-primary'
-                    }`}
-                  >
-                    {st.title}
-                  </h3>
-
-                  {/* Secondary Subtitle directly echoing the reference style */}
-                  <p className="text-[11px] font-medium text-gold-dark text-center mt-1 px-1 line-clamp-2">
-                    {st.subtitle}
-                  </p>
-
-                  {/* Step Description */}
-                  <p className="text-xs text-ink-muted text-center mt-2 leading-relaxed px-1 line-clamp-3">
-                    {st.description}
-                  </p>
-
-                  {/* Phase Status Pill */}
-                  <div className="mt-3">
-                    <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-semibold tracking-wider uppercase transition-colors ${
-                      isActive 
-                        ? 'bg-gold-light text-brand-darkest border border-gold-champagne/60' 
-                        : 'bg-warm-cream text-ink-muted border border-warm-border'
+                    <span className={`mt-5 font-serif italic text-sm ${isActive ? 'text-gold-rich' : 'text-ink-muted'}`}>
+                      Step {st.step}
+                    </span>
+                    <h3
+                      onClick={() => {
+                        setActiveStep(idx);
+                        setIsPlaying(false);
+                      }}
+                      className={`font-serif text-xl xl:text-[1.4rem] font-medium leading-tight mt-1 cursor-pointer transition-colors line-clamp-2 ${isActive ? 'text-ink-charcoal' : 'text-ink-body hover:text-ink-charcoal'}`}
+                    >
+                      {st.title}
+                    </h3>
+                    <p className="text-[11px] font-medium text-gold-dark mt-2 line-clamp-2">
+                      {st.subtitle}
+                    </p>
+                    <p className="text-xs text-ink-muted mt-2 leading-relaxed line-clamp-3">
+                      {st.description}
+                    </p>
+                    <span className={`mt-4 inline-flex px-3 py-1 rounded-full text-[9px] font-semibold uppercase tracking-[0.14em] border transition-colors ${
+                      isActive ? 'border-gold-primary text-gold-rich bg-gold-light/60' : 'border-ink-charcoal/10 text-ink-muted'
                     }`}>
                       {st.highlight}
                     </span>
                   </div>
-
-                </div>
-              );
-            })}
-
+                );
+              })}
+            </div>
           </div>
         </div>
 
-        {/* ======================================================== */}
-        {/* TABLET & MOBILE VIEW: RESPONSIVE CONNECTED STEPPER       */}
-        {/* ======================================================== */}
+        {/* MOBILE / TABLET: swipe cards */}
         <div className="block lg:hidden mb-12">
-          
-          {/* Mobile Horizontal Preview Scroller */}
-          <div className="flex gap-4 overflow-x-auto pb-4 pt-2 px-1 snap-x no-scrollbar">
+          <div className="flex gap-4 overflow-x-auto pb-4 pt-2 -mx-5 px-5 snap-x no-scrollbar">
             {steps.map((st, idx) => {
-              const Icon = getStepIcon(st.icon);
-              const isActive = activeStep === idx;
+              const Icon = getStepIcon(st.icon, idx);
+              const isActive = safeStep === idx;
               return (
                 <button
-                  key={st.step}
+                  key={st.id || st.step}
                   onClick={() => {
                     setActiveStep(idx);
                     setIsPlaying(false);
                   }}
-                  className={`snap-center shrink-0 w-[240px] rounded-2xl p-5 border transition-all text-left flex flex-col justify-between ${
-                    isActive 
-                      ? 'bg-white border-gold-champagne shadow-luxury ring-1 ring-gold-champagne/50' 
-                      : 'bg-warm-canvas border-warm-border hover:bg-white'
+                  className={`snap-center shrink-0 w-[260px] rounded-[4px] p-6 border transition-all duration-500 text-left flex flex-col justify-between ${
+                    isActive ? 'bg-brand-darkest border-brand-darkest text-warm-canvas' : 'bg-warm-canvas border-warm-border'
                   }`}
                 >
-                  <div className="flex items-center justify-between mb-4">
-                    {/* Circle Node */}
-                    <div className={`w-14 h-14 rounded-full flex items-center justify-center text-white shadow-md border ${
-                      nodeBgClass
-                    } ${
-                      isActive ? 'border-gold-champagne ring-2 ring-gold-champagne/40' : 'border-white/40'
-                    }`}>
-                      <Icon className="w-6 h-6 text-gold-champagne" strokeWidth={1.8} />
-                    </div>
-                    <span className={`font-serif text-2xl font-bold ${
-                      isActive ? 'text-gold-rich' : 'text-neutral-300'
-                    }`}>
+                  <div className="flex items-center justify-between mb-6">
+                    <span className={`w-12 h-12 rounded-full border flex items-center justify-center ${isActive ? 'border-gold-champagne/40 text-gold-champagne' : 'border-warm-border text-brand-primary'}`}>
+                      <Icon className="w-5 h-5" strokeWidth={1.5} />
+                    </span>
+                    <span className={`font-serif italic text-4xl ${isActive ? 'text-gold-primary' : 'text-ink-charcoal/20'}`}>
                       {st.step}
                     </span>
                   </div>
-
                   <div className="space-y-1.5">
-                    <span className="text-[10px] uppercase tracking-wider font-semibold text-gold-rich block">
+                    <span className={`text-[9px] uppercase tracking-[0.18em] font-semibold block ${isActive ? 'text-gold-champagne' : 'text-gold-rich'}`}>
                       {st.subtitle}
                     </span>
-                    <h4 className="font-serif font-bold text-base text-brand-darkest">
+                    <h4 className={`font-serif text-2xl font-medium leading-tight ${isActive ? 'text-warm-canvas' : 'text-ink-charcoal'}`}>
                       {st.title}
                     </h4>
-                    <p className="text-xs text-ink-muted leading-relaxed line-clamp-3">
+                    <p className={`text-xs leading-relaxed line-clamp-3 ${isActive ? 'text-warm-canvas/60' : 'text-ink-muted'}`}>
                       {st.description}
                     </p>
                   </div>
-
-                  <div className="mt-4 pt-3 border-t border-warm-border/60 flex items-center justify-between text-[11px] text-ink-muted">
-                    <span className="font-semibold text-brand-primary">Phase {st.step}</span>
-                    <span className="text-gold-dark font-medium">{st.timeline}</span>
+                  <div className={`mt-5 pt-3 border-t flex items-center justify-between text-[11px] ${isActive ? 'border-white/10' : 'border-warm-border'}`}>
+                    <span className={`font-semibold ${isActive ? 'text-gold-champagne' : 'text-brand-primary'}`}>Phase {st.step}</span>
+                    <span className={isActive ? 'text-warm-canvas/60' : 'text-gold-dark'}>{st.timeline}</span>
                   </div>
                 </button>
               );
             })}
           </div>
-
-          {/* Swipe indicator hint */}
-          <div className="flex items-center justify-between mt-3 text-xs text-ink-muted px-2">
+          <div className="flex items-center justify-between mt-3 text-[11px] text-ink-muted">
             <span>Tap any stage or swipe horizontally</span>
             <span className="flex items-center gap-1 font-semibold text-brand-primary">
-              Step {currentStepData.step} of 06
+              Step {currentStepData.step} of {String(steps.length).padStart(2, '0')}
               <ChevronRight className="w-3.5 h-3.5" />
             </span>
           </div>
-
         </div>
 
-        {/* ======================================================== */}
-        {/* ACTIVE STAGE SPOTLIGHT CARD (EXPANDED REASSURANCE)       */}
-        {/* ======================================================== */}
-        <div className="rounded-3xl bg-white border border-warm-border shadow-luxury p-6 sm:p-8 lg:p-10 relative overflow-hidden mb-16">
-          
-          {/* Subtle Top Accent Bar */}
-          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-brand-primary via-gold-champagne to-brand-primary" />
-
-          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
-            
-            {/* Left: Active Icon & Title Details */}
-            <div className="flex items-start sm:items-center gap-5">
-              
-              {/* Highlight Circle */}
-              <div className={`w-16 h-16 sm:w-20 sm:h-20 rounded-2xl shrink-0 flex items-center justify-center text-white shadow-lg border border-gold-champagne/40 ${
-                nodeBgClass
-              }`}>
-                {React.createElement(getStepIcon(currentStepData.icon), {
-                  className: "w-8 h-8 sm:w-10 sm:h-10 text-gold-champagne",
-                  strokeWidth: 1.8
+        {/* Spotlight */}
+        <div data-card className="relative rounded-[4px] bg-warm-canvas border border-warm-border overflow-hidden mb-16 lg:mb-24">
+          <div className="grid grid-cols-1 lg:grid-cols-12">
+            <div className="lg:col-span-7 p-7 sm:p-10 lg:p-12 flex items-start gap-6">
+              <span className="hidden sm:flex w-20 h-20 rounded-full bg-brand-darkest text-gold-champagne items-center justify-center shrink-0">
+                {React.createElement(getStepIcon(currentStepData.icon, safeStep), {
+                  className: "w-8 h-8",
+                  strokeWidth: 1.4
                 })}
-              </div>
-
-              {/* Title & Phase Meta */}
-              <div className="space-y-1.5">
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="px-3 py-0.5 rounded-full bg-gold-light text-brand-darkest text-xs font-bold tracking-wider uppercase border border-gold-champagne/50">
+              </span>
+              <div key={safeStep} className="space-y-3 animate-fadeIn">
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gold-rich">
                     Active Phase {currentStepData.step}
                   </span>
-                  <span className="inline-flex items-center gap-1 text-xs font-semibold text-brand-primary">
+                  <span className="h-3 w-px bg-warm-border" />
+                  <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-brand-primary">
                     <Clock className="w-3.5 h-3.5 text-gold-rich" />
                     {currentStepData.timeline}
                   </span>
                 </div>
-
-                <h3 className="font-serif text-2xl sm:text-3xl font-bold text-brand-darkest">
+                <h3 className="display text-4xl sm:text-5xl text-ink-charcoal">
                   {currentStepData.title}
                 </h3>
-                <p className="text-xs sm:text-sm font-medium text-gold-dark">
+                <p className="text-sm font-medium text-gold-dark">
                   {currentStepData.subtitle}
                 </p>
+                <p className="pt-3 text-ink-body text-[15px] leading-relaxed">
+                  <span className="font-semibold text-ink-charcoal">Scope Overview: </span>
+                  {currentStepData.description}
+                </p>
               </div>
-
             </div>
 
-            {/* Right: Key Deliverable & Actions */}
-            <div className="w-full lg:w-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-4 border-t lg:border-t-0 pt-4 lg:pt-0 border-warm-border">
-              
-              {/* Deliverable Badge Box */}
-              <div className="px-4 py-3 rounded-xl bg-warm-cream border border-warm-border space-y-1">
-                <span className="text-[11px] uppercase tracking-wider text-ink-muted font-semibold block">
+            <div className="lg:col-span-5 p-7 sm:p-10 lg:p-12 bg-brand-darkest text-warm-canvas flex flex-col justify-between gap-8">
+              <div className="space-y-2">
+                <span className="text-[10px] uppercase tracking-[0.2em] text-warm-canvas/50 font-semibold block">
                   Stage Deliverable:
                 </span>
-                <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-brand-darkest">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <div key={safeStep} className="flex items-start gap-3 font-serif text-2xl sm:text-3xl leading-snug animate-fadeIn">
+                  <CheckCircle2 className="w-5 h-5 text-gold-primary shrink-0 mt-1.5" strokeWidth={1.5} />
                   <span>{currentStepData.deliverable}</span>
                 </div>
               </div>
-
-              {/* Step Navigation Buttons */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 <button
                   onClick={() => {
                     setActiveStep((prev) => (prev > 0 ? prev - 1 : steps.length - 1));
                     setIsPlaying(false);
                   }}
-                  className="p-3 rounded-xl bg-white hover:bg-warm-canvas border border-warm-border text-ink-body hover:border-gold-champagne transition-all shadow-sm"
+                  className="w-12 h-12 rounded-full border border-white/20 hover:border-gold-champagne hover:text-gold-champagne flex items-center justify-center transition-colors"
                   aria-label="Previous stage"
                 >
                   <ChevronLeft className="w-5 h-5" />
@@ -487,54 +285,42 @@ export default function ProcessSection({ settings, onOpenConsultation }) {
                     setActiveStep((prev) => (prev + 1) % steps.length);
                     setIsPlaying(false);
                   }}
-                  className="px-4 py-3 rounded-xl bg-brand-primary hover:bg-brand-dark text-white font-semibold text-xs tracking-wide transition-all shadow-sm flex items-center gap-1.5"
+                  className="btn-brass !py-3.5"
                 >
                   <span>Next Step</span>
                   <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
-
             </div>
-
           </div>
-
-          {/* Full Detailed Description */}
-          <div className="mt-6 pt-5 border-t border-warm-border/70 text-ink-body text-sm sm:text-base leading-relaxed bg-warm-canvas/60 p-4 rounded-xl">
-            <span className="font-semibold text-brand-darkest">Scope Overview: </span>
-            {currentStepData.description}
-          </div>
-
+          {/* progress hairline */}
+          <div className="absolute bottom-0 left-0 h-[2px] bg-gold-primary transition-all duration-700" style={{ width: `${((safeStep + 1) / steps.length) * 100}%` }} />
         </div>
 
-        {/* ======================================================== */}
-        {/* CONSULTATION CALLOUT BANNER (PRESERVED IN FULL)          */}
-        {/* ======================================================== */}
-        <div className="rounded-3xl bg-brand-darkest text-white p-8 sm:p-12 border border-gold-champagne/30 shadow-2xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
-          
-          {/* Subtle Ambient Background Flare */}
-          <div className="absolute -top-24 -right-24 w-80 h-80 bg-gold-rich/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-24 -left-24 w-80 h-80 bg-brand-primary/30 rounded-full blur-3xl pointer-events-none" />
-
-          <div className="space-y-2 text-center md:text-left z-10">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-gold-champagne text-xs font-semibold tracking-wider uppercase border border-gold-champagne/20">
-              <Sparkles className="w-3.5 h-3.5 text-gold-primary" />
-              <span>Step 01 starts today</span>
+        {/* CTA banner */}
+        <div data-card className="relative rounded-[4px] overflow-hidden bg-brand-primary text-warm-canvas px-7 py-12 sm:p-14 lg:p-20">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_85%_20%,rgba(180,142,87,0.28),transparent_45%)] pointer-events-none" />
+          <div className="absolute -bottom-40 -left-24 w-[420px] h-[420px] arch border border-white/10 pointer-events-none" />
+          <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+            <div className="lg:col-span-8 space-y-5">
+              <span className="eyebrow text-gold-champagne">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>{process.ctaEyebrow}</span>
+              </span>
+              <h3 className="display text-4xl sm:text-6xl">
+                {process.ctaTitle}
+              </h3>
+              <p className="text-[15px] text-warm-canvas/70 max-w-xl leading-relaxed">
+                {process.ctaText}
+              </p>
             </div>
-            <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-white">
-              Ready to begin your home transformation?
-            </h3>
-            <p className="text-sm text-emerald-100/70 max-w-xl">
-              Book a free consultation at our Kovilpatti design studio or schedule a site measurement anywhere across Tamil Nadu.
-            </p>
+            <div className="lg:col-span-4 lg:flex lg:justify-end">
+              <button onClick={onOpenConsultation} className="btn-brass group w-full sm:w-auto">
+                <span>{process.ctaButton}</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </button>
+            </div>
           </div>
-
-          <button
-            onClick={onOpenConsultation}
-            className="shrink-0 px-8 py-4 rounded-xl bg-gradient-to-r from-gold-primary via-gold-champagne to-gold-rich text-brand-darkest font-bold text-sm tracking-wide shadow-gold-glow hover:brightness-105 active:scale-95 transition-all flex items-center gap-2 z-10"
-          >
-            <span>Book Initial Consultation</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
         </div>
 
       </div>

@@ -1,157 +1,106 @@
-﻿import React from 'react';
-import { Home, CookingPot, Briefcase, Key, ArrowRight, Layers, Sparkles, CheckCircle2 } from 'lucide-react';
+import React from 'react';
+import { ArrowRight } from 'lucide-react';
+import { getIcon } from '../data/icons.js';
+import SectionHeader from './ui/SectionHeader.jsx';
 
 export default function ServicesSection({ settings, onOpenConsultation }) {
-  const defaultServices = [
-    {
-      id: "residential",
-      icon: "Home",
-      title: "Residential Interior Design",
-      subtitle: "Comfort • Aesthetics • Practicality",
-      description: "We create elegant and functional living spaces tailored to your lifestyle, combining aesthetics, comfort, and practicality.",
-      image: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878427/modshine/hero_living_room.jpg",
-      deliverables: ["Complete Hall & Living Room Decor", "Master & Kids Bedroom Concepts", "Lighting & Ceiling Architecture", "Curated Soft Furnishings"]
-    },
-    {
-      id: "modular",
-      icon: "CookingPot",
-      title: "Modular Kitchen & Furniture",
-      subtitle: "Style • Durability • Efficiency",
-      description: "Custom-designed modular kitchens, wardrobes, TV units, and storage solutions crafted for style, durability, and efficient space utilization.",
-      image: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878434/modshine/kitchen_island.jpg",
-      deliverables: ["Action TESA HDHMR Boilo Kitchens", "Floor-to-Ceiling Sliding Wardrobes", "Acoustic Fluted TV Units", "Sacred Backlit Pooja Mandirs"]
-    },
-    {
-      id: "commercial",
-      icon: "Briefcase",
-      title: "Commercial Interior Design",
-      subtitle: "Productivity • Brand Identity",
-      description: "From offices to retail spaces, we design professional environments that enhance productivity and strengthen your brand identity.",
-      image: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878461/modshine/partition_wooden_slat.jpg",
-      deliverables: ["Corporate Offices & Executive Cabins", "Retail Showrooms & Boutiques", "Hospitality & Clinic Lounges", "Soundproof Partition Walls"]
-    },
-    {
-      id: "turnkey",
-      icon: "Key",
-      title: "Turnkey Interior Solutions",
-      subtitle: "Concept to Handover",
-      description: "We manage the complete project from concept, design, material selection, execution, and final handover with assured quality and timely delivery.",
-      image: "https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878425/modshine/bedroom_twin_luxury.jpg",
-      deliverables: ["3D Realistic Walkthrough Visuals", "Single Point Accountability", "Factory-Direct Precision Joinery", "Fixed Timeline & Budget Assurance"]
-    }
-  ];
-
-  const services = (settings?.services && settings.services.length > 0)
-    ? settings.services
-    : defaultServices;
+  const head = settings?.sections?.services || {};
+  const services = Array.isArray(settings?.services) ? settings.services : [];
 
   const renderIcon = (iconName) => {
-    switch (iconName) {
-      case 'Home': return <Home className="w-6 h-6" />;
-      case 'CookingPot': return <CookingPot className="w-6 h-6" />;
-      case 'Briefcase': return <Briefcase className="w-6 h-6" />;
-      case 'Key': return <Key className="w-6 h-6" />;
-      case 'Layers': return <Layers className="w-6 h-6" />;
-      default: return <Sparkles className="w-6 h-6" />;
-    }
+    const Icon = getIcon(iconName);
+    return <Icon className="w-5 h-5" strokeWidth={1.5} />;
   };
 
   return (
-    <section id="services" className="py-20 lg:py-28 bg-white relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-light text-brand-primary text-xs font-semibold tracking-wider uppercase border border-brand-primary/20">
-            <Layers className="w-3.5 h-3.5 text-gold-rich" />
-            <span>Our Core Expertise</span>
-          </div>
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-darkest tracking-tight">
-            Comprehensive Interior Design & Modular Services
-          </h2>
-          <p className="text-ink-muted text-base sm:text-lg leading-relaxed">
-            From initial site measurement to final keys handover, every solution is engineered to perfection with premium materials and transparent pricing.
-          </p>
-        </div>
+    <section id="services" className="relative py-24 lg:py-36 bg-warm-canvas">
+      <div className="max-w-[1440px] mx-auto px-5 sm:px-6 lg:px-10">
 
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+        <SectionHeader
+          index="02"
+          eyebrow={head.eyebrow}
+          title={head.title}
+          highlight={head.titleHighlight}
+          intro={head.intro}
+        />
+
+        <div className="space-y-24 lg:space-y-36">
           {services.map((s, idx) => {
             const rawDeliverables = Array.isArray(s.deliverables)
               ? s.deliverables
               : (typeof s.deliverables === 'string' ? s.deliverables.split(',').map(d => d.trim()).filter(Boolean) : []);
+            const flip = idx % 2 === 1;
 
             return (
-              <div
+              <article
                 key={s.id || idx}
-                className="group rounded-2xl overflow-hidden border border-warm-border/80 bg-warm-canvas hover:border-brand-primary/40 transition-all duration-300 shadow-sm hover:shadow-luxury flex flex-col justify-between h-full"
+                className="group grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center"
               >
-                {/* Image Banner */}
-                <div className="relative h-60 overflow-hidden bg-brand-dark">
-                  <img
-                    src={s.image || 'https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878427/modshine/hero_living_room.jpg'}
-                    alt={s.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-brand-darkest/80 via-brand-darkest/20 to-transparent"></div>
-                  
-                  {/* Icon Badge */}
-                  <div className="absolute top-4 left-4 p-3 rounded-xl bg-brand-primary/90 text-gold-champagne backdrop-blur-md border border-gold-champagne/30 shadow-md">
-                    {renderIcon(s.icon)}
-                  </div>
-
-                  {/* Subtitle tag */}
-                  {s.subtitle && (
-                    <div className="absolute bottom-4 left-4 right-4">
-                      <span className="text-[11px] font-semibold uppercase tracking-wider text-gold-champagne bg-brand-darkest/80 px-2.5 py-1 rounded-md backdrop-blur-sm border border-gold-champagne/20">
-                        {s.subtitle}
-                      </span>
+                {/* Image */}
+                <div className={`lg:col-span-7 ${flip ? 'lg:order-2' : ''}`}>
+                  <div className="relative">
+                    <div data-reveal-img="up" className="relative aspect-[4/3] lg:aspect-[16/11] overflow-hidden rounded-[4px] bg-brand-dark">
+                      <img
+                        data-parallax="12"
+                        src={s.image || 'https://res.cloudinary.com/pgn8z8k7/image/upload/v1793878427/modshine/hero_living_room.jpg'}
+                        alt={s.title}
+                        className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-[1.4s] ease-out"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-brand-darkest/40 via-transparent to-transparent pointer-events-none" />
                     </div>
-                  )}
+                    {/* Oversized index numeral */}
+                    <span className={`pointer-events-none select-none absolute -top-[4.1rem] sm:-top-[6.3rem] ${flip ? 'right-0' : 'left-0'} font-serif italic text-[4.5rem] sm:text-[7rem] leading-none text-gold-primary/40`}>
+                      {String(idx + 1).padStart(2, '0')}
+                    </span>
+                  </div>
                 </div>
 
-                {/* Content Body */}
-                <div className="p-6 sm:p-8 flex-1 flex flex-col justify-between space-y-5">
-                  <div className="space-y-3">
-                    <h3 className="font-serif text-2xl font-bold text-brand-darkest group-hover:text-brand-primary transition-colors">
-                      {s.title}
-                    </h3>
-                    <p className="text-ink-body text-sm leading-relaxed">
-                      {s.description}
-                    </p>
-
-                    {/* Deliverables tags */}
-                    {rawDeliverables.length > 0 && (
-                      <div className="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
-                        {rawDeliverables.map((item, i) => (
-                          <div key={i} className="flex items-center gap-1.5 text-xs text-ink-muted">
-                            <span className="w-1.5 h-1.5 rounded-full bg-gold-primary shrink-0"></span>
-                            <span className="truncate">{item}</span>
-                          </div>
-                        ))}
-                      </div>
+                {/* Copy */}
+                <div data-card className={`lg:col-span-5 ${flip ? 'lg:order-1' : ''}`}>
+                  <div className="flex items-center gap-4 mb-6">
+                    <span className="w-12 h-12 rounded-full border border-warm-border flex items-center justify-center text-brand-primary group-hover:bg-brand-primary group-hover:text-gold-champagne group-hover:border-brand-primary transition-all duration-500">
+                      {renderIcon(s.icon)}
+                    </span>
+                    {s.subtitle && (
+                      <span className="text-[10px] font-semibold uppercase tracking-[0.24em] text-gold-rich">
+                        {s.subtitle}
+                      </span>
                     )}
                   </div>
 
-                  <div className="pt-4 border-t border-warm-border/60">
-                    <button
-                      onClick={onOpenConsultation}
-                      className="text-xs font-bold uppercase tracking-wider text-brand-primary group-hover:text-gold-rich flex items-center gap-1.5 transition-colors"
-                    >
-                      <span>Inquire About This Service</span>
-                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                    </button>
-                  </div>
+                  <h3 className="display text-4xl sm:text-5xl text-ink-charcoal">
+                    {s.title}
+                  </h3>
+                  <p className="mt-5 text-ink-body text-[15px] sm:text-base leading-[1.8]">
+                    {s.description}
+                  </p>
+
+                  {rawDeliverables.length > 0 && (
+                    <ul className="mt-8 border-t border-warm-border">
+                      {rawDeliverables.map((item, i) => (
+                        <li key={i} className="flex items-center justify-between gap-4 py-3.5 border-b border-warm-border text-sm text-ink-body">
+                          <span className="flex items-center gap-3 min-w-0">
+                            <span className="font-serif italic text-gold-primary text-sm w-5 shrink-0">{i + 1}.</span>
+                            <span className="truncate">{item}</span>
+                          </span>
+                          <span className="h-px w-6 bg-warm-border shrink-0" />
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+
+                  <button
+                    onClick={onOpenConsultation}
+                    className="mt-8 link-underline text-brand-primary hover:text-gold-rich transition-colors"
+                  >
+                    <span>{settings?.servicesCta}</span>
+                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                  </button>
                 </div>
-              </div>
+              </article>
             );
           })}
         </div>
-
-      </div>
-    </section>
-  );
-}
 
       </div>
     </section>

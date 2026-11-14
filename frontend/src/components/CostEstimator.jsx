@@ -1,87 +1,76 @@
 import React, { useState } from 'react';
-import { Calculator, Check, ArrowRight, ShieldCheck, HelpCircle } from 'lucide-react';
+import { Check, ArrowRight, ShieldCheck } from 'lucide-react';
+import { fillTokens } from '../data/siteContent.js';
+import SectionHeader from './ui/SectionHeader.jsx';
 
-export default function CostEstimator({ onOpenConsultationWithEstimate }) {
-  const [projectScope, setProjectScope] = useState('kitchen');
-  const [boardType, setBoardType] = useState('hdhmr');
-  const [hardwareTier, setHardwareTier] = useState('hettich');
-  const [finishType, setFinishType] = useState('matte');
+export default function CostEstimator({ settings, onOpenConsultationWithEstimate }) {
+  const head = settings?.sections?.estimator || {};
+  const est = settings?.estimator || {};
+  const arr = (v) => (Array.isArray(v) ? v : []);
+  const scopeOptions = arr(est.scopeOptions);
+  const boardOptions = arr(est.boardOptions);
+  const hardwareOptions = arr(est.hardwareOptions);
+  const finishOptions = arr(est.finishOptions);
+  const stepLabels = arr(est.stepLabels);
 
-  const scopeOptions = [
-    { id: 'kitchen', label: 'Modular Kitchen', desc: 'L-Shape / Parallel with overhead lofts & tandem boxes' },
-    { id: 'wardrobe', label: 'Master Bedroom Wardrobe', desc: '9ft Floor-to-ceiling with loft & vanity mirror' },
-    { id: 'tv-partition', label: 'TV Unit & Living Partition', desc: 'Fluted acoustic wall + wooden slat room divider' },
-    { id: '2bhk', label: 'Full 2 BHK Complete Interior', desc: 'Kitchen + 2 Wardrobes + TV Unit + Mandir + Foyer' },
-    { id: '3bhk', label: 'Full 3 BHK Luxury Turnkey', desc: 'Turnkey interior across all 3 bedrooms, hall & kitchen' },
-  ];
+  const [projectScope, setProjectScope] = useState(scopeOptions[0]?.id);
+  const [boardType, setBoardType] = useState(boardOptions[0]?.id);
+  const [hardwareTier, setHardwareTier] = useState(hardwareOptions[0]?.id);
+  const [finishType, setFinishType] = useState(finishOptions[0]?.id);
 
-  const boardOptions = [
-    { id: 'hdhmr', label: 'Action TESA HDHMR Boilo', badge: 'Recommended • Waterproof' },
-    { id: 'bwp', label: 'Greenply BWP Marine Plywood 710', badge: 'Marine Grade' },
-    { id: 'mr', label: 'CenturyPly MR Plywood', badge: 'Standard Moisture Resistant' },
-  ];
+  const blank = { id: '', label: '', desc: '', badge: '' };
+  const currentScope = scopeOptions.find(s => s.id === projectScope) || scopeOptions[0] || blank;
+  const currentBoard = boardOptions.find(b => b.id === boardType) || boardOptions[0] || blank;
+  const currentHardware = hardwareOptions.find(h => h.id === hardwareTier) || hardwareOptions[0] || blank;
+  const currentFinish = finishOptions.find(f => f.id === finishType) || finishOptions[0] || blank;
+  const tokens = {
+    board: currentBoard.label.split(' ').slice(0, 2).join(' '),
+    hardware: currentHardware.label,
+    scope: currentScope.label,
+    finish: currentFinish.label,
+  };
 
-  const hardwareOptions = [
-    { id: 'hettich', label: 'German Hettich Sensys + InnoTech', badge: 'Lifetime Smooth' },
-    { id: 'ebco', label: 'Ebco Heavy Duty Soft-Close Channels', badge: 'High Durability' },
-  ];
+  const optionCls = (active) =>
+    `relative p-4 rounded-[4px] text-left border transition-all duration-300 ${
+      active
+        ? 'border-brand-primary bg-brand-light/50 text-ink-charcoal shadow-[inset_0_0_0_1px_#1f3d34]'
+        : 'border-warm-border bg-warm-canvas text-ink-body hover:border-ink-charcoal/40'
+    }`;
 
-  const finishOptions = [
-    { id: 'matte', label: 'Cashmere Anti-Fingerprint Acrylic Matte' },
-    { id: 'fluted', label: 'Fluted Louvers & Carra Marble Sheet Highlights' },
-    { id: 'gloss', label: 'Scratch-Resistant High Gloss Laminate' },
-  ];
-
-  // Selected options
-  const currentScope = scopeOptions.find(s => s.id === projectScope) || scopeOptions[0];
-  const currentBoard = boardOptions.find(b => b.id === boardType) || boardOptions[0];
-  const currentHardware = hardwareOptions.find(h => h.id === hardwareTier) || hardwareOptions[0];
-  const currentFinish = finishOptions.find(f => f.id === finishType) || finishOptions[0];
+  const StepLabel = ({ children, n }) => (
+    <label className="flex items-baseline gap-3 mb-4">
+      <span className="font-serif italic text-gold-primary text-lg">{n}</span>
+      <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-ink-charcoal">{children}</span>
+    </label>
+  );
 
   return (
-    <section id="estimator" className="py-20 lg:py-28 bg-warm-canvas relative border-t border-warm-border/60">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-light text-brand-primary text-xs font-semibold tracking-wider uppercase border border-brand-primary/20">
-            <Calculator className="w-3.5 h-3.5 text-gold-rich" />
-            <span>Interactive Project Estimator</span>
-          </div>
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-darkest tracking-tight">
-            Custom Interior Specification Planner
-          </h2>
-          <p className="text-ink-muted text-sm sm:text-base leading-relaxed">
-            Customize your modular furniture requirements and plan your layout specifications engineered with genuine Action TESA and German hardware.
-          </p>
-        </div>
+    <section id="estimator" className="relative py-24 lg:py-36 bg-warm-canvas">
+      <div className="max-w-[1440px] mx-auto px-5 sm:px-6 lg:px-10">
 
-        {/* Calculator Container */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          
-          {/* Controls Column */}
-          <div className="lg:col-span-7 bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-8 border border-warm-border shadow-sm space-y-5 sm:space-y-6">
-            
-            {/* 1. Project Scope */}
-            <div className="space-y-3">
-              <label className="text-xs font-bold uppercase tracking-wider text-brand-darkest block">
-                1. Select Room / Project Scope
-              </label>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+        <SectionHeader
+          index="08"
+          eyebrow={head.eyebrow}
+          title={head.title}
+          highlight={head.titleHighlight}
+          intro={head.intro}
+        />
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+
+          {/* Controls */}
+          <div data-card className="lg:col-span-7 space-y-10">
+
+            <div>
+              <StepLabel n="i.">{stepLabels[0]}</StepLabel>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {scopeOptions.map((opt) => (
-                  <button
-                    key={opt.id}
-                    type="button"
-                    onClick={() => setProjectScope(opt.id)}
-                    className={`p-3.5 rounded-xl text-left border transition-all ${
-                      projectScope === opt.id
-                        ? 'border-brand-primary bg-brand-light/70 text-brand-darkest shadow-sm ring-1 ring-brand-primary'
-                        : 'border-warm-border bg-white text-ink-body hover:bg-warm-cream'
-                    }`}
-                  >
-                    <div className="flex justify-between items-center mb-1">
-                      <span className="font-bold text-xs">{opt.label}</span>
-                      {projectScope === opt.id && <Check className="w-4 h-4 text-brand-primary" />}
+                  <button key={opt.id} type="button" onClick={() => setProjectScope(opt.id)} className={optionCls(currentScope.id === opt.id)}>
+                    <div className="flex justify-between items-center gap-2 mb-1">
+                      <span className="font-serif text-lg font-semibold leading-tight">{opt.label}</span>
+                      <span className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 ${currentScope.id === opt.id ? 'bg-brand-primary border-brand-primary' : 'border-warm-border'}`}>
+                        {currentScope.id === opt.id && <Check className="w-3 h-3 text-warm-canvas" />}
+                      </span>
                     </div>
                     <p className="text-[11px] text-ink-muted line-clamp-1">{opt.desc}</p>
                   </button>
@@ -89,155 +78,98 @@ export default function CostEstimator({ onOpenConsultationWithEstimate }) {
               </div>
             </div>
 
-            {/* 2. Board Substrate Quality */}
-            <div className="space-y-3">
-              <label className="text-xs font-bold uppercase tracking-wider text-brand-darkest block">
-                2. Core Board Material
-              </label>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+            <div>
+              <StepLabel n="ii.">{stepLabels[1]}</StepLabel>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {boardOptions.map((opt) => (
-                  <button
-                    key={opt.id}
-                    type="button"
-                    onClick={() => setBoardType(opt.id)}
-                    className={`p-3 rounded-xl text-left border transition-all flex flex-col justify-between ${
-                      boardType === opt.id
-                        ? 'border-brand-primary bg-brand-light/70 text-brand-darkest shadow-sm ring-1 ring-brand-primary'
-                        : 'border-warm-border bg-white text-ink-body hover:bg-warm-cream'
-                    }`}
-                  >
-                    <span className="font-bold text-xs mb-1">{opt.label}</span>
-                    <span className="text-[10px] text-emerald-800 font-semibold">{opt.badge}</span>
+                  <button key={opt.id} type="button" onClick={() => setBoardType(opt.id)} className={`${optionCls(currentBoard.id === opt.id)} flex flex-col justify-between gap-2`}>
+                    <span className="font-semibold text-[13px] leading-snug">{opt.label}</span>
+                    <span className="text-[10px] uppercase tracking-[0.12em] text-brand-accent font-semibold">{opt.badge}</span>
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* 3. Hardware Grade */}
-            <div className="space-y-3">
-              <label className="text-xs font-bold uppercase tracking-wider text-brand-darkest block">
-                3. Hardware & Slider Brand
-              </label>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div>
+              <StepLabel n="iii.">{stepLabels[2]}</StepLabel>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {hardwareOptions.map((opt) => (
-                  <button
-                    key={opt.id}
-                    type="button"
-                    onClick={() => setHardwareTier(opt.id)}
-                    className={`p-3 rounded-xl text-left border transition-all ${
-                      hardwareTier === opt.id
-                        ? 'border-brand-primary bg-brand-light/70 text-brand-darkest shadow-sm ring-1 ring-brand-primary'
-                        : 'border-warm-border bg-white text-ink-body hover:bg-warm-cream'
-                    }`}
-                  >
-                    <div className="flex justify-between items-center mb-1">
-                      <span className="font-bold text-xs">{opt.label}</span>
-                      {hardwareTier === opt.id && <Check className="w-4 h-4 text-brand-primary" />}
+                  <button key={opt.id} type="button" onClick={() => setHardwareTier(opt.id)} className={optionCls(currentHardware.id === opt.id)}>
+                    <div className="flex justify-between items-center gap-2 mb-1">
+                      <span className="font-semibold text-[13px] leading-snug">{opt.label}</span>
+                      <span className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 ${currentHardware.id === opt.id ? 'bg-brand-primary border-brand-primary' : 'border-warm-border'}`}>
+                        {currentHardware.id === opt.id && <Check className="w-3 h-3 text-warm-canvas" />}
+                      </span>
                     </div>
-                    <span className="text-[10px] text-ink-muted">{opt.badge}</span>
+                    <span className="text-[10px] uppercase tracking-[0.12em] text-ink-muted">{opt.badge}</span>
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* 4. Surface Finish */}
-            <div className="space-y-3">
-              <label className="text-xs font-bold uppercase tracking-wider text-brand-darkest block">
-                4. Surface Finish & Texture
-              </label>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+            <div>
+              <StepLabel n="iv.">{stepLabels[3]}</StepLabel>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {finishOptions.map((opt) => (
-                  <button
-                    key={opt.id}
-                    type="button"
-                    onClick={() => setFinishType(opt.id)}
-                    className={`p-3 rounded-xl text-left border text-xs font-medium transition-all ${
-                      finishType === opt.id
-                        ? 'border-brand-primary bg-brand-light/70 text-brand-darkest shadow-sm ring-1 ring-brand-primary'
-                        : 'border-warm-border bg-white text-ink-body hover:bg-warm-cream'
-                    }`}
-                  >
+                  <button key={opt.id} type="button" onClick={() => setFinishType(opt.id)} className={`${optionCls(currentFinish.id === opt.id)} text-[13px] font-medium leading-snug`}>
                     {opt.label}
                   </button>
                 ))}
               </div>
             </div>
-
           </div>
 
-          {/* Results Summary Column */}
-          <div className="lg:col-span-5 bg-brand-darkest text-white rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-gold-champagne/30 shadow-2xl space-y-5 sm:space-y-6">
-            
-            <div className="border-b border-brand-medium/40 pb-4 sm:pb-5">
-              <span className="text-[11px] sm:text-xs uppercase tracking-widest text-gold-champagne font-semibold block mb-1">Project Specification</span>
-              <div className="flex items-baseline gap-2">
-                <span className="font-serif text-2xl sm:text-3xl font-bold gold-gradient-text break-words">
-                  Custom Architecture Plan
-                </span>
-              </div>
-              <p className="text-[11px] sm:text-xs text-emerald-200/70 mt-1">
-                *Tailored specifically to your site floor plan with 10-Year Warranty.
+          {/* Summary */}
+          <div data-card className="lg:col-span-5 lg:sticky lg:top-28 rounded-[4px] bg-brand-darkest text-warm-canvas p-7 sm:p-10 relative overflow-hidden">
+            <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-gold-primary/15 blur-[100px] pointer-events-none" />
+
+            <div className="relative border-b border-white/10 pb-6">
+              <span className="text-[10px] uppercase tracking-[0.24em] text-gold-champagne font-semibold block mb-3">{est.specLabel}</span>
+              <span className="display text-4xl sm:text-5xl gold-gradient-text block">
+                {est.specTitle}
+              </span>
+              <p className="text-xs text-warm-canvas/55 mt-3">
+                {est.specNote}
               </p>
             </div>
 
-            {/* Included in estimate */}
-            <div className="space-y-3">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-gold-champagne">
-                Included in This Specification:
+            <div className="relative py-6 space-y-4">
+              <h4 className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gold-champagne">
+                {est.inclusionsTitle}
               </h4>
-              <ul className="space-y-2 text-xs text-emerald-100/90">
-                <li className="flex items-center gap-2">
-                  <Check className="w-4 h-4 text-gold-primary" />
-                  <span>Laser Site Measurement & Customized Layout Planning</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Check className="w-4 h-4 text-gold-primary" />
-                  <span>Certified {currentBoard.label.split(' ')[0]} {currentBoard.label.split(' ')[1]} Grade Substrates</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Check className="w-4 h-4 text-gold-primary" />
-                  <span>{currentHardware.label} soft-close channels</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Check className="w-4 h-4 text-gold-primary" />
-                  <span>Factory Joinery, Safe Statewide Transportation & On-Site Installation</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Check className="w-4 h-4 text-gold-primary" />
-                  <span>10-Year Warranty & Free Periodic Maintenance Visit</span>
-                </li>
+              <ul className="divide-y divide-white/10 text-[13px] text-warm-canvas/85">
+                {arr(est.inclusions).map((line, i) => (
+                  <li key={i} className="flex items-start gap-3 py-2.5">
+                    <Check className="w-4 h-4 text-gold-primary shrink-0 mt-0.5" />
+                    <span>{fillTokens(line, tokens)}</span>
+                  </li>
+                ))}
               </ul>
             </div>
 
-            {/* CTA to lock in quote */}
-            <div className="pt-2">
-              <button
-                onClick={() => {
-                  onOpenConsultationWithEstimate({
-                    scope: currentScope.label,
-                    board: currentBoard.label,
-                    hardware: currentHardware.label,
-                    finish: currentFinish.label,
-                    estimateText: 'Custom Architecture Specification'
-                  });
-                }}
-                className="w-full py-4 rounded-xl bg-gradient-to-r from-gold-primary via-gold-champagne to-gold-rich text-brand-darkest font-bold text-sm tracking-wide shadow-gold-glow hover:brightness-105 transition-all flex items-center justify-center gap-2"
-              >
-                <span>Request Custom Quote & Consultation</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
+            <button
+              onClick={() => {
+                onOpenConsultationWithEstimate({
+                  scope: currentScope.label,
+                  board: currentBoard.label,
+                  hardware: currentHardware.label,
+                  finish: currentFinish.label,
+                  estimateText: est.specTitle || 'Custom Architecture Specification'
+                });
+              }}
+              className="relative btn-brass w-full group"
+            >
+              <span>{est.ctaText}</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </button>
 
-            {/* Guarantee note */}
-            <div className="p-3 rounded-xl bg-brand-dark/80 border border-brand-medium/30 flex items-center gap-2 text-xs text-emerald-200/80">
-              <ShieldCheck className="w-5 h-5 text-gold-champagne shrink-0" />
-              <span>Zero obligation. Final custom quote confirmed after site measurement & design sign-off.</span>
+            <div className="relative mt-5 flex items-start gap-2.5 text-xs text-warm-canvas/55">
+              <ShieldCheck className="w-4 h-4 text-gold-champagne shrink-0" strokeWidth={1.5} />
+              <span>{est.guarantee}</span>
             </div>
-
           </div>
 
         </div>
-
       </div>
     </section>
   );

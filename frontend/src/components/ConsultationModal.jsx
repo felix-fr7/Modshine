@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { X, Send, CheckCircle, ArrowRight, ShieldCheck } from 'lucide-react';
 import { apiUrl } from '../config/api.js';
 
-export default function ConsultationModal({ isOpen, onClose, prefillData, onInquirySubmitted }) {
+export default function ConsultationModal({ settings, isOpen, onClose, prefillData, onInquirySubmitted }) {
+  const m = settings?.consultation || {};
+  const serviceOptions = Array.isArray(m.serviceOptions) ? m.serviceOptions : [];
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -59,13 +61,13 @@ export default function ConsultationModal({ isOpen, onClose, prefillData, onInqu
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 animate-fadeIn">
-      <div className="bg-white rounded-2xl sm:rounded-3xl max-w-lg w-full p-5 sm:p-8 space-y-5 sm:space-y-6 shadow-2xl border border-warm-border relative max-h-[92vh] overflow-y-auto my-auto">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-brand-darkest/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 animate-fadeIn">
+      <div className="bg-warm-canvas rounded-[6px] max-w-lg w-full p-6 sm:p-10 space-y-6 shadow-[0_50px_100px_-30px_rgba(0,0,0,0.6)] border border-warm-border relative max-h-[92vh] overflow-y-auto my-auto">
         
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 sm:top-5 sm:right-5 p-2 rounded-full hover:bg-neutral-100 text-neutral-500 transition-colors"
+          className="absolute top-4 right-4 sm:top-6 sm:right-6 w-10 h-10 rounded-full border border-warm-border hover:border-ink-charcoal text-ink-body flex items-center justify-center transition-colors"
           aria-label="Close modal"
         >
           <X className="w-5 h-5" />
@@ -73,11 +75,11 @@ export default function ConsultationModal({ isOpen, onClose, prefillData, onInqu
 
         {success ? (
           <div className="text-center py-8 space-y-4 animate-fadeIn">
-            <div className="w-16 h-16 rounded-full bg-emerald-100 text-brand-primary flex items-center justify-center mx-auto shadow-md">
+            <div className="w-16 h-16 rounded-full border border-gold-primary/50 text-brand-primary flex items-center justify-center mx-auto">
               <CheckCircle className="w-10 h-10" />
             </div>
-            <h3 className="font-serif text-2xl font-bold text-brand-darkest">
-              Consultation Scheduled!
+            <h3 className="display text-4xl text-ink-charcoal">
+              {m.successTitle}
             </h3>
             <p className="text-xs text-ink-muted leading-relaxed">
               Thank you, <strong>{formData.name}</strong>. Our senior interior designer will call <strong>{formData.phone}</strong> to confirm your requirements and schedule a design consultation.
@@ -87,7 +89,7 @@ export default function ConsultationModal({ isOpen, onClose, prefillData, onInqu
                 setSuccess(false);
                 onClose();
               }}
-              className="px-6 py-2.5 rounded-xl bg-brand-primary text-white text-xs font-semibold"
+              className="btn-dark"
             >
               Done
             </button>
@@ -96,85 +98,80 @@ export default function ConsultationModal({ isOpen, onClose, prefillData, onInqu
           <form onSubmit={handleSubmit} className="space-y-4">
             
             <div>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-gold-rich bg-warm-cream px-2.5 py-1 rounded">
-                Design & Project Consultation
+              <span className="eyebrow">
+                {m.eyebrow}
               </span>
-              <h3 className="font-serif text-2xl font-bold text-brand-darkest mt-2">
-                Book Your Design Session
+              <h3 className="display text-4xl text-ink-charcoal mt-3">
+                {m.title}
               </h3>
-              <p className="text-xs text-ink-muted">
-                Visit our Kovilpatti studio or request a laser measurement at your home anywhere in Tamil Nadu.
+              <p className="text-sm text-ink-muted mt-2 leading-relaxed">
+                {m.intro}
               </p>
             </div>
 
             {errorMsg && (
-              <div className="p-3 rounded-xl bg-red-50 text-red-700 text-xs border border-red-200">
+              <div className="p-3.5 rounded-[4px] bg-[#f6e7e2] text-[#8a3d2b] text-xs border border-[#e8cbc1]">
                 {errorMsg}
               </div>
             )}
 
-            <div className="space-y-3">
+            <div className="space-y-6">
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-brand-darkest block">Your Name *</label>
+                <label className="field-label">Your Name *</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Suresh Ramanathan"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-3.5 py-2 rounded-xl border border-warm-border text-xs focus:outline-none focus:border-brand-primary"
+                  className="field"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-brand-darkest block">Phone Number *</label>
+                <label className="field-label">Phone Number *</label>
                 <input
                   type="tel"
                   required
                   placeholder="+91 98421 XXXXX"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className="w-full px-3.5 py-2 rounded-xl border border-warm-border text-xs focus:outline-none focus:border-brand-primary"
+                  className="field"
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-6">
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-brand-darkest block">Service</label>
+                  <label className="field-label">Service</label>
                   <select
                     value={formData.service}
                     onChange={(e) => setFormData({ ...formData, service: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl border border-warm-border text-xs focus:outline-none focus:border-brand-primary"
+                    className="field"
                   >
-                    <option value="Modular Kitchen">Modular Kitchen</option>
-                    <option value="Wardrobe">Wardrobe</option>
-                    <option value="TV Unit & Wall">TV Unit & Wall</option>
-                    <option value="Pooja Mandir">Pooja Mandir</option>
-                    <option value="Partition">Partition</option>
-                    <option value="Full 2 BHK / 3 BHK">Full 2 BHK / 3 BHK</option>
+                    {serviceOptions.map((o) => <option key={o} value={o}>{o}</option>)}
                   </select>
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-brand-darkest block">City</label>
+                  <label className="field-label">City</label>
                   <input
                     type="text"
                     placeholder="e.g. Chennai, Coimbatore, Kovilpatti"
                     value={formData.city}
                     onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl border border-warm-border text-xs focus:outline-none focus:border-brand-primary"
+                    className="field"
                   />
                 </div>
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-brand-darkest block">Message / Preferred Time</label>
+                <label className="field-label">Message / Preferred Time</label>
                 <textarea
                   rows={2}
                   placeholder="Tell us about your home floor plan or preferred visit time..."
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full px-3.5 py-2 rounded-xl border border-warm-border text-xs focus:outline-none focus:border-brand-primary"
+                  className="field"
                 ></textarea>
               </div>
             </div>
@@ -182,15 +179,15 @@ export default function ConsultationModal({ isOpen, onClose, prefillData, onInqu
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 rounded-xl bg-brand-primary hover:bg-brand-dark text-white font-bold text-xs tracking-wide shadow-luxury flex items-center justify-center gap-2 disabled:opacity-50"
+              className="btn-dark w-full"
             >
-              <span>{loading ? 'Submitting...' : 'Confirm Consultation Booking'}</span>
+              <span>{loading ? 'Submitting...' : m.submitText}</span>
               <ArrowRight className="w-3.5 h-3.5 text-gold-champagne" />
             </button>
 
             <div className="flex items-center justify-center gap-1.5 text-[11px] text-ink-muted">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-              <span>Direct factory pricing • 10-Year Warranty</span>
+              <ShieldCheck className="w-3.5 h-3.5 text-brand-accent" />
+              <span>{m.footnote}</span>
             </div>
 
           </form>

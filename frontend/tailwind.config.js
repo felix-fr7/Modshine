@@ -7,42 +7,54 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Deep forest — derived from the Modshine logo green
         brand: {
-          darkest: '#091c16',
-          dark: '#0e2d24',
-          primary: '#14453a',
-          medium: '#1c5c4f',
-          accent: '#267a68',
-          light: '#e8f3f0'
+          darkest: '#0e1a16',
+          dark: '#152822',
+          primary: '#1f3d34',
+          medium: '#2d5446',
+          accent: '#44705f',
+          light: '#e4ebe5'
         },
+        // Brushed brass
         gold: {
-          light: '#f5edd8',
-          champagne: '#ddc59f',
-          primary: '#c49f64',
-          rich: '#aa8243',
-          dark: '#8b672f'
+          light: '#f2eadb',
+          champagne: '#d8c29c',
+          primary: '#b48e57',
+          rich: '#98743f',
+          dark: '#765828'
         },
+        // Linen & travertine neutrals
         warm: {
-          canvas: '#fdfcf9',
-          cream: '#f7f4ed',
-          border: '#e8e2d4',
-          muted: '#8c867b'
+          canvas: '#f5f1ea',
+          cream: '#ece5d8',
+          border: '#ddd4c4',
+          muted: '#8b8275'
         },
         ink: {
-          charcoal: '#181e1c',
-          body: '#2d3733',
-          muted: '#63726d'
+          charcoal: '#1d1b18',
+          body: '#3b3732',
+          muted: '#6e675d'
         }
       },
       fontFamily: {
-        serif: ['"Playfair Display"', 'Georgia', 'serif'],
-        sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+        serif: ['"Cormorant Garamond"', 'Cormorant', 'Georgia', 'serif'],
+        sans: ['Manrope', '"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
-        'luxury': '0 20px 40px -15px rgba(14, 45, 36, 0.12)',
-        'luxury-lg': '0 30px 60px -20px rgba(14, 45, 36, 0.18)',
-        'gold-glow': '0 0 25px rgba(196, 159, 100, 0.25)',
-      }
+        'luxury': '0 24px 48px -24px rgba(14, 26, 22, 0.18)',
+        'luxury-lg': '0 40px 80px -32px rgba(14, 26, 22, 0.28)',
+        'gold-glow': '0 14px 40px -12px rgba(180, 142, 87, 0.45)',
+      },
+      keyframes: {
+        marquee: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+      },
+      animation: {
+        marquee: 'marquee 38s linear infinite',
+      },
     },
   },
   plugins: [],
