@@ -65,6 +65,9 @@ const collectImageUrls = (value) => new Set(JSON.stringify(value ?? null).match(
 // Data layer — MongoDB Atlas when connected, local JSON file otherwise
 // ======================================================================
 let isMongoConnected = false;
+let mongoError = process.env.MONGODB_URI ? 'connecting…' : 'MONGODB_URI is not set on this server';
+// never leak credentials in diagnostics
+const cleanMongoError = (msg) => String(msg || '').replace(/mongodb(\+srv)?:\/\/[^@\s]+@/gi, 'mongodb$1://***@').slice(0, 300);
 const plain = (doc) => (doc && typeof doc.toJSON === 'function' ? doc.toJSON() : doc);
 const newId = (prefix) => `${prefix}-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
 const stripMeta = ({ _id, __v, createdAt, updatedAt, ...rest }) => rest;
@@ -257,15 +260,17 @@ if (MONGODB_URI) {
     .connect(MONGODB_URI, { serverSelectionTimeoutMS: 8000 })
     .then(() => {
       isMongoConnected = true;
+      mongoError = null;
       console.log('✅ Connected to MongoDB Atlas');
       initMongoSync().then(() => auth.ensureDefaultAdmin()).catch((e) => console.warn('Admin seed notice:', e.message));
     })
     .catch((err) => {
-      console.warn('⚠️  MongoDB connection failed:', err.message);
+      mongoError = cleanMongoError(err.message);
+      console.warn('⚠️  MongoDB connection failed:', mongoError);
       console.warn('⚡ Falling back to local JSON storage (changes are NOT durable on Render).');
     });
-  mongoose.connection.on('disconnected', () => { isMongoConnected = false; });
-  mongoose.connection.on('reconnected', () => { isMongoConnected = true; });
+  mongoose.connection.on('disconnected', () => { isMongoConnected = false; mongoError = 'disconnected'; });
+  mongoose.connection.on('reconnected', () => { isMongoConnected = true; mongoError = null; });
 } else {
   console.warn('⚠️  MONGODB_URI not set — using local JSON storage.');
 }
@@ -292,6 +297,7 @@ const healthPayload = () => ({
   status: 'online',
   appName: 'Modshine Interior API',
   database: isMongoConnected ? 'MongoDB Atlas (Connected)' : 'Local JSON Engine (Active)',
+  ...(isMongoConnected ? {} : { databaseError: mongoError }),
   cloudinary: cloudinaryReady ? 'configured' : 'missing env',
   adminLogin: 'database',
   timestamp: new Date().toISOString(),
@@ -369,6 +375,7 @@ admin.get('/overview', wrap(async (req, res) => {
     totalInquiries: inquiries.length,
     newInquiries: inquiries.filter((i) => i.status === 'New').length,
     databaseMode: isMongoConnected ? 'MongoDB Atlas (Live)' : 'Local JSON Store',
+    databaseError: isMongoConnected ? null : mongoError,
     cloudinary: cloudinaryReady,
   });
 }));

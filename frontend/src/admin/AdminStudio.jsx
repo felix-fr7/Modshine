@@ -105,6 +105,7 @@ function Dashboard({ overview, products, categories, inquiries, go }) {
           <div>
             <p className="font-semibold">Database not connected — changes may be lost.</p>
             <p className="text-xs mt-1">The server is using temporary local storage. Check MONGODB_URI on the server and MongoDB Atlas network access.</p>
+            {overview.databaseError && <p className="text-xs mt-2 font-mono break-words opacity-90">Reason: {overview.databaseError}</p>}
           </div>
         </div>
       )}
