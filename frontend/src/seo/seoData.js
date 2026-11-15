@@ -132,11 +132,14 @@ export function buildJsonLd(content, products = [], siteUrl = DEFAULT_SITE_URL) 
         ...products.slice(0, 20).filter((p) => p?.title).map((p) => ({
           '@type': 'Offer',
           itemOffered: {
-            '@type': 'Product',
+            // Custom interior work is a Service (a Product would need price/reviews for Google)
+            '@type': 'Service',
             name: p.title,
+            serviceType: p.categoryName || p.category,
             description: plainText(p.description),
             image: cld(p.image, { w: 1200 }),
-            category: p.categoryName || p.category,
+            provider: { '@id': businessId },
+            areaServed: 'Tamil Nadu',
           },
         })),
       ],
